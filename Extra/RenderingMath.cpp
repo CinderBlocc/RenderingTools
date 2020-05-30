@@ -1,0 +1,73 @@
+#include "RenderingMath.h"
+#include "WrapperStructsExtensions.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
+
+RT::Matrix3 RT::LookAt(Vector objectLocation, Vector lookAtLocation, LookAtAxis axis, float rollAmount)
+{
+	//rollAmount should be in radians
+
+	Vector forward = lookAtLocation - objectLocation;
+	forward.normalize();
+
+	Vector right = Vector::cross(Vector(0, 0, 1), forward);
+	if(right.magnitude() == 0)
+	{
+		//Forward axis is parallel to world Z axis
+		Matrix3 defaultMat;
+		return defaultMat;
+	}
+	right.normalize();
+
+	Vector up = Vector::cross(forward, right);
+	up.normalize();
+
+	if(rollAmount != 0)
+	{
+		Quat rot = AngleAxisRotation(rollAmount, forward);
+		right = RotateVectorWithQuat(right, rot, true);
+		up = RotateVectorWithQuat(up, rot, true);
+	}
+
+	Matrix3 mat;
+
+	if(axis == LookAtAxis::AXIS_RIGHT)
+	{
+		//Right
+		mat.forward = right;
+		mat.right = forward * -1;
+		mat.up = up;
+
+		Quat rot = AngleAxisRotation(M_PI, up);
+		mat.RotateWithQuat(rot, true);
+	}
+	else if(axis == LookAtAxis::AXIS_UP)
+	{
+		//Up
+		mat.forward = up;
+		mat.right = right * -1;
+		mat.up = forward;
+	}
+	else
+	{
+		//Forward
+		mat.forward = forward;
+		mat.right = right;
+		mat.up = up;
+	}
+
+	return mat;
+}
+
+Quat RT::AngleAxisRotation(float angle, Vector axis)
+{
+	//Angle in radians
+	Quat result;
+	float angDiv2 = angle * 0.5f;
+	result.W = cos(angDiv2);
+	result.X = axis.X * sin(angDiv2);
+	result.Y = axis.Y * sin(angDiv2);
+	result.Z = axis.Z * sin(angDiv2);
+
+	return result;
+}

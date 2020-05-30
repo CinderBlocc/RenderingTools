@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\RenderingTools">
+      <UniqueIdentifier>{77c07572-4c93-4eab-9085-49574db166ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingTools">
+      <UniqueIdentifier>{e2c229d7-0f9e-4318-b143-9534b5fcf03c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenderingTools\Extra">
+      <UniqueIdentifier>{fcc6d1c2-e6c1-4f34-9756-6a55df71e892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingTools\Extra">
+      <UniqueIdentifier>{0239b346-02fa-4d09-a459-aef1467c7dcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenderingTools\Objects">
+      <UniqueIdentifier>{871e1408-0af1-46b6-b2fa-e39d0da62a11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RenderingTools\Objects">
+      <UniqueIdentifier>{780e3b4d-378f-41c5-99b5-3c2cdbdf3500}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RenderingExamples.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Extra\RenderingAssistant.cpp">
+      <Filter>Source Files\RenderingTools\Extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Extra\RenderingMath.cpp">
+      <Filter>Source Files\RenderingTools\Extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Extra\WrapperStructsExtensions.cpp">
+      <Filter>Source Files\RenderingTools\Extra</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Objects\Chevron.cpp">
+      <Filter>Source Files\RenderingTools\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Objects\Circle.cpp">
+      <Filter>Source Files\RenderingTools\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Objects\Cone.cpp">
+      <Filter>Source Files\RenderingTools\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Objects\Cube.cpp">
+      <Filter>Source Files\RenderingTools\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Objects\Frustum.cpp">
+      <Filter>Source Files\RenderingTools\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Objects\Grid.cpp">
+      <Filter>Source Files\RenderingTools\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Objects\Line.cpp">
+      <Filter>Source Files\RenderingTools\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Objects\Matrix3.cpp">
+      <Filter>Source Files\RenderingTools\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Objects\Plane.cpp">
+      <Filter>Source Files\RenderingTools\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Objects\Sphere.cpp">
+      <Filter>Source Files\RenderingTools\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Objects\Triangle.cpp">
+      <Filter>Source Files\RenderingTools\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Objects\VisualCamera.cpp">
+      <Filter>Source Files\RenderingTools\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\RenderingTools.cpp">
+      <Filter>Source Files\RenderingTools</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RenderingExamples.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extra\RenderingAssistant.h">
+      <Filter>Header Files\RenderingTools\Extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extra\RenderingMath.h">
+      <Filter>Header Files\RenderingTools\Extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Extra\WrapperStructsExtensions.h">
+      <Filter>Header Files\RenderingTools\Extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Objects\Chevron.h">
+      <Filter>Header Files\RenderingTools\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Objects\Circle.h">
+      <Filter>Header Files\RenderingTools\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Objects\Cone.h">
+      <Filter>Header Files\RenderingTools\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Objects\Cube.h">
+      <Filter>Header Files\RenderingTools\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Objects\Frustum.h">
+      <Filter>Header Files\RenderingTools\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Objects\Grid.h">
+      <Filter>Header Files\RenderingTools\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Objects\Line.h">
+      <Filter>Header Files\RenderingTools\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Objects\Matrix3.h">
+      <Filter>Header Files\RenderingTools\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Objects\Plane.h">
+      <Filter>Header Files\RenderingTools\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Objects\Sphere.h">
+      <Filter>Header Files\RenderingTools\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Objects\Triangle.h">
+      <Filter>Header Files\RenderingTools\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Objects\VisualCamera.h">
+      <Filter>Header Files\RenderingTools\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\RenderingTools.h">
+      <Filter>Header Files\RenderingTools</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

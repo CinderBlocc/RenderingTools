@@ -1,0 +1,125 @@
+#include "Matrix3.h"
+#include "../Extra/WrapperStructsExtensions.h"
+
+Quat RT::Matrix3::ToQuat()
+{
+	//https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+
+	Quat q;
+
+	float trace = forward.X + right.Y + up.Z;
+	if( trace > 0 )
+	{
+		float s = 0.5f / sqrtf(trace+ 1.0f);
+		q.W =   0.25f / s;
+		q.X = ( right.Z   - up.Y      ) * s;
+		q.Y = ( up.X      - forward.Z ) * s;
+		q.Z = ( forward.Y - right.X   ) * s;
+	}
+	else
+	{
+		if ( forward.X > right.Y && forward.X > up.Z )
+		{
+			float s = 2.0f * sqrtf( 1.0f + forward.X - right.Y - up.Z);
+			q.W = ( right.Z - up.Y      ) / s;
+			q.X =   0.25f * s;
+			q.Y = ( right.X + forward.Y ) / s;
+			q.Z = ( up.X    + forward.Z ) / s;
+		}
+		else if (right.Y > up.Z)
+		{
+			float s = 2.0f * sqrtf( 1.0f + right.Y - forward.X - up.Z);
+			q.W = ( up.X    - forward.Z ) / s;
+			q.X = ( right.X + forward.Y ) / s;
+			q.Y =   0.25f * s;
+			q.Z = ( up.Y    + right.Z   ) / s;
+		}
+		else
+		{
+			float s = 2.0f * sqrtf( 1.0f + up.Z - forward.X - right.Y );
+			q.W = ( forward.Y - right.X   ) / s;
+			q.X = ( up.X      + forward.Z ) / s;
+			q.Y = ( up.Y      + right.Z   ) / s;
+			q.Z =   0.25f * s;
+		}
+	}
+
+	return q;
+}
+
+Rotator RT::Matrix3::ToRotator()
+{
+	Quat q = this->ToQuat();
+	return QuatToRotator(q);
+}
+
+RT::Matrix3 RT::Matrix3::QuatToMatrix(Quat q)
+{
+	forward = RotateVectorWithQuat(Vector(1, 0, 0), q);
+	right = RotateVectorWithQuat(Vector(0, 1, 0), q);
+	up = RotateVectorWithQuat(Vector(0, 0, 1), q);
+	this->normalize();
+
+	return *this;
+}
+
+RT::Matrix3 RT::Matrix3::RotatorToMatrix(Rotator rot)
+{
+	Quat q = RotatorToQuat(rot);
+	return QuatToMatrix(q);
+}
+
+RT::Matrix3 RT::Matrix3::RotateWithQuat(Quat q, bool normalize)
+{
+	forward = RotateVectorWithQuat(forward, q);
+	right = RotateVectorWithQuat(right, q);
+	up = RotateVectorWithQuat(up, q);
+
+	if(normalize)
+	{
+		this->normalize();
+	}
+
+	return *this;
+}
+
+void RT::Matrix3::Draw(CanvasWrapper canvas, Vector location, float size)
+{
+	//LinearColor inColor = canvas.GetColor();
+
+	//Forward
+	canvas.SetColor(255,0,0,255);
+	DrawVector(canvas, forward, location, size);
+
+	//Right
+	canvas.SetColor(0,255,0,255);
+	DrawVector(canvas, right, location, size);
+
+	//Up
+	canvas.SetColor(0,0,255,255);
+	DrawVector(canvas, up, location, size);
+
+	//Root
+	Vector2 root = canvas.Project(location);
+	float boxSizePercent = size/100;
+	if(boxSizePercent > 1) boxSizePercent = 1;
+	int boxSize = 10 * boxSizePercent;
+
+	canvas.SetColor(255,255,255,255);
+	canvas.SetPosition(root.minus({boxSize/2,boxSize/2}));
+	canvas.FillBox(Vector2{boxSize,boxSize});
+
+	//canvas.SetColor(inColor);
+}
+
+void RT::Matrix3::normalize()
+{
+	forward.normalize();
+	right.normalize();
+	up.normalize();
+}
+
+const RT::Matrix3 RT::Matrix3::identity()
+{
+	return Matrix3();
+}

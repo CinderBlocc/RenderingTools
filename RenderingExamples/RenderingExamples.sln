@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RenderingExamples", "RenderingExamples\RenderingExamples.vcxproj", "{7F01518C-92C6-48E0-8AA2-3EF314FDBC08}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F01518C-92C6-48E0-8AA2-3EF314FDBC08}.Release|x64.ActiveCfg = Release|x64
+		{7F01518C-92C6-48E0-8AA2-3EF314FDBC08}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE64277D-7745-4539-A6FC-E5841039469A}
+	EndGlobalSection
+EndGlobal
