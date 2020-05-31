@@ -5,6 +5,8 @@
 
 namespace RT
 {
+	class Frustum;
+
 	class Triangle
 	{
 	public:
@@ -19,7 +21,7 @@ namespace RT
 			: vert1(v1), vert2(v2), vert3(v3) {}
 
 		/* FUNCTIONS */
-		//void Draw(CanvasWrapper canvas);
+		void Draw(CanvasWrapper canvas, Frustum &frustum, float lineThickness=1, bool drawNormal=false);
 
 		Plane GetPlaneFromTriangle();
 

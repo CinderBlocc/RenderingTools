@@ -254,7 +254,7 @@ void RT::Chevron::Draw(CanvasWrapper canvas, Frustum frustum, LinearColor color,
 	}
 }
 
-void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, float gap, float speed, double secondsElapsed)
+void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, LinearColor color, float gap, float speed, double secondsElapsed)
 {
 	//Speed should be given in cm/s
 
@@ -305,7 +305,7 @@ void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector st
 			chevy.SetWipeTailToTip(1 - (localAnimPerc / overflowPerc));
 		}
 
-		chevy.Draw(canvas, frustum, LinearColor{255,255,0,255});
+		chevy.Draw(canvas, frustum, color);
 	}
 }
 

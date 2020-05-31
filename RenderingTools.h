@@ -9,6 +9,7 @@
 #include "Objects/Circle.h"
 #include "Objects/Cone.h"
 #include "Objects/Cube.h"
+#include "Objects/Cylinder.h"
 #include "Objects/Frustum.h"
 #include "Objects/Grid.h"
 #include "Objects/Line.h"

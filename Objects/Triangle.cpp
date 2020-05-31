@@ -1,5 +1,24 @@
 #include "Triangle.h"
 #include "Line.h"
+#include "Frustum.h"
+#include "../Extra/WrapperStructsExtensions.h"
+
+void RT::Triangle::Draw(CanvasWrapper canvas, Frustum &frustum, float lineThickness, bool drawNormal)
+{
+	Line(vert1, vert2, lineThickness).DrawWithinFrustum(canvas, frustum);
+	Line(vert2, vert3, lineThickness).DrawWithinFrustum(canvas, frustum);
+	Line(vert3, vert1, lineThickness).DrawWithinFrustum(canvas, frustum);
+
+	if(drawNormal)
+	{
+		Vector normal = GetPlaneFromTriangle().direction();
+		Vector midpoint = (((vert1 + vert2) * .5f) + vert3) * .5f;
+		if(frustum.IsInFrustum(midpoint))
+		{
+			DrawVector(canvas, normal, midpoint, 100);
+		}
+	}
+}
 
 RT::Plane RT::Triangle::GetPlaneFromTriangle()
 {
