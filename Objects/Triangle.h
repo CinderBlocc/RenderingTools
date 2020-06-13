@@ -14,14 +14,14 @@ namespace RT
 		Vector vert2;
 		Vector vert3;
 
-		/* CONSTRUCTORS */
-		Triangle()
-			: vert1(Vector{0,0,0}), vert2(Vector{0,0,0}), vert3(Vector{0,0,0}) {}
-		Triangle(Vector v1, Vector v2, Vector v3)
-			: vert1(v1), vert2(v2), vert3(v3) {}
+		// CONSTRUCTORS
+		explicit Triangle();
+		explicit Triangle(Vector v1, Vector v2, Vector v3);
 
-		/* FUNCTIONS */
-		void Draw(CanvasWrapper canvas, Frustum &frustum, float lineThickness=1, bool drawNormal=false);
+		// FUNCTIONS
+		//void Draw(CanvasWrapper canvas); // Uncomment when the new CanvasWrapper::FillTriangle has been added
+		//void DrawWithinFrustum(CanvasWrapper canvas, Frustum &frustum); // Future implementation: constrain triangle to clip space
+		void DrawOutline(CanvasWrapper canvas, Frustum &frustum, float lineThickness=1, bool drawNormal=false);
 
 		Plane GetPlaneFromTriangle();
 

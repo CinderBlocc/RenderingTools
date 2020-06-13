@@ -4,7 +4,7 @@
 #include "bakkesmod/wrappers/wrapperstructs.h"
 #include "bakkesmod/plugin/bakkesmodplugin.h"
 
-//Rendering Tools Includes
+//3D Objects
 #include "Objects/Chevron.h"
 #include "Objects/Circle.h"
 #include "Objects/Cone.h"
@@ -19,10 +19,14 @@
 #include "Objects/Sphere.h"
 #include "Objects/Triangle.h"
 //#include "Objects/VisualCamera.h" //Will reinclude when it's been cleaned up
+
+//Extra Tools
 #include "Extra/RenderingAssistant.h"
 #include "Extra/RenderingMath.h"
 #include "Extra/WrapperStructsExtensions.h"
 
+
+//All of these will be split off into the appropriate headers eventually
 namespace RT
 {
 	//Rotations
@@ -33,7 +37,7 @@ namespace RT
 	//Miscellaneous canvas functions
 	LinearColor GetPercentageColor(float percent, float alpha=1.0f);
 	float GetVisualDistance(CanvasWrapper canvas, Frustum frustum, CameraWrapper camera, Vector objectLocation);
-	void SetColor(CanvasWrapper canvas, LinearColor color);
-	void SetColor(CanvasWrapper canvas, string colorName, float opacity=255);
+	void SetColor(CanvasWrapper canvas, LinearColor color); //Remove when the corresponding CanvasWrapper function has been added
+	void SetColor(CanvasWrapper canvas, string colorName, float opacity=255); //Remove as well?
 	void DrawDebugStrings(CanvasWrapper canvas, vector<string> drawString, bool background=false, int width=200);
 }

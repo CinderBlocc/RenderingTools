@@ -6,6 +6,18 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+RT::Cylinder::Cylinder()
+	: location(Vector()), orientation(Quat()), radius(50), height(100), lineThickness(1) {}
+
+RT::Cylinder::Cylinder(float rad, float h)
+	: location(Vector()), orientation(Quat()), radius(rad), height(h), lineThickness(1) {}
+
+RT::Cylinder::Cylinder(Vector loc, float rad, float h)
+	: location(loc), orientation(Quat()), radius(rad), height(h), lineThickness(1) {}
+
+RT::Cylinder::Cylinder(Vector loc, Quat rot, float rad, float h)
+	: location(loc), orientation(rot), radius(rad), height(h), lineThickness(1) {}
+
 void RT::Cylinder::Draw(CanvasWrapper canvas, Frustum &frustum, int segments)
 {
 	//Simple frustum check. Not very clean but can be improved later

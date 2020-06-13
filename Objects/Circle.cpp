@@ -6,6 +6,12 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+RT::Circle::Circle()
+	: location(Vector(0,0,0)), orientation(Quat(1,0,0,0)), radius(100), lineThickness(1), piePercentage(1), steps(16) {}
+
+RT::Circle::Circle(Vector loc, Quat rot, float rad)
+	: Circle() { location = loc; orientation = rot; radius = rad; }
+
 void RT::Circle::Draw(CanvasWrapper canvas, Frustum &frustum)
 {
 	vector<Vector> circlePoints;

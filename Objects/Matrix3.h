@@ -11,20 +11,16 @@ namespace RT
 		Vector right;
 		Vector up;
 
-		/* CONSTRUCTORS */
-		Matrix3()
-			: forward(Vector{1,0,0}), right(Vector{0,1,0}), up(Vector{0,0,1}) {}
-		Matrix3(Vector f, Vector r, Vector u)
-			: forward(f), right(r), up(u) {}
-		Matrix3(Quat q)
-			{ QuatToMatrix(q); }
-		Matrix3(Rotator rot)
-			{ RotatorToMatrix(rot); }
+		// CONSTRUCTORS
+		explicit Matrix3();
+		explicit Matrix3(Vector f, Vector r, Vector u);
+		explicit Matrix3(Quat q);
+		explicit Matrix3(Rotator rot);
 
-		/* FUNCTIONS */
+		// FUNCTIONS
 		void Draw(CanvasWrapper canvas, Vector location, float size=100);
 		
-		Quat    ToQuat();
+		Quat ToQuat();
 		Rotator ToRotator();
 		Matrix3 QuatToMatrix(Quat q);
 		Matrix3 RotatorToMatrix(Rotator rot);

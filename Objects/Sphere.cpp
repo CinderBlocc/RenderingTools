@@ -6,6 +6,15 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+RT::Sphere::Sphere()
+	: location(Vector(0,0,0)), orientation(Quat(1,0,0,0)), radius(100) {}
+
+RT::Sphere::Sphere(Vector loc, float rad)
+	: location(loc), orientation(Quat()), radius(rad) {}
+
+RT::Sphere::Sphere(Vector loc, Quat rot, float rad)
+	: location(loc), orientation(rot), radius(rad) {}
+
 void RT::Sphere::Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocation, int segments)
 {
 	//Occlude opposite side of sphere using IsOccludingLine on each vertex with a sphere that is slightly smaller than this one

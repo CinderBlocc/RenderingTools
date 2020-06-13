@@ -25,8 +25,7 @@ namespace RT
 		void DrawObject(CanvasWrapper canvas, size_t startingIndex, size_t range);
 
 	public:
-		VisualCamera();
-		~VisualCamera();
+		explicit VisualCamera();
 
 		void DrawCamera(CanvasWrapper canvas, Vector location, Rotator rotation, float scale=2, LinearColor color={255,255,255,255});
 		void DrawCameraWithViewFrustum(CanvasWrapper canvas, Vector location, Rotator rotation, float FOV, float clipDistance=250, float scale=2, LinearColor color={255,255,255,255});

@@ -91,8 +91,6 @@ RT::VisualCamera::VisualCamera()
 	}
 }
 
-RT::VisualCamera::~VisualCamera(){}
-
 void RT::VisualCamera::TransformCamera(Vector location, Rotator rotation, float scale)
 {
 	allCalculatedCameraVerts.clear();

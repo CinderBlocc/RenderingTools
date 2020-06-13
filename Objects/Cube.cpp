@@ -1,6 +1,12 @@
 #include "Cube.h"
 #include "Matrix3.h"
 
+RT::Cube::Cube()
+	: location(Vector()), orientation(Quat()), sideLength(50), lineThickness(1) {}
+
+RT::Cube::Cube(Vector loc, Quat rot, float sLength)
+	: location(loc), orientation(rot), sideLength(sLength), lineThickness(1) {}
+
 void RT::Cube::Draw(CanvasWrapper canvas)
 {
 	float halfLength = sideLength * .5f;

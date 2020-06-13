@@ -3,7 +3,29 @@
 #include "Frustum.h"
 #include "../Extra/WrapperStructsExtensions.h"
 
-void RT::Triangle::Draw(CanvasWrapper canvas, Frustum &frustum, float lineThickness, bool drawNormal)
+RT::Triangle::Triangle()
+	: vert1(Vector{0,0,0}), vert2(Vector{0,0,0}), vert3(Vector{0,0,0}) {}
+
+RT::Triangle::Triangle(Vector v1, Vector v2, Vector v3)
+	: vert1(v1), vert2(v2), vert3(v3) {}
+
+// Uncomment when the new CanvasWrapper::FillTriangle has been added
+//void RT::Triangle::Draw(CanvasWrapper canvas)
+//{
+//	Vector2F v1F = canvas.ProjectF(vert1);
+//	Vector2F v2F = canvas.ProjectF(vert2);
+//	Vector2F v3F = canvas.ProjectF(vert3);
+//	
+//	canvas.FillTriangle(v1F, v2F, v3F);
+//}
+
+// Future implementation: constrain triangle to clip space
+//void RT::Triangle::DrawWithinFrustum(CanvasWrapper canvas, Frustum &frustum)
+//{
+//
+//}
+
+void RT::Triangle::DrawOutline(CanvasWrapper canvas, Frustum &frustum, float lineThickness, bool drawNormal)
 {
 	Line(vert1, vert2, lineThickness).DrawWithinFrustum(canvas, frustum);
 	Line(vert2, vert3, lineThickness).DrawWithinFrustum(canvas, frustum);
@@ -29,7 +51,7 @@ RT::Plane RT::Triangle::GetPlaneFromTriangle()
 	float d = Vector::dot(Vector{-normal.X, -normal.Y, -normal.Z}, vert2);
 
 	float mag = normal.magnitude();
-	Plane newPlane = {normal.X/mag, normal.Y/mag, normal.Z/mag, d/mag};
+	Plane newPlane(normal.X/mag, normal.Y/mag, normal.Z/mag, d/mag);
 	return newPlane;
 }
 

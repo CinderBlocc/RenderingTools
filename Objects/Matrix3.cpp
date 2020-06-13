@@ -1,6 +1,18 @@
 #include "Matrix3.h"
 #include "../Extra/WrapperStructsExtensions.h"
 
+RT::Matrix3::Matrix3()
+	: forward(Vector{1,0,0}), right(Vector{0,1,0}), up(Vector{0,0,1}) {}
+
+RT::Matrix3::Matrix3(Vector f, Vector r, Vector u)
+	: forward(f), right(r), up(u) {}
+
+RT::Matrix3::Matrix3(Quat q)
+	{ QuatToMatrix(q); }
+
+RT::Matrix3::Matrix3(Rotator rot)
+	{ RotatorToMatrix(rot); }
+
 Quat RT::Matrix3::ToQuat()
 {
 	//https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/

@@ -15,13 +15,11 @@ namespace RT
 		float thickness;
 		int segments;
 
-		/* CONSTRUCTORS */
-		Cone()
-			: location(Vector()), direction(Vector(0,0,1)), radius(5), height(20), rollAmount(0), segments(8), thickness(1) {}
-		Cone(Vector loc, Vector dir)
-			: Cone() { location = loc; direction = dir; }
+		// CONSTRUCTORS
+		explicit Cone();
+		explicit Cone(Vector loc, Vector dir);
 
-		/* FUNCTIONS */
+		// FUNCTIONS
 		void Draw(CanvasWrapper canvas);
 	};
 }

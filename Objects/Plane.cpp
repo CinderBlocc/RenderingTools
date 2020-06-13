@@ -5,10 +5,19 @@
 #include "Frustum.h"
 #include "../Extra/WrapperStructsExtensions.h"
 
-RT::Plane::Plane(Vector normal, Vector pointOnPlane)
+RT::Plane::Plane()
+	: x(0), y(0), z(0), d(0) {}
+
+RT::Plane::Plane(float X, float Y, float Z, float D)
+	: x(X), y(Y), z(Z), d(D) {}
+
+RT::Plane::Plane(Vector normal, float distance)
+	: x(normal.X), y(normal.Y), z(normal.Z), d(distance) {}
+
+RT::Plane::Plane(Vector normal, Vector location)
 {
 	normal.normalize();
-	float distance = Vector::dot((normal * -1), pointOnPlane);
+	float distance = Vector::dot((normal * -1), location);
 	
 	x = normal.X;
 	y = normal.Y;

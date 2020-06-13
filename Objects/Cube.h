@@ -12,13 +12,11 @@ namespace RT
 		float sideLength;
 		float lineThickness;
 
-		/* CONSTRUCTORS */
-		Cube()
-			: location(Vector()), orientation(Quat()), sideLength(50), lineThickness(1) {}
-		Cube(Vector loc, Quat rot, float sLength)
-			: location(loc), orientation(rot), sideLength(sLength), lineThickness(1) {}
+		// CONSTRUCTORS
+		explicit Cube();
+		explicit Cube(Vector loc, Quat rot, float sLength);
 
-		/* FUNCTIONS */
+		// FUNCTIONS
 		void Draw(CanvasWrapper canvas);
 	};
 }

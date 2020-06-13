@@ -1,6 +1,15 @@
 #include "Line.h"
 #include "Frustum.h"
 
+RT::Line::Line()
+	: lineBegin(Vector{0,0,0}), lineEnd(Vector{0,0,0}), thickness(1.f) {}
+
+RT::Line::Line(Vector begin, Vector end)
+	: lineBegin(begin), lineEnd(end), thickness(1) {}
+
+RT::Line::Line(Vector begin, Vector end, float thicc)
+	: lineBegin(begin), lineEnd(end), thickness(thicc) {}
+
 void RT::Line::Draw(CanvasWrapper canvas)
 {
 	if(thickness == 1)
@@ -12,82 +21,6 @@ void RT::Line::Draw(CanvasWrapper canvas)
 		canvas.DrawLine(canvas.ProjectF(lineBegin), canvas.ProjectF(lineEnd), thickness);
 	}
 }
-
-/*
-//ORIGINAL - Dont touch until new one works
-void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum, Vector &newLineBegin, Vector &newLineEnd)
-{
-	//RELIES ON OLDER BUGGY VERSION OF IsWithinLineSegment
-	//UPDATE THIS TO CHANGE THE BEGIN AND END POINTS OF A COPY OF THE LINE TO FIT INSIDE THE FRUSTUM
-
-	//return 0 if line is completely inside frustum
-	//return 1 if line is completely outside frustum
-	//return 2 if lineBegin is outside frustum
-	//return 3 if lineEnd is outside frustum
-	//return 4 if both are out of frustum but line still intersects
-
-	int pointsOutsideFrustum = 0;
-	int numIntersections = 0;
-	bool beginInFrustum = false;
-	bool endInFrustum = false;
-	bool intersectsInFrustum[2] = {false, false};
-	Vector intersects[2];
-
-	if(IsInFrustum(frustum, line.lineBegin, 0.0f))
-		beginInFrustum = true;
-	else
-		pointsOutsideFrustum++;
-	if(IsInFrustum(frustum, line.lineEnd, 0.0f))
-		endInFrustum = true;
-	else
-		pointsOutsideFrustum++;
-	
-	if(beginInFrustum && endInFrustum)
-		return 0;//Line is completely inside frustum
-	else
-	{
-		int intersectionIndex = 0;
-		for(int i=0; i<6; i++)
-		{
-			if(LinePlaneIntersection(line, frustum.planes[i]))
-			{
-				Vector intersection = LinePlaneIntersectionPoint(line, frustum.planes[i]);
-				if(IsInFrustum(frustum, intersection, 1.0f))
-				{
-					intersectsInFrustum[intersectionIndex] = true;
-					intersects[intersectionIndex] = intersection;
-					intersectionIndex++;
-				}
-			}
-		}
-
-		if(!intersectsInFrustum[0] && !intersectsInFrustum[1])
-			return 1;//Line is completely outside frustum
-		if(!beginInFrustum && endInFrustum)
-		{
-			if(IsWithinLineSegment(line, intersects[0], false))
-				newLineBegin = Vector{intersects[0].X, intersects[0].Y, intersects[0].Z};
-			else
-				newLineBegin = Vector{intersects[1].X, intersects[1].Y, intersects[1].Z};
-			return 2;//Only lineBegin is outside frustum and should be replaced by newLineBegin
-		}
-		if(beginInFrustum && !endInFrustum)
-		{
-			if(IsWithinLineSegment(line, intersects[0], true))
-				newLineEnd = Vector{intersects[0].X, intersects[0].Y, intersects[0].Z};
-			else
-				newLineEnd = Vector{intersects[1].X, intersects[1].Y, intersects[1].Z};
-			return 3;//Only lineEnd is outside frustum and should be replaced by newLineEnd
-		}
-		if(intersectsInFrustum[0] && intersectsInFrustum[1])
-		{
-			newLineBegin = Vector{intersects[0].X, intersects[0].Y, intersects[0].Z};
-			newLineEnd = Vector{intersects[1].X, intersects[1].Y, intersects[1].Z};
-			return 4;//Both lineBegin and lineEnd are both outside frustum and should be replaced by newLineBegin and newLineEnd
-		}
-	}
-}
-*/
 
 void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum)
 {

@@ -3,6 +3,12 @@
 #include "Frustum.h"
 #include "Line.h"
 
+RT::Grid::Grid()
+	: width(100), height(100), widthSegs(10), heightSegs(10) {}
+
+RT::Grid::Grid(Vector loc, Quat rot, float w, float h, int wSegs, int hSegs)
+	: location(loc), orientation(rot), width(w), height(h), widthSegs(wSegs), heightSegs(hSegs) {}
+
 void RT::Grid::Draw(CanvasWrapper canvas, Frustum &frustum, bool useThickMidline)
 {
 	//The terms "horizontal" and "vertical" refer to the direction the line is drawn

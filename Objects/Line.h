@@ -13,15 +13,12 @@ namespace RT
 		Vector lineEnd;
 		float thickness;
 
-		/* CONSTRUCTORS */
-		Line()
-			: lineBegin(Vector{0,0,0}), lineEnd(Vector{0,0,0}), thickness(1.f) {}
-		Line(Vector begin, Vector end)
-			: lineBegin(begin), lineEnd(end), thickness(1) {}
-		Line(Vector begin, Vector end, float thicc)
-			: lineBegin(begin), lineEnd(end), thickness(thicc) {}
+		// CONSTRUCTORS
+		explicit Line();
+		explicit Line(Vector begin, Vector end);
+		explicit Line(Vector begin, Vector end, float thicc);
 		
-		/* FUNCTIONS */
+		// FUNCTIONS
 		void Draw(CanvasWrapper canvas);
 		void DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum);
 		void DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float animationPerc, int segments=10, float segPercent=0.5f);

@@ -11,12 +11,12 @@ namespace RT
 		Vector location;
 		Quat orientation;
 
-		/* CONSTRUCTORS */
-		Chevron();
-		Chevron(Vector loc, Quat rot);
-		Chevron(Vector loc, Quat rot, float len, float wid, float thicc, float tipToTail, float tailToTip);
+		// CONSTRUCTORS
+		explicit Chevron();
+		explicit Chevron(Vector loc, Quat rot);
+		explicit Chevron(Vector loc, Quat rot, float len, float wid, float thicc, float tipToTail, float tailToTip);
 
-		/* FUNCTIONS */
+		// FUNCTIONS
 		void Draw(CanvasWrapper canvas, Frustum frustum, LinearColor color, bool showLines=false);
 		void DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, LinearColor color, float gap, float speed, double secondsElapsed);
 

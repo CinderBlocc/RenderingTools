@@ -15,18 +15,13 @@ namespace RT
 		float z;
 		float d;
 
-		/* CONSTRUCTORS */
-		Plane()
-			: x(0), y(0), z(0), d(0) {}
-		Plane(float X, float Y, float Z, float D)
-			: x(X), y(Y), z(Z), d(D) {}
-		Plane(Vector normal)
-			: x(normal.X), y(normal.Y), z(normal.Z), d(0) {}
-		Plane(Vector normal, float distance)
-			: x(normal.X), y(normal.Y), z(normal.Z), d(distance) {}
-		Plane(Vector normal, Vector location); //Defined in cpp. Creates a plane with specified normal passing through specified location
+		// CONSTRUCTORS
+		explicit Plane();
+		explicit Plane(float X, float Y, float Z, float D);
+		explicit Plane(Vector normal, float distance=0);
+		explicit Plane(Vector normal, Vector location);
 
-		/* FUNCTIONS */
+		// FUNCTIONS
 		void Draw(CanvasWrapper canvas, Frustum &frustum, float size=300, int squares=20);
 
 		Vector direction();
