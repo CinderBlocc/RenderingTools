@@ -14,7 +14,7 @@ RT::Circle::Circle(Vector loc, Quat rot, float rad)
 
 void RT::Circle::Draw(CanvasWrapper canvas, Frustum &frustum)
 {
-	vector<Vector> circlePoints;
+	std::vector<Vector> circlePoints;
 	Vector start = {1,0,0};
 	Vector axis = {0,0,1};
 

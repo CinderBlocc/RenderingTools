@@ -97,7 +97,7 @@ RT::Matrix3 RT::Matrix3::RotateWithQuat(Quat q, bool normalize)
 
 void RT::Matrix3::Draw(CanvasWrapper canvas, Vector location, float size)
 {
-	//LinearColor inColor = canvas.GetColor();
+	LinearColor inColor = canvas.GetColor();
 
 	//Forward
 	canvas.SetColor(255,0,0,255);
@@ -121,7 +121,7 @@ void RT::Matrix3::Draw(CanvasWrapper canvas, Vector location, float size)
 	canvas.SetPosition(root.minus({boxSize/2,boxSize/2}));
 	canvas.FillBox(Vector2{boxSize,boxSize});
 
-	//canvas.SetColor(inColor);
+	canvas.SetColor(inColor);
 }
 
 void RT::Matrix3::normalize()

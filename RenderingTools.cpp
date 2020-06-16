@@ -160,7 +160,7 @@ void RT::SetColor(CanvasWrapper canvas, LinearColor color)
 {
 	canvas.SetColor((char)color.R, (char)color.G, (char)color.B, (char)color.A);
 }
-void RT::SetColor(CanvasWrapper canvas, string colorName, float opacity)
+void RT::SetColor(CanvasWrapper canvas, std::string colorName, float opacity)
 {
 	LinearColor color = {0,0,0,opacity};
 
@@ -174,7 +174,7 @@ void RT::SetColor(CanvasWrapper canvas, string colorName, float opacity)
 
 	SetColor(canvas, color);
 }
-void RT::DrawDebugStrings(CanvasWrapper canvas, vector<string> drawString, bool background, int width)
+void RT::DrawDebugStrings(CanvasWrapper canvas, std::vector<std::string> drawString, bool background, int width)
 {
 	if(drawString.empty()) return;
 

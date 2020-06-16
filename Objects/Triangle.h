@@ -19,7 +19,7 @@ namespace RT
 		explicit Triangle(Vector v1, Vector v2, Vector v3);
 
 		// FUNCTIONS
-		//void Draw(CanvasWrapper canvas); // Uncomment when the new CanvasWrapper::FillTriangle has been added
+		void Draw(CanvasWrapper canvas);
 		//void DrawWithinFrustum(CanvasWrapper canvas, Frustum &frustum); // Future implementation: constrain triangle to clip space
 		void DrawOutline(CanvasWrapper canvas, Frustum &frustum, float lineThickness=1, bool drawNormal=false);
 

@@ -128,10 +128,11 @@ void RT::VisualCamera::DrawObject(CanvasWrapper canvas, size_t startingIndex, si
 void RT::VisualCamera::DrawCamera(CanvasWrapper canvas, Vector location, Rotator rotation, float scale, LinearColor color)
 {
 	TransformCamera(location, rotation, scale);
+    LinearColor inColor = canvas.GetColor();
 	canvas.SetColor((char)color.R, (char)color.G, (char)color.B, (char)color.A);
 
 	//DRAW LINES
-	vector<int> objectRanges;//Number of vertices per object
+	std::vector<int> objectRanges;//Number of vertices per object
 	objectRanges.push_back(8);//Matte box
 	objectRanges.push_back(14);//Body
 	objectRanges.push_back(24);//Reel 1
@@ -144,6 +145,8 @@ void RT::VisualCamera::DrawCamera(CanvasWrapper canvas, Vector location, Rotator
 		DrawObject(canvas, lineIndex, objectRanges[i]);
 		lineIndex += objectRanges[i];
 	}
+
+    canvas.SetColor(inColor);
 }
 
 void RT::VisualCamera::DrawCameraWithViewFrustum(CanvasWrapper canvas, Vector location, Rotator rotation, float FOV, float clipDistance, float scale, LinearColor color)
@@ -171,6 +174,7 @@ void RT::VisualCamera::DrawCameraWithViewFrustum(CanvasWrapper canvas, Vector lo
 	constexpr int NBR = 6;
 	constexpr int NBL = 7;
 	//Far plane
+    LinearColor inColor = canvas.GetColor();
 	canvas.SetColor(0,255,0,255);
 	canvas.DrawLine(canvas.Project(frustum.points[FTL]), canvas.Project(frustum.points[FTR]));//top line is green to indicate orientation
 	canvas.SetColor((char)color.R, (char)color.G, (char)color.B, (char)color.A);
@@ -187,4 +191,5 @@ void RT::VisualCamera::DrawCameraWithViewFrustum(CanvasWrapper canvas, Vector lo
 	canvas.DrawLine(canvas.Project(frustum.points[FTR]), canvas.Project(frustum.points[NTR]));
 	canvas.DrawLine(canvas.Project(frustum.points[FBR]), canvas.Project(frustum.points[NBR]));
 	canvas.DrawLine(canvas.Project(frustum.points[FBL]), canvas.Project(frustum.points[NBL]));
+    canvas.SetColor(inColor);
 }

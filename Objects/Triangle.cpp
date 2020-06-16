@@ -9,15 +9,14 @@ RT::Triangle::Triangle()
 RT::Triangle::Triangle(Vector v1, Vector v2, Vector v3)
 	: vert1(v1), vert2(v2), vert3(v3) {}
 
-// Uncomment when the new CanvasWrapper::FillTriangle has been added
-//void RT::Triangle::Draw(CanvasWrapper canvas)
-//{
-//	Vector2F v1F = canvas.ProjectF(vert1);
-//	Vector2F v2F = canvas.ProjectF(vert2);
-//	Vector2F v3F = canvas.ProjectF(vert3);
-//	
-//	canvas.FillTriangle(v1F, v2F, v3F);
-//}
+void RT::Triangle::Draw(CanvasWrapper canvas)
+{
+	Vector2F v1F = canvas.ProjectF(vert1);
+	Vector2F v2F = canvas.ProjectF(vert2);
+	Vector2F v3F = canvas.ProjectF(vert3);
+	
+	canvas.FillTriangle(v1F, v2F, v3F);
+}
 
 // Future implementation: constrain triangle to clip space
 //void RT::Triangle::DrawWithinFrustum(CanvasWrapper canvas, Frustum &frustum)

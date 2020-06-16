@@ -17,7 +17,7 @@ void RT::Cone::Draw(CanvasWrapper canvas)
 	Quat orientation = LookAt(location, location + dir, LookAtAxis::AXIS_UP).ToQuat();
 	
 	//Create base circle
-	vector<Vector> basePoints;
+	std::vector<Vector> basePoints;
 	Vector start = {1,0,0};
 
 	//Get all the vertices that comprise the circle
@@ -33,7 +33,7 @@ void RT::Cone::Draw(CanvasWrapper canvas)
 	Vector2F tip = canvas.ProjectF(location + (dir * height));
 	
 	//Orient circle and project to canvas
-	vector<Vector2F> canvasPoints;
+	std::vector<Vector2F> canvasPoints;
 	for(size_t i = 0; i != basePoints.size(); ++i)
 	{
 		basePoints[i] = basePoints[i] * radius;

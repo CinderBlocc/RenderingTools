@@ -27,7 +27,7 @@ void RT::Cylinder::Draw(CanvasWrapper canvas, Frustum &frustum, int segments)
 	}
 
 	//Create circle
-	vector<Vector> circlePoints;
+	std::vector<Vector> circlePoints;
 	for(int j = 0; j != segments; ++j)
 	{
 		Quat rotAmount = AngleAxisRotation(2 * M_PI * ((float)j / segments), Vector(0,0,1));
@@ -35,8 +35,8 @@ void RT::Cylinder::Draw(CanvasWrapper canvas, Frustum &frustum, int segments)
 	}
 
 	//Transform circles
-	vector<Vector2F> bottomPoints;
-	vector<Vector2F> topPoints;
+	std::vector<Vector2F> bottomPoints;
+	std::vector<Vector2F> topPoints;
 	for(size_t i = 0; i != circlePoints.size(); ++i)
 	{
 		Vector bottom = circlePoints[i];

@@ -36,7 +36,7 @@ void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum)
 	}
 	
 	//Store which planes have been intersected and the location
-	vector<int> planeIndex;
+	std::vector<int> planeIndex;
 	for(int i = 0; i != 6; ++i)
 	{
 		if(frustum.planes[i].LineIntersectsWithPlane(*this))
@@ -152,7 +152,7 @@ void RT::Line::DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float
 	float trueAnimPerc = abs(animationPerc) - static_cast<int>(abs(animationPerc));
 
 	//Generate segments
-	vector<float> splits;
+	std::vector<float> splits;
 	for(int i = 0; i != segments; ++i)
 	{
 		float position = (static_cast<float>(i) / segments) + trueAnimPerc;

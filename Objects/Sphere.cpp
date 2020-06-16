@@ -31,14 +31,14 @@ void RT::Sphere::Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocat
 	}
 	int maxVerticalSegs = segments / 2;
 
-	vector<vector<Vector>> semicircles;
+	std::vector<std::vector<Vector>> semicircles;
 	Vector start = {0, 0, radius * .95f};
 
 
 	//Fill vertices
 	for(int i = 0; i != segments; ++i)
 	{
-		vector<Vector> semicirclePoints;
+		std::vector<Vector> semicirclePoints;
 		for(int j = 0; j != maxVerticalSegs+1; ++j)
 		{
 			Vector newPoint = start;

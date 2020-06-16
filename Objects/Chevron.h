@@ -17,8 +17,8 @@ namespace RT
 		explicit Chevron(Vector loc, Quat rot, float len, float wid, float thicc, float tipToTail, float tailToTip);
 
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas, Frustum frustum, LinearColor color, bool showLines=false);
-		void DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, LinearColor color, float gap, float speed, double secondsElapsed);
+		void Draw(CanvasWrapper canvas, Frustum frustum, bool showLines=false);
+		void DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, float gap, float speed, double secondsElapsed);
 
 		float GetLength();
 		void SetLength(const float newLength);

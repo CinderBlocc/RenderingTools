@@ -50,7 +50,7 @@ RT::Chevron::Chevron(Vector loc, Quat rot, float len, float wid, float thicc, fl
 	UpdateBaseVertices();
 }
 
-void RT::Chevron::Draw(CanvasWrapper canvas, Frustum frustum, LinearColor color, bool showLines)
+void RT::Chevron::Draw(CanvasWrapper canvas, Frustum frustum, bool showLines)
 {
 	//Both wipe values completely obscure chevron, don't draw
 	if(wipeTailToTip + wipeTipToTail >= 1)
@@ -198,23 +198,23 @@ void RT::Chevron::Draw(CanvasWrapper canvas, Frustum frustum, LinearColor color,
 	/* DRAW TRIANGLES */
 	if(drawTip)
 	{
-		canvas.FillTriangle(leftTipV2F,          leftTipInnerV2F,     rightTipV2F,         color); // Tip
+		canvas.FillTriangle(leftTipV2F,          leftTipInnerV2F,     rightTipV2F); // Tip
 	}
 	if(drawMiddle)
 	{
-		canvas.FillTriangle(leftTipV2F,          leftOuterV2F,        leftTipInnerV2F,     color); // Left Outer
-		canvas.FillTriangle(leftOuterV2F,        leftInnerV2F,        leftTipInnerV2F,     color); // Left Inner
-		canvas.FillTriangle(rightTipV2F,         rightOuterV2F,       rightTipInnerV2F,    color); // Right Outer
-		canvas.FillTriangle(rightOuterV2F,       rightInnerV2F,       rightTipInnerV2F,    color); // Right Inner
+		canvas.FillTriangle(leftTipV2F,          leftOuterV2F,        leftTipInnerV2F); // Left Outer
+		canvas.FillTriangle(leftOuterV2F,        leftInnerV2F,        leftTipInnerV2F); // Left Inner
+		canvas.FillTriangle(rightTipV2F,         rightOuterV2F,       rightTipInnerV2F); // Right Outer
+		canvas.FillTriangle(rightOuterV2F,       rightInnerV2F,       rightTipInnerV2F); // Right Inner
 	}
 	if(drawBottom)
 	{
-		canvas.FillTriangle(leftOuterV2F,        leftBottomOuterV2F,  leftBottomSplitV2F,  color); // Left Bottom outer
-		canvas.FillTriangle(leftBottomSplitV2F,  leftBottomOuterV2F,  leftBottomInnerV2F,  color); // Left Bottom split
-		canvas.FillTriangle(leftBottomSplitV2F,  leftBottomInnerV2F,  leftInnerV2F,        color); // Left Bottom inner
-		canvas.FillTriangle(rightOuterV2F,       rightBottomOuterV2F, rightBottomSplitV2F, color); // Right Bottom outer
-		canvas.FillTriangle(rightBottomSplitV2F, rightBottomOuterV2F, rightBottomInnerV2F, color); // Right Bottom split
-		canvas.FillTriangle(rightBottomSplitV2F, rightBottomInnerV2F, rightInnerV2F,       color); // Right Bottom inner
+		canvas.FillTriangle(leftOuterV2F,        leftBottomOuterV2F,  leftBottomSplitV2F); // Left Bottom outer
+		canvas.FillTriangle(leftBottomSplitV2F,  leftBottomOuterV2F,  leftBottomInnerV2F); // Left Bottom split
+		canvas.FillTriangle(leftBottomSplitV2F,  leftBottomInnerV2F,  leftInnerV2F); // Left Bottom inner
+		canvas.FillTriangle(rightOuterV2F,       rightBottomOuterV2F, rightBottomSplitV2F); // Right Bottom outer
+		canvas.FillTriangle(rightBottomSplitV2F, rightBottomOuterV2F, rightBottomInnerV2F); // Right Bottom split
+		canvas.FillTriangle(rightBottomSplitV2F, rightBottomInnerV2F, rightInnerV2F); // Right Bottom inner
 	}
 
 	/* DRAW LINES */
@@ -254,7 +254,7 @@ void RT::Chevron::Draw(CanvasWrapper canvas, Frustum frustum, LinearColor color,
 	}
 }
 
-void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, LinearColor color, float gap, float speed, double secondsElapsed)
+void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, float gap, float speed, double secondsElapsed)
 {
 	//Speed should be given in cm/s
 
@@ -305,7 +305,7 @@ void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector st
 			chevy.SetWipeTailToTip(1 - (localAnimPerc / overflowPerc));
 		}
 
-		chevy.Draw(canvas, frustum, color);
+		chevy.Draw(canvas, frustum);
 	}
 }
 
