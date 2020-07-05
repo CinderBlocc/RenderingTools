@@ -30,7 +30,7 @@ void RT::Cylinder::Draw(CanvasWrapper canvas, Frustum &frustum, int segments)
 	std::vector<Vector> circlePoints;
 	for(int j = 0; j != segments; ++j)
 	{
-		Quat rotAmount = AngleAxisRotation(2 * M_PI * ((float)j / segments), Vector(0,0,1));
+		Quat rotAmount = AngleAxisRotation(static_cast<float>(2 * M_PI * ((float)j / segments)), Vector(0,0,1));
 		circlePoints.push_back(RotateVectorWithQuat(Vector(radius, 0, 0), rotAmount));
 	}
 

@@ -24,7 +24,7 @@ void RT::Cone::Draw(CanvasWrapper canvas)
 	for(int i = 0; i < segments; ++i)
 	{
 		Vector newPoint = start;
-		float angle = ((2 * M_PI) / segments * i) + rollAmount;
+		float angle = static_cast<float>(((2 * M_PI) / segments * i) + rollAmount);
 		Quat rotAmount = AngleAxisRotation(angle, Vector{0,0,1});
 		newPoint = RotateVectorWithQuat(newPoint, rotAmount);
 		basePoints.push_back(newPoint);

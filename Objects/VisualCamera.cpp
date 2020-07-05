@@ -155,9 +155,9 @@ void RT::VisualCamera::DrawCameraWithViewFrustum(CanvasWrapper canvas, Vector lo
 	DrawCamera(canvas, location, rotation, scale, color);
 	
 	//Create frustum for visual camera
-	float resX = canvas.GetSize().X;
-	float resY = canvas.GetSize().Y;
-	float ratio = resX/resY;
+    float resX = static_cast<float>(canvas.GetSize().X);
+    float resY = static_cast<float>(canvas.GetSize().Y);
+	float ratio = resX / resY;
 
 	RT::Frustum frustum(canvas, RT::RotatorToQuat(rotation), location, FOV, 0, clipDistance);
 
@@ -173,11 +173,11 @@ void RT::VisualCamera::DrawCameraWithViewFrustum(CanvasWrapper canvas, Vector lo
 	constexpr int NTR = 5;
 	constexpr int NBR = 6;
 	constexpr int NBL = 7;
+
 	//Far plane
-    LinearColor inColor = canvas.GetColor();
-	canvas.SetColor(0,255,0,255);
+    canvas.SetColor(LinearColor{0,255,0,255});
 	canvas.DrawLine(canvas.Project(frustum.points[FTL]), canvas.Project(frustum.points[FTR]));//top line is green to indicate orientation
-	canvas.SetColor((char)color.R, (char)color.G, (char)color.B, (char)color.A);
+	canvas.SetColor(color);
 	canvas.DrawLine(canvas.Project(frustum.points[FTR]), canvas.Project(frustum.points[FBR]));
 	canvas.DrawLine(canvas.Project(frustum.points[FBR]), canvas.Project(frustum.points[FBL]));
 	canvas.DrawLine(canvas.Project(frustum.points[FBL]), canvas.Project(frustum.points[FTL]));
@@ -191,5 +191,4 @@ void RT::VisualCamera::DrawCameraWithViewFrustum(CanvasWrapper canvas, Vector lo
 	canvas.DrawLine(canvas.Project(frustum.points[FTR]), canvas.Project(frustum.points[NTR]));
 	canvas.DrawLine(canvas.Project(frustum.points[FBR]), canvas.Project(frustum.points[NBR]));
 	canvas.DrawLine(canvas.Project(frustum.points[FBL]), canvas.Project(frustum.points[NBL]));
-    canvas.SetColor(inColor);
 }

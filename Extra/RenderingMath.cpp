@@ -38,7 +38,7 @@ RT::Matrix3 RT::LookAt(Vector objectLocation, Vector lookAtLocation, LookAtAxis 
 		mat.right = forward * -1;
 		mat.up = up;
 
-		Quat rot = AngleAxisRotation(M_PI, up);
+		Quat rot = AngleAxisRotation(static_cast<float>(M_PI), up);
 		mat.RotateWithQuat(rot, true);
 	}
 	else if(axis == LookAtAxis::AXIS_UP)

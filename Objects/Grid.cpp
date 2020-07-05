@@ -31,7 +31,7 @@ void RT::Grid::Draw(CanvasWrapper canvas, Frustum &frustum, bool useThickMidline
 	for(int y = 1; y < tempHeightSegs; ++y)
 	{
 		Line line;
-		line.lineBegin = startLocation + (mat.up * verticalGridSpacing * y);
+		line.lineBegin = startLocation + (mat.up * verticalGridSpacing * (float)y);
 		line.lineEnd = line.lineBegin + (mat.right * width);
 		if(useThickMidline && drawHorizontalCenterLine && y == tempHeightSegs/2)
 		{
@@ -44,7 +44,7 @@ void RT::Grid::Draw(CanvasWrapper canvas, Frustum &frustum, bool useThickMidline
 	for(int x = 1; x < tempWidthSegs; ++x)
 	{
 		Line line;
-		line.lineBegin = startLocation + (mat.right * horizontalGridSpacing * x);
+		line.lineBegin = startLocation + (mat.right * horizontalGridSpacing * (float)x);
 		line.lineEnd = line.lineBegin + (mat.up * height);
 		if(useThickMidline && drawVerticalCenterLine && x == tempWidthSegs/2)
 		{

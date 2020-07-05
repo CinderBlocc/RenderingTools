@@ -100,24 +100,24 @@ void RT::Matrix3::Draw(CanvasWrapper canvas, Vector location, float size)
 	LinearColor inColor = canvas.GetColor();
 
 	//Forward
-	canvas.SetColor(255,0,0,255);
+    canvas.SetColor(LinearColor{255,0,0,255});
 	DrawVector(canvas, forward, location, size);
 
 	//Right
-	canvas.SetColor(0,255,0,255);
+    canvas.SetColor(LinearColor{0,255,0,255});
 	DrawVector(canvas, right, location, size);
 
 	//Up
-	canvas.SetColor(0,0,255,255);
+    canvas.SetColor(LinearColor{0,0,255,255});
 	DrawVector(canvas, up, location, size);
 
 	//Root
 	Vector2 root = canvas.Project(location);
 	float boxSizePercent = size/100;
 	if(boxSizePercent > 1) boxSizePercent = 1;
-	int boxSize = 10 * boxSizePercent;
+	int boxSize = static_cast<int>(10 * boxSizePercent);
 
-	canvas.SetColor(255,255,255,255);
+    canvas.SetColor(LinearColor{255,255,255,255});
 	canvas.SetPosition(root.minus({boxSize/2,boxSize/2}));
 	canvas.FillBox(Vector2{boxSize,boxSize});
 

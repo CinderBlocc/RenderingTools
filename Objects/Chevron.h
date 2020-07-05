@@ -18,7 +18,7 @@ namespace RT
 
 		// FUNCTIONS
 		void Draw(CanvasWrapper canvas, Frustum frustum, bool showLines=false);
-		void DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, float gap, float speed, double secondsElapsed);
+		void DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, float gap, float speed, float secondsElapsed);
 
 		float GetLength();
 		void SetLength(const float newLength);

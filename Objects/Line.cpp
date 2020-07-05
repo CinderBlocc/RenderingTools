@@ -203,7 +203,7 @@ void RT::Line::DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float
 	}
 }
 
-void RT::Line::DrawSegmentedAutomatic(CanvasWrapper canvas, Frustum &frustum, float segmentLength, float gapLength, float speed, double secondsElapsed)
+void RT::Line::DrawSegmentedAutomatic(CanvasWrapper canvas, Frustum &frustum, float segmentLength, float gapLength, float speed, float secondsElapsed)
 {
 	//AUTOMATIC: Calculates number of segments and segPercent automatically based on desired segment and gap length
 	//Speed should be given in cm/s
@@ -219,7 +219,7 @@ void RT::Line::DrawSegmentedAutomatic(CanvasWrapper canvas, Frustum &frustum, fl
 	if(totalSegmentLength == 0) return;
 	
 	//Calculate number of segments and length of each segment
-	int segs = magnitude() / totalSegmentLength;
+	int segs = static_cast<int>(magnitude() / totalSegmentLength);
 	float segPerc = segmentLength / totalSegmentLength;
 
 	//Convert distance units into line percentage

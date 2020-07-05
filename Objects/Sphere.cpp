@@ -44,11 +44,11 @@ void RT::Sphere::Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocat
 			Vector newPoint = start;
 
 			//Define semicircle
-			Quat circleShape = AngleAxisRotation(M_PI * ((float)j / maxVerticalSegs), Vector(1,0,0));
+			Quat circleShape = AngleAxisRotation(static_cast<float>(M_PI * ((float)j / maxVerticalSegs)), Vector(1,0,0));
 			newPoint = RotateVectorWithQuat(newPoint, circleShape);
 
 			//Rotate semicircle
-			Quat semicirclePosition = AngleAxisRotation(2 * M_PI * ((float)i / segments), Vector(0,0,1));
+			Quat semicirclePosition = AngleAxisRotation(static_cast<float>(2 * M_PI * ((float)i / segments)), Vector(0,0,1));
 			newPoint = RotateVectorWithQuat(newPoint, semicirclePosition);
 
 			//Rotate to align to orientation

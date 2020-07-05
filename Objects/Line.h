@@ -22,7 +22,7 @@ namespace RT
 		void Draw(CanvasWrapper canvas);
 		void DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum);
 		void DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float animationPerc, int segments=10, float segPercent=0.5f);
-		void DrawSegmentedAutomatic(CanvasWrapper canvas, Frustum &frustum, float segmentLength, float gapLength, float speed=0, double secondsElapsed=0);
+		void DrawSegmentedAutomatic(CanvasWrapper canvas, Frustum &frustum, float segmentLength, float gapLength, float speed=0, float secondsElapsed=0);
 
 		bool IsPointWithinLineSegment(Vector point);
 		float PointPercentageAlongLine(Vector point);

@@ -254,7 +254,7 @@ void RT::Chevron::Draw(CanvasWrapper canvas, Frustum frustum, bool showLines)
 	}
 }
 
-void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, float gap, float speed, double secondsElapsed)
+void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, float gap, float speed, float secondsElapsed)
 {
 	//Speed should be given in cm/s
 
@@ -278,7 +278,7 @@ void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector st
 	animationPercentage -= (int)animationPercentage;
 
 	//Get number of chevrons to draw
-	int numChevys = 1 / gapPerc;
+	int numChevys = static_cast<int>(1.f / gapPerc);
 	if(numChevys == 0)
 	{
 		numChevys = 1;
@@ -361,9 +361,9 @@ void RT::Chevron::UpdateMaxThickness()
 	Vector bottomInnerVert = bottomOuterVert + (outerRightAxis * thickness);//dot product remains the same regardless of thickness, so we can use thickness here
 
 	float dotOuterVert = Vector::dot(Vector(0, -1, 0) - bottomOuterVert, outerRightAxis);
-	float angleInnerSplitVert = (M_PI / 2) - acos(dotOuterVert);//right angle minus the known angle
+	double angleInnerSplitVert = (M_PI / 2) - acos(dotOuterVert);//right angle minus the known angle
 
-	maxThickness = length * cos(angleInnerSplitVert);
+	maxThickness = length * static_cast<float>(cos(angleInnerSplitVert));
 }
 
 void RT::Chevron::SetWipeTipToTail(const float newWipeTipToTail)

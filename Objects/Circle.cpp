@@ -30,7 +30,7 @@ void RT::Circle::Draw(CanvasWrapper canvas, Frustum &frustum)
 	for(int i = 0; i < steps; ++i)
 	{
 		Vector newPoint = start;
-		float angle = (2 * M_PI / steps) * (float)i;
+		float angle = static_cast<float>((2 * M_PI / steps) * (double)i);
 		Quat rotAmount = AngleAxisRotation(angle, axis);
 		newPoint = RotateVectorWithQuat(newPoint, rotAmount);
 		circlePoints.push_back(newPoint);
@@ -41,7 +41,7 @@ void RT::Circle::Draw(CanvasWrapper canvas, Frustum &frustum)
 		circlePoints[i] = RotateVectorWithQuat(circlePoints[i], orientation);
 
 	//Determine how many lines to draw
-	int newPointAmount = ((float)circlePoints.size() * piePercentage);
+	int newPointAmount = static_cast<int>((float)circlePoints.size() * piePercentage);
 	if(piePercentage != 0 && piePercentage != 1)
 		newPointAmount += 1;
 	
@@ -96,7 +96,7 @@ void RT::Circle::DrawSegmented(CanvasWrapper canvas, Frustum &frustum, int segme
 
 	Circle circ = *this;
 	circ.piePercentage = percentPerSeg / segments;
-	float rotSection = (2 * M_PI) / segments;
+	float rotSection = static_cast<float>((2 * M_PI) / segments);
 
 	Matrix3 orientationMat(circ.orientation);
 

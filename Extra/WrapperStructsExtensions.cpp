@@ -14,10 +14,10 @@ Rotator RT::QuatToRotator(Quat quat)
 
 	//Pitch
 	float pitch_f = asin(fwd.Z);
-	int PITCH = (pitch_f / (M_PI / 2)) * 16384;
+	int PITCH = static_cast<int>((pitch_f / (M_PI / 2)) * 16384);
 
 	//Yaw
-	float hor_mag = sqrt((double)fwd.X * fwd.X + (double)fwd.Y * fwd.Y);
+	float hor_mag = static_cast<float>(sqrt((double)fwd.X * fwd.X + (double)fwd.Y * fwd.Y));
 	float hor_y = fwd.Y / hor_mag;
 	float fwd_y = asin(hor_y);
 	if (fwd_y >= 0)
@@ -25,16 +25,16 @@ Rotator RT::QuatToRotator(Quat quat)
 		if (fwd.X >= 0)
 			fwd_y = fwd_y;
 		else
-			fwd_y = M_PI - fwd_y;
+			fwd_y = static_cast<float>(M_PI) - fwd_y;
 	}
 	else
 	{
 		if (fwd.X >= 0)
 			fwd_y = fwd_y;
 		else
-			fwd_y = -M_PI - fwd_y;
+			fwd_y = static_cast<float>(-M_PI) - fwd_y;
 	}
-	int YAW = (fwd_y / M_PI) * 32768;
+	int YAW = static_cast<int>((fwd_y / M_PI) * 32768);
 
 	//Roll
 	Vector vert = Vector(0, 0, 1);
@@ -53,29 +53,29 @@ Rotator RT::QuatToRotator(Quat quat)
 		if (up.Z >= 0)
 			roll_f = -roll_f;
 		else
-			roll_f  = -M_PI + roll_f;
+			roll_f  = static_cast<float>(-M_PI) + roll_f;
 	}
 	else
 	{
 		if (up.Z >= 0)
 			roll_f = roll_f;
 		else
-			roll_f = M_PI - roll_f;
+			roll_f = static_cast<float>(M_PI) - roll_f;
 	}
-	int ROLL = (roll_f / M_PI) * 32768;
+	int ROLL = static_cast<int>((roll_f / M_PI) * 32768);
 
 	return Rotator(PITCH, YAW, ROLL);
 }
 
 Quat RT::RotatorToQuat(Rotator rot)
 {
-	float rotatorToRadian = ((M_PI/180)/2)/182.044449;
-	float sinPitch = sin((double)rot.Pitch*rotatorToRadian);
-	float cosPitch = cos((double)rot.Pitch*rotatorToRadian);
-	float sinYaw = sin((double)rot.Yaw*rotatorToRadian);
-	float cosYaw = cos((double)rot.Yaw*rotatorToRadian);
-	float sinRoll = sin((double)rot.Roll*rotatorToRadian);
-	float cosRoll = cos((double)rot.Roll*rotatorToRadian);
+	float rotatorToRadian = static_cast<float>(((M_PI / 180) / 2) / 182.044449);
+	float sinPitch = static_cast<float>(sin((double)rot.Pitch*rotatorToRadian));
+	float cosPitch = static_cast<float>(cos((double)rot.Pitch*rotatorToRadian));
+	float sinYaw = static_cast<float>(sin((double)rot.Yaw*rotatorToRadian));
+	float cosYaw = static_cast<float>(cos((double)rot.Yaw*rotatorToRadian));
+    float sinRoll = static_cast<float>(sin((double)rot.Roll*rotatorToRadian));
+    float cosRoll = static_cast<float>(cos((double)rot.Roll*rotatorToRadian));
 	
 	Quat convertedQuat;
 	convertedQuat.X = (cosRoll*sinPitch*sinYaw) - (sinRoll*cosPitch*cosYaw);
@@ -108,14 +108,14 @@ Quat RT::Slerp(Quat q1, Quat q2, float percent)
 	// we could rotate around any axis normal to qa or qb
 	if (fabs(sinHalfTheta) < 0.001)
 	{
-		q.W = q1.W * 0.5 + q2.W * 0.5;
-		q.X = q1.X * 0.5 + q2.X * 0.5;
-		q.Y = q1.Y * 0.5 + q2.Y * 0.5;
-		q.Z = q1.Z * 0.5 + q2.Z * 0.5;
+        q.W = q1.W * 0.5f + q2.W * 0.5f;
+        q.X = q1.X * 0.5f + q2.X * 0.5f;
+        q.Y = q1.Y * 0.5f + q2.Y * 0.5f;
+        q.Z = q1.Z * 0.5f + q2.Z * 0.5f;
 		return q;
 	}
-	double ratioA = sin((1.0 - percent) * halfTheta) / sinHalfTheta;
-	double ratioB = sin(percent * halfTheta) / sinHalfTheta; 
+	float ratioA = static_cast<float>(sin((1.0 - percent) * halfTheta) / sinHalfTheta);
+	float ratioB = static_cast<float>(sin(percent * halfTheta) / sinHalfTheta); 
 
 	q.W = (q1.W * ratioA + q2.W * ratioB);
 	q.X = (q1.X * ratioA + q2.X * ratioB);
@@ -127,7 +127,7 @@ Quat RT::Slerp(Quat q1, Quat q2, float percent)
 
 Quat RT::NormalizeQuat(Quat q)
 {
-	float mag = sqrt((double)q.X*q.X + (double)q.Y*q.Y + (double)q.Z*q.Z + (double)q.W*q.W);
+	float mag = static_cast<float>(sqrt((double)q.X*q.X + (double)q.Y*q.Y + (double)q.Z*q.Z + (double)q.W*q.W));
 	q.X /= mag;
 	q.Y /= mag;
 	q.Z /= mag;

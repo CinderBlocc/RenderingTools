@@ -23,7 +23,7 @@ RT::Frustum::Frustum(CanvasWrapper canvas, Quat cameraQuat, Vector cameraLocatio
 	mat.normalize();
 
 	float aspectRatio = (float)canvas.GetSize().X / canvas.GetSize().Y;
-	float angle = 2 * tan(FOV * 0.5 * (M_PI/180));
+	float angle = static_cast<float>(2 * tan(FOV * 0.5 * (M_PI/180)));
 
 	float fFarWidth   = angle * farClip;
 	float fFarHeight  = fFarWidth / aspectRatio;

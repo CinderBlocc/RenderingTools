@@ -27,7 +27,7 @@ RT::Matrix3 RT::SingleAxisAlignment(Matrix3 matrix, Vector targetDirection, Look
 	double a = (targetDirectionRejected - finalAxis).magnitude();
 	double b = targetDirectionRejected.magnitude();
 	double c = finalAxis.magnitude();
-	float rotAngle = acos((b*b + c*c - a*a)/2*b*c);
+	float rotAngle = static_cast<float>(acos((b*b + c*c - a*a)/2*b*c));
 
 	if(ShouldNegateAngle(Vector::dot(targetDirectionRejected, secondaryRotationAxis), step))
 		rotAngle *= -1;
@@ -145,7 +145,7 @@ float RT::GetVisualDistance(CanvasWrapper canvas, Frustum frustum, CameraWrapper
 		perspScaleLineEndProjected = canvas.ProjectF(objectLocation - (camUp * testScalePerspectiveLineLength));
 
 	Vector2F perspScaleLine = {perspScaleLineEndProjected.X - perspScaleLineStartProjected.X, perspScaleLineEndProjected.Y - perspScaleLineStartProjected.Y};
-	float perspScale = sqrt((double)perspScaleLine.X * perspScaleLine.X + (double)perspScaleLine.Y * perspScaleLine.Y);
+	float perspScale = static_cast<float>(sqrt((double)perspScaleLine.X * perspScaleLine.X + (double)perspScaleLine.Y * perspScaleLine.Y));
 	//if(perspScale > 100)
 	//	perspScale = 100;
 	float distancePercentage = perspScale/100;//1 is close, 0 is infinitely far away
