@@ -20,6 +20,6 @@ namespace RT
 		explicit Cone(Vector loc, Vector dir);
 
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas);
+		void Draw(CanvasWrapper canvas) const;
 	};
 }

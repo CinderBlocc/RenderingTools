@@ -22,11 +22,11 @@ namespace RT
 		explicit Plane(Vector normal, Vector location);
 
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas, Frustum &frustum, float size=300, int squares=20);
+		void Draw(CanvasWrapper canvas, Frustum &frustum, float size=300, int squares=20) const;
 
-		Vector direction();
+		Vector direction() const;
 
-		bool LineIntersectsWithPlane(Line &line);
-		Vector LinePlaneIntersectionPoint(Line &line);
+		bool LineIntersectsWithPlane(Line &line) const;
+		Vector LinePlaneIntersectionPoint(Line &line) const;
 	};
 }

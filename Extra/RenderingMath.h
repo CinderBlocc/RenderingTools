@@ -12,6 +12,6 @@ enum class LookAtAxis
 
 namespace RT
 {
-	RT::Matrix3 LookAt(Vector objectLocation, Vector lookAtLocation, LookAtAxis axis, float rollAmount=0);
+    Matrix3 LookAt(Vector objectLocation, Vector lookAtLocation, LookAtAxis axis, float rollAmount=0, Vector worldUpAxis={0,0,1});
 	Quat AngleAxisRotation(float angle, Vector axis);
 }

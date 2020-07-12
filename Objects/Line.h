@@ -19,18 +19,18 @@ namespace RT
 		explicit Line(Vector begin, Vector end, float thicc);
 		
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas);
-		void DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum);
-		void DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float animationPerc, int segments=10, float segPercent=0.5f);
+		void Draw(CanvasWrapper canvas) const;
+		void DrawWithinFrustum(CanvasWrapper canvas, Frustum &frustum) const;
+		void DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float animationPerc, int segments=10, float segPercent=0.5f) const;
 		void DrawSegmentedAutomatic(CanvasWrapper canvas, Frustum &frustum, float segmentLength, float gapLength, float speed=0, float secondsElapsed=0);
 
-		bool IsPointWithinLineSegment(Vector point);
-		float PointPercentageAlongLine(Vector point);
-		Vector GetPointAlongLine(float percent);
+		bool IsPointWithinLineSegment(Vector point) const;
+		float PointPercentageAlongLine(Vector point) const;
+		Vector GetPointAlongLine(float percent) const;
 
-		Vector direction();
-		const float magnitude();
-		const float getAnimationPercentage();
+		Vector direction() const;
+		const float magnitude() const;
+		const float getAnimationPercentage() const;
 		void setAnimationPercentage(float perc);
 
 	private:

@@ -21,7 +21,7 @@ namespace RT
 		explicit Circle(Vector loc, Quat rot, float rad);
 
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas, Frustum &frustum);
-		void DrawSegmented(CanvasWrapper canvas, Frustum &frustum, int segments, float percentPerSeg=0.5f);
+		void Draw(CanvasWrapper canvas, Frustum &frustum) const;
+		void DrawSegmented(CanvasWrapper canvas, Frustum &frustum, int segments, float percentPerSeg=0.5f) const;
 	};
 }

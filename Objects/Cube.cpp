@@ -4,10 +4,16 @@
 RT::Cube::Cube()
 	: location(Vector()), orientation(Quat()), sideLength(50), lineThickness(1) {}
 
+RT::Cube::Cube(Vector loc)
+    : location(loc), orientation(Quat()), sideLength(50), lineThickness(1) {}
+
+RT::Cube::Cube(Vector loc, float sLength)
+    : location(loc), orientation(Quat()), sideLength(sLength), lineThickness(1) {}
+
 RT::Cube::Cube(Vector loc, Quat rot, float sLength)
 	: location(loc), orientation(rot), sideLength(sLength), lineThickness(1) {}
 
-void RT::Cube::Draw(CanvasWrapper canvas)
+void RT::Cube::Draw(CanvasWrapper canvas) const
 {
 	float halfLength = sideLength * .5f;
 
@@ -29,37 +35,37 @@ void RT::Cube::Draw(CanvasWrapper canvas)
 	//Rendering works differently when thickness is not 1
 	if(lineThickness != 1)
 	{
-		for(int i=0; i<4; i++)
+		for(int i = 0; i < 4; ++i)
 		{
 			if(i == 3)
 			{
 				canvas.DrawLine(points[i], points[0], lineThickness);
-				canvas.DrawLine(points[i+4], points[4], lineThickness);
+				canvas.DrawLine(points[i + 4], points[4], lineThickness);
 				canvas.DrawLine(points[0], points[4], lineThickness);
 			}
 			else
 			{
-				canvas.DrawLine(points[i], points[i+1], lineThickness);
-				canvas.DrawLine(points[i+4], points[i+5], lineThickness);
-				canvas.DrawLine(points[i+1], points[i+5], lineThickness);
+				canvas.DrawLine(points[i], points[i + 1], lineThickness);
+				canvas.DrawLine(points[i + 4], points[i + 5], lineThickness);
+				canvas.DrawLine(points[i + 1], points[i + 5], lineThickness);
 			}
 		}
 	}
 	else
 	{
-		for(int i=0; i<4; i++)
+		for(int i = 0; i < 4; ++i)
 		{
 			if(i == 3)
 			{
 				canvas.DrawLine(points[i], points[0]);
-				canvas.DrawLine(points[i+4], points[4]);
+				canvas.DrawLine(points[i + 4], points[4]);
 				canvas.DrawLine(points[0], points[4]);
 			}
 			else
 			{
-				canvas.DrawLine(points[i], points[i+1]);
-				canvas.DrawLine(points[i+4], points[i+5]);
-				canvas.DrawLine(points[i+1], points[i+5]);
+				canvas.DrawLine(points[i], points[i + 1]);
+				canvas.DrawLine(points[i + 4], points[i + 5]);
+				canvas.DrawLine(points[i + 1], points[i + 5]);
 			}
 		}
 	}

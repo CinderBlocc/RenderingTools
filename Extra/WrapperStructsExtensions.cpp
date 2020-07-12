@@ -13,13 +13,13 @@ Rotator RT::QuatToRotator(Quat quat)
 	Vector right = matrix.up;
 
 	//Pitch
-	float pitch_f = asin(fwd.Z);
+	float pitch_f = static_cast<float>(asin(fwd.Z));
 	int PITCH = static_cast<int>((pitch_f / (M_PI / 2)) * 16384);
 
 	//Yaw
 	float hor_mag = static_cast<float>(sqrt((double)fwd.X * fwd.X + (double)fwd.Y * fwd.Y));
 	float hor_y = fwd.Y / hor_mag;
-	float fwd_y = asin(hor_y);
+	float fwd_y = static_cast<float>(asin(hor_y));
 	if (fwd_y >= 0)
 	{
 		if (fwd.X >= 0)
@@ -44,9 +44,9 @@ Rotator RT::QuatToRotator(Quat quat)
 	hor_right = { -hor_right.X, -hor_right.Y, -hor_right.Z }; // left-handed coordinate system
 	hor_right.normalize();
 	float roll_cos = Vector::dot(hor_right, right);
-	float roll_f = acos(roll_cos);
+	float roll_f = static_cast<float>(acos(roll_cos));
 	
-	float up_f = asin(up.Z);
+	float up_f = static_cast<float>(asin(up.Z));
 	
 	if (right.Z >= 0)
 	{

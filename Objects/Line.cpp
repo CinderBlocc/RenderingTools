@@ -10,7 +10,7 @@ RT::Line::Line(Vector begin, Vector end)
 RT::Line::Line(Vector begin, Vector end, float thicc)
 	: lineBegin(begin), lineEnd(end), thickness(thicc) {}
 
-void RT::Line::Draw(CanvasWrapper canvas)
+void RT::Line::Draw(CanvasWrapper canvas) const
 {
 	if(thickness == 1)
 	{
@@ -22,8 +22,10 @@ void RT::Line::Draw(CanvasWrapper canvas)
 	}
 }
 
-void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum)
+void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum &frustum) const
 {
+    Line thisLine = *this;
+
 	//Check if the beginning and the end of the line are in the frustum
 	bool beginInFrustum = frustum.IsInFrustum(lineBegin);
 	bool endInFrustum = frustum.IsInFrustum(lineEnd);
@@ -39,9 +41,9 @@ void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum)
 	std::vector<int> planeIndex;
 	for(int i = 0; i != 6; ++i)
 	{
-		if(frustum.planes[i].LineIntersectsWithPlane(*this))
+		if(frustum.planes[i].LineIntersectsWithPlane(thisLine))
 		{
-			Vector intersectLocation = frustum.planes[i].LinePlaneIntersectionPoint(*this);
+			Vector intersectLocation = frustum.planes[i].LinePlaneIntersectionPoint(thisLine);
 			if(frustum.IsInFrustum(intersectLocation, 1.f) && IsPointWithinLineSegment(intersectLocation))
 			{
 				planeIndex.push_back(i);
@@ -50,7 +52,7 @@ void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum)
 	}
 
 	//If no planes have been intersected, the line does not pass through the frustum. Don't draw
-	if(planeIndex.size() == 0)
+	if(planeIndex.empty())
 	{
 		return;
 	}
@@ -61,7 +63,7 @@ void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum)
 	//Update the beginning if it's the only beginning outside the frustum
 	if(!beginInFrustum && endInFrustum)
 	{
-		tempLine.lineBegin = frustum.planes[planeIndex[0]].LinePlaneIntersectionPoint(*this);
+		tempLine.lineBegin = frustum.planes[planeIndex[0]].LinePlaneIntersectionPoint(thisLine);
 		tempLine.Draw(canvas);
 		return;
 	}
@@ -69,7 +71,7 @@ void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum)
 	//Update the end if it's the only end outside the frustum
 	if(beginInFrustum && !endInFrustum)
 	{
-		tempLine.lineEnd = frustum.planes[planeIndex[0]].LinePlaneIntersectionPoint(*this);
+		tempLine.lineEnd = frustum.planes[planeIndex[0]].LinePlaneIntersectionPoint(thisLine);
 		tempLine.Draw(canvas);
 		return;
 	}
@@ -80,8 +82,8 @@ void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum)
 	{
 		return;
 	}
-	Vector intersect0 = frustum.planes[planeIndex[0]].LinePlaneIntersectionPoint(*this);
-	Vector intersect1 = frustum.planes[planeIndex[1]].LinePlaneIntersectionPoint(*this);
+	Vector intersect0 = frustum.planes[planeIndex[0]].LinePlaneIntersectionPoint(thisLine);
+	Vector intersect1 = frustum.planes[planeIndex[1]].LinePlaneIntersectionPoint(thisLine);
 
 	tempLine.lineBegin = ((tempLine.lineBegin - intersect0).magnitude() < (tempLine.lineBegin - intersect1).magnitude())
 		? intersect0 : intersect1;
@@ -90,59 +92,9 @@ void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum frustum)
 		? intersect0 : intersect1;
 
 	tempLine.Draw(canvas);
-	return;
-
-
-	//return 0 if line is completely inside frustum
-	//return 1 if line is completely outside frustum
-	//return 2 if lineBegin is outside frustum
-	//return 3 if lineEnd is outside frustum
-	//return 4 if both are out of frustum but line still intersects
-
-	/*
-	int intersectionIndex = 0;
-	for(int i=0; i<6; i++)
-	{
-		if(frustum.planes[i].LineIntersectsWithPlane(*this))
-		{
-			Vector intersection = frustum.planes[i].LinePlaneIntersectionPoint(*this);
-			if(frustum.IsInFrustum(intersection))
-			{
-				intersectsInFrustum[intersectionIndex] = true;
-				intersects[intersectionIndex] = intersection;
-				intersectionIndex++;
-			}
-		}
-	}
-
-	if(!intersectsInFrustum[0] && !intersectsInFrustum[1])
-		return 1;//Line is completely outside frustum
-	if(!beginInFrustum && endInFrustum)
-	{
-		if(IsWithinLineSegment(line, intersects[0], false))
-			newLineBegin = Vector{intersects[0].X, intersects[0].Y, intersects[0].Z};
-		else
-			newLineBegin = Vector{intersects[1].X, intersects[1].Y, intersects[1].Z};
-		return 2;//Only lineBegin is outside frustum and should be replaced by newLineBegin
-	}
-	if(beginInFrustum && !endInFrustum)
-	{
-		if(IsWithinLineSegment(line, intersects[0], true))
-			newLineEnd = Vector{intersects[0].X, intersects[0].Y, intersects[0].Z};
-		else
-			newLineEnd = Vector{intersects[1].X, intersects[1].Y, intersects[1].Z};
-		return 3;//Only lineEnd is outside frustum and should be replaced by newLineEnd
-	}
-	if(intersectsInFrustum[0] && intersectsInFrustum[1])
-	{
-		newLineBegin = Vector{intersects[0].X, intersects[0].Y, intersects[0].Z};
-		newLineEnd = Vector{intersects[1].X, intersects[1].Y, intersects[1].Z};
-		return 4;//Both lineBegin and lineEnd are both outside frustum and should be replaced by newLineBegin and newLineEnd
-	}
-	*/
 }
 
-void RT::Line::DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float animationPerc, int segments, float segPercent)
+void RT::Line::DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float animationPerc, int segments, float segPercent) const
 {
 	//MANUAL: Manually define number of desired segments and the percentage of each segment that should be visible
 
@@ -235,7 +187,7 @@ void RT::Line::DrawSegmentedAutomatic(CanvasWrapper canvas, Frustum &frustum, fl
 	DrawSegmentedManual(canvas, frustum, animationPercentage, segs, segPerc);
 }
 
-bool RT::Line::IsPointWithinLineSegment(Vector point)
+bool RT::Line::IsPointWithinLineSegment(Vector point) const
 {
 	Vector beginToPoint = lineBegin - point;
 	beginToPoint.normalize();
@@ -257,30 +209,30 @@ bool RT::Line::IsPointWithinLineSegment(Vector point)
 	return true;
 }
 
-float RT::Line::PointPercentageAlongLine(Vector point)
+float RT::Line::PointPercentageAlongLine(Vector point) const
 {
 	float dot = Vector::dot((lineEnd - lineBegin),(point - lineBegin));
 	return (dot / (magnitude() * magnitude()));
 }
 
-Vector RT::Line::GetPointAlongLine(float percent)
+Vector RT::Line::GetPointAlongLine(float percent) const
 {
 	return (lineBegin * (1 - percent) + lineEnd * percent);
 }
 
-Vector RT::Line::direction()
+Vector RT::Line::direction() const
 {
-	Vector direction = lineEnd - lineBegin;
-	direction.normalize();
-	return direction;
+	Vector dir = lineEnd - lineBegin;
+	dir.normalize();
+	return dir;
 }
 
-const float RT::Line::magnitude()
+const float RT::Line::magnitude() const
 {
 	return (lineEnd - lineBegin).magnitude();
 }
 
-const float RT::Line::getAnimationPercentage()
+const float RT::Line::getAnimationPercentage() const
 {
 	return animationPercentage;
 }

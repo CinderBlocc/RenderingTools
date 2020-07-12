@@ -5,6 +5,7 @@
 namespace RT
 {
 	class Frustum;
+    class Line;
 
 	class Cylinder
 	{
@@ -22,7 +23,8 @@ namespace RT
 		explicit Cylinder(Vector loc, Quat rot, float rad, float h);
 
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas, Frustum &frustum, int segments=16);
-		bool IsInCylinder(Vector location);
+		void Draw(CanvasWrapper canvas, Frustum &frustum, int segments=16) const;
+		bool IsInCylinder(Vector location) const;
+        bool LineCrossesCylinder(const Line &line) const;
 	};
 }

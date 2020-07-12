@@ -3,14 +3,15 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-RT::Matrix3 RT::LookAt(Vector objectLocation, Vector lookAtLocation, LookAtAxis axis, float rollAmount)
+RT::Matrix3 RT::LookAt(Vector objectLocation, Vector lookAtLocation, LookAtAxis axis, float rollAmount, Vector worldUpAxis)
 {
 	//rollAmount should be in radians
+    //worldUp is for cases where the up axis for the cross product should be different from the real world up axis
 
 	Vector forward = lookAtLocation - objectLocation;
 	forward.normalize();
 
-	Vector right = Vector::cross(Vector(0, 0, 1), forward);
+	Vector right = Vector::cross(worldUpAxis, forward);
 	if(right.magnitude() == 0)
 	{
 		//Forward axis is parallel to world Z axis
@@ -64,10 +65,10 @@ Quat RT::AngleAxisRotation(float angle, Vector axis)
 	//Angle in radians
 	Quat result;
 	float angDiv2 = angle * 0.5f;
-	result.W = cos(angDiv2);
-	result.X = axis.X * sin(angDiv2);
-	result.Y = axis.Y * sin(angDiv2);
-	result.Z = axis.Z * sin(angDiv2);
+	result.W = static_cast<float>(cos(angDiv2));
+    result.X = axis.X * static_cast<float>(sin(angDiv2));
+    result.Y = axis.Y * static_cast<float>(sin(angDiv2));
+    result.Z = axis.Z * static_cast<float>(sin(angDiv2));
 
 	return result;
 }

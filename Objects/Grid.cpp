@@ -9,7 +9,7 @@ RT::Grid::Grid()
 RT::Grid::Grid(Vector loc, Quat rot, float w, float h, int wSegs, int hSegs)
 	: location(loc), orientation(rot), width(w), height(h), widthSegs(wSegs), heightSegs(hSegs) {}
 
-void RT::Grid::Draw(CanvasWrapper canvas, Frustum &frustum, bool useThickMidline)
+void RT::Grid::Draw(CanvasWrapper canvas, Frustum &frustum, bool useThickMidline) const
 {
 	//The terms "horizontal" and "vertical" refer to the direction the line is drawn
 

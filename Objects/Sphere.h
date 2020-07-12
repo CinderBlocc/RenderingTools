@@ -1,11 +1,12 @@
 #pragma once
 #include "bakkesmod/wrappers/wrapperstructs.h"
 #include "bakkesmod/plugin/bakkesmodplugin.h"
-#include "Line.h"
+//#include "Line.h"
 
 namespace RT
 {
 	class Frustum;
+    class Line;
 
 	class Sphere
 	{
@@ -20,8 +21,8 @@ namespace RT
 		explicit Sphere(Vector loc, Quat rot, float rad);
 
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocation, int segments);
+		void Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocation, int segments) const;
 
-		bool IsOccludingLine(Line line);
+		bool IsOccludingLine(Line &line) const;
 	};
 }

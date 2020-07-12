@@ -15,7 +15,7 @@ RT::Sphere::Sphere(Vector loc, float rad)
 RT::Sphere::Sphere(Vector loc, Quat rot, float rad)
 	: location(loc), orientation(rot), radius(rad) {}
 
-void RT::Sphere::Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocation, int segments)
+void RT::Sphere::Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocation, int segments) const
 {
 	//Occlude opposite side of sphere using IsOccludingLine on each vertex with a sphere that is slightly smaller than this one
 	//Create a vertical (half?) circle and rotate it a few times. Keep track of all points at each level
@@ -71,13 +71,15 @@ void RT::Sphere::Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocat
 		for(size_t j = 0; j != semicircles[i].size() - 1; ++j)
 		{
 			//Check if the vertical line points are visible
-			if(!frustum.IsInFrustum(semicircles[i][j]) || testSphere.IsOccludingLine(Line(semicircles[i][j], cameraLocation)))
+            Line vertLinePoints(semicircles[i][j], cameraLocation);
+			if(!frustum.IsInFrustum(semicircles[i][j]) || testSphere.IsOccludingLine(vertLinePoints))
 			{
 				continue;
 			}
 
 			//Draw vertical line
-			if(frustum.IsInFrustum(semicircles[i][j + 1]) && !testSphere.IsOccludingLine(Line(semicircles[i][j + 1], cameraLocation)))
+            Line vertLineNext(semicircles[i][j + 1], cameraLocation);
+			if(frustum.IsInFrustum(semicircles[i][j + 1]) && !testSphere.IsOccludingLine(vertLineNext))
 			{
 				canvas.DrawLine(canvas.ProjectF(semicircles[i][j]), canvas.ProjectF(semicircles[i][j + 1]));
 			}
@@ -91,7 +93,8 @@ void RT::Sphere::Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocat
 			//Draw horizontal lines
 			if(i != semicircles.size() - 1)
 			{
-				if(frustum.IsInFrustum(semicircles[i + 1][j]) && !testSphere.IsOccludingLine(Line(semicircles[i + 1][j], cameraLocation)))
+                Line horizontalLine(semicircles[i + 1][j], cameraLocation);
+				if(frustum.IsInFrustum(semicircles[i + 1][j]) && !testSphere.IsOccludingLine(horizontalLine))
 				{
 					canvas.DrawLine(canvas.ProjectF(semicircles[i][j]), canvas.ProjectF(semicircles[i + 1][j]));
 				}
@@ -99,7 +102,8 @@ void RT::Sphere::Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocat
 			else
 			{
 				//Connect last semicircle to first semicircle
-				if(frustum.IsInFrustum(semicircles[0][j]) && !testSphere.IsOccludingLine(Line(semicircles[0][j], cameraLocation)))
+                Line connectLastToFirstLine(semicircles[0][j], cameraLocation);
+				if(frustum.IsInFrustum(semicircles[0][j]) && !testSphere.IsOccludingLine(connectLastToFirstLine))
 				{
 					canvas.DrawLine(canvas.ProjectF(semicircles[i][j]), canvas.ProjectF(semicircles[0][j]));
 				}
@@ -108,7 +112,7 @@ void RT::Sphere::Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocat
 	}
 }
 
-bool RT::Sphere::IsOccludingLine(Line line)
+bool RT::Sphere::IsOccludingLine(Line &line) const
 {
 	//Checks if a line drawn from a point to the camera is occluded by the sphere
 
@@ -153,4 +157,6 @@ bool RT::Sphere::IsOccludingLine(Line line)
 		else
 			return true;
 	}
+
+    return false;
 }

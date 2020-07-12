@@ -10,7 +10,7 @@ RT::Cone::Cone()
 RT::Cone::Cone(Vector loc, Vector dir)
 	: Cone() { location = loc; direction = dir; }
 
-void RT::Cone::Draw(CanvasWrapper canvas)
+void RT::Cone::Draw(CanvasWrapper canvas) const
 {
 	Vector dir = direction;
 	dir.normalize();

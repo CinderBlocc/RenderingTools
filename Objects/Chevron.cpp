@@ -2,6 +2,7 @@
 #include "Line.h"
 #include "Triangle.h"
 #include "Matrix3.h"
+#include "Frustum.h"
 #include "../Extra/WrapperStructsExtensions.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -50,7 +51,7 @@ RT::Chevron::Chevron(Vector loc, Quat rot, float len, float wid, float thicc, fl
 	UpdateBaseVertices();
 }
 
-void RT::Chevron::Draw(CanvasWrapper canvas, Frustum frustum, bool showLines)
+void RT::Chevron::Draw(CanvasWrapper canvas, Frustum &frustum, bool showLines) const
 {
 	//Both wipe values completely obscure chevron, don't draw
 	if(wipeTailToTip + wipeTipToTail >= 1)
@@ -254,7 +255,7 @@ void RT::Chevron::Draw(CanvasWrapper canvas, Frustum frustum, bool showLines)
 	}
 }
 
-void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, float gap, float speed, float secondsElapsed)
+void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum &frustum, Vector start, Vector end, float gap, float speed, float secondsElapsed) const
 {
 	//Speed should be given in cm/s
 
@@ -309,7 +310,7 @@ void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector st
 	}
 }
 
-float RT::Chevron::GetFullLength()
+float RT::Chevron::GetFullLength() const
 {
 	Vector bottomOuterVert = Vector{length, width, 0};
 	Vector tipToOuterDir = bottomOuterVert; tipToOuterDir.normalize();
@@ -319,7 +320,7 @@ float RT::Chevron::GetFullLength()
 	return bottomInnerVert.X;
 }
 
-float RT::Chevron::GetTipLength()
+float RT::Chevron::GetTipLength() const
 {
 	return (tipInnerVert - tipVert).magnitude();
 }
@@ -386,17 +387,17 @@ void RT::Chevron::SetWipeTailToTip(const float newWipeTailToTip)
 	UpdateBaseVertices();
 }
 
-float RT::Chevron::GetLength() { return length; }
+float RT::Chevron::GetLength() const { return length; }
 
-float RT::Chevron::GetWidth() { return width; }
+float RT::Chevron::GetWidth() const { return width; }
 
-float RT::Chevron::GetThickness() { return thickness; }
+float RT::Chevron::GetThickness() const { return thickness; }
 
-float RT::Chevron::GetMaxThickness() { return maxThickness; }
+float RT::Chevron::GetMaxThickness() const { return maxThickness; }
 
-float RT::Chevron::GetWipeTipToTail() { return wipeTipToTail; }
+float RT::Chevron::GetWipeTipToTail() const { return wipeTipToTail; }
 
-float RT::Chevron::GetWipeTailToTip() { return wipeTailToTip; }
+float RT::Chevron::GetWipeTailToTip() const { return wipeTailToTip; }
 
 void RT::Chevron::UpdateBaseVertices()
 {

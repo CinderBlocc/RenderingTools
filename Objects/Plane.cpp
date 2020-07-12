@@ -25,7 +25,7 @@ RT::Plane::Plane(Vector normal, Vector location)
 	d = distance;
 }
 
-void RT::Plane::Draw(CanvasWrapper canvas, Frustum &frustum, float size, int squares)
+void RT::Plane::Draw(CanvasWrapper canvas, Frustum &frustum, float size, int squares) const
 {
 	Matrix3 planeMat;
 	planeMat.forward = direction();
@@ -48,7 +48,7 @@ void RT::Plane::Draw(CanvasWrapper canvas, Frustum &frustum, float size, int squ
 	DrawVector(canvas, direction(), direction() * -d, size / 2);
 }
 
-Vector RT::Plane::direction()
+Vector RT::Plane::direction() const
 {
 	Vector dir = Vector{x, y, z};
 	dir.normalize();
@@ -56,7 +56,7 @@ Vector RT::Plane::direction()
 	return dir;
 }
 
-bool RT::Plane::LineIntersectsWithPlane(Line &line)
+bool RT::Plane::LineIntersectsWithPlane(Line &line) const
 {
 	//if the line is parallel to the plane, it will not intersect
 	if(Vector::dot(line.direction(), direction()) != 0)
@@ -65,7 +65,7 @@ bool RT::Plane::LineIntersectsWithPlane(Line &line)
 		return false;
 }
 
-Vector RT::Plane::LinePlaneIntersectionPoint(Line &line)
+Vector RT::Plane::LinePlaneIntersectionPoint(Line &line) const
 {
 	//f = plane (4D in numerator, 3D in denominator)
 	//p = lineStart (with additional 4D value of 1 in numerator)

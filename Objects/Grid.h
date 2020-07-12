@@ -21,6 +21,6 @@ namespace RT
 		explicit Grid(Vector loc, Quat rot, float w, float h, int wSegs, int hSegs);
 
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas, Frustum &frustum, bool useThickMidline=true);
+		void Draw(CanvasWrapper canvas, Frustum &frustum, bool useThickMidline=true) const;
 	};
 }

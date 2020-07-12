@@ -14,9 +14,11 @@ namespace RT
 
 		// CONSTRUCTORS
 		explicit Cube();
+        explicit Cube(Vector loc);
+        explicit Cube(Vector loc, float sLength);
 		explicit Cube(Vector loc, Quat rot, float sLength);
 
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas);
+		void Draw(CanvasWrapper canvas) const;
 	};
 }

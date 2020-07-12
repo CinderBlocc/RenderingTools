@@ -18,7 +18,7 @@ RT::Cylinder::Cylinder(Vector loc, float rad, float h)
 RT::Cylinder::Cylinder(Vector loc, Quat rot, float rad, float h)
 	: location(loc), orientation(rot), radius(rad), height(h), lineThickness(1) {}
 
-void RT::Cylinder::Draw(CanvasWrapper canvas, Frustum &frustum, int segments)
+void RT::Cylinder::Draw(CanvasWrapper canvas, Frustum &frustum, int segments) const
 {
 	//Simple frustum check. Not very clean but can be improved later
 	if(!frustum.IsInFrustum(location, height * .5f))
@@ -91,7 +91,7 @@ void RT::Cylinder::Draw(CanvasWrapper canvas, Frustum &frustum, int segments)
 	}
 }
 
-bool RT::Cylinder::IsInCylinder(Vector objLocation)
+bool RT::Cylinder::IsInCylinder(Vector objLocation) const
 {
 	Matrix3 rotMat(this->orientation);
 
@@ -118,4 +118,93 @@ bool RT::Cylinder::IsInCylinder(Vector objLocation)
 	{
 		return false;
 	}
+}
+
+bool RT::Cylinder::LineCrossesCylinder(const Line &line) const
+{
+    /*
+    https://stackoverflow.com/questions/4078401/trying-to-optimize-line-vs-cylinder-intersection
+    The cylinder is circular, right? You could transform coordinates so that the center line of the cylinder functions as the Z axis.
+    Then you have a 2D problem of intersecting a line with a circle.
+    The intersection points will be in terms of a parameter going from 0 to 1 along the length of the line,
+    so you can calculate their positions in that coordinate system and compare to the top and bottom of the cylinder.
+    */
+
+    //Create a plane at both caps of the cylinder and do a disc check
+    //i.e. get intersection point, then check distance to center
+
+
+    //Move objects to world origin. Remove rotation from cylinder and line points
+    Quat inverse = orientation.conjugate();
+    Vector offset(0, 0, height * .5f);
+
+    RT::Cylinder cylCopy = *this;
+    cylCopy.orientation = inverse * cylCopy.orientation;
+    cylCopy.location = offset;
+
+    RT::Line lineCopy = line;
+    lineCopy.lineBegin = RT::RotateVectorWithQuat(lineCopy.lineBegin, inverse) - location + offset;
+    lineCopy.lineEnd = RT::RotateVectorWithQuat(lineCopy.lineEnd, inverse) - location + offset;
+
+    //Test if either of the points are inside the cylinder
+    if(cylCopy.IsInCylinder(lineCopy.lineBegin) || cylCopy.IsInCylinder(lineCopy.lineEnd))
+    {
+        return true;
+    }
+
+    //Create planes to test the end caps
+    RT::Plane top(Vector(0,0,1), height);
+    RT::Plane bottom(Vector(0,0,1), 0);
+
+    if(top.LineIntersectsWithPlane(lineCopy))
+    {
+        Vector intersectionPoint = top.LinePlaneIntersectionPoint(lineCopy);
+        float dist = (intersectionPoint - Vector(0, 0, height)).magnitude();
+        if(dist <= radius)
+        {
+            if(lineCopy.IsPointWithinLineSegment(intersectionPoint))
+            {
+                return true;
+            }
+        }
+    }
+    if(bottom.LineIntersectsWithPlane(lineCopy))
+    {
+        Vector intersectionPoint = bottom.LinePlaneIntersectionPoint(lineCopy);
+        float dist = (intersectionPoint - Vector(0, 0, 0)).magnitude();
+        if(dist <= radius)
+        {
+            if(lineCopy.IsPointWithinLineSegment(intersectionPoint))
+            {
+                return true;
+            }
+        }
+    }
+
+    //Test the body of the cylinder
+    //Remove the vertical component from the line, then test against a 2D circle
+    float beginZ = lineCopy.lineBegin.Z;
+    float endZ = lineCopy.lineEnd.Z;
+    lineCopy.lineBegin.Z = 0;
+    lineCopy.lineEnd.Z = 0;
+
+    //Find closest point on line to the circle center
+    Vector circToA = Vector(0, 0, 0) - lineCopy.lineBegin;
+    Vector BToA = lineCopy.lineEnd - lineCopy.lineBegin;
+    Vector closestPoint = RT::VectorProjection(circToA, BToA);
+    if(closestPoint.magnitude() < radius)
+    {
+        //Line crosses 2D circle, test if it is within vertical bounds of cylinder
+        float perc = lineCopy.PointPercentageAlongLine(closestPoint);
+        lineCopy.lineBegin.Z = beginZ;
+        lineCopy.lineEnd.Z = endZ;
+
+        Vector newClosestPoint = lineCopy.GetPointAlongLine(perc);
+        if(newClosestPoint.Z <= height)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

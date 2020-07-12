@@ -12,7 +12,7 @@ RT::Circle::Circle()
 RT::Circle::Circle(Vector loc, Quat rot, float rad)
 	: Circle() { location = loc; orientation = rot; radius = rad; }
 
-void RT::Circle::Draw(CanvasWrapper canvas, Frustum &frustum)
+void RT::Circle::Draw(CanvasWrapper canvas, Frustum &frustum) const
 {
 	std::vector<Vector> circlePoints;
 	Vector start = {1,0,0};
@@ -89,7 +89,7 @@ void RT::Circle::Draw(CanvasWrapper canvas, Frustum &frustum)
 	}
 }
 
-void RT::Circle::DrawSegmented(CanvasWrapper canvas, Frustum &frustum, int segments, float percentPerSeg)
+void RT::Circle::DrawSegmented(CanvasWrapper canvas, Frustum &frustum, int segments, float percentPerSeg) const
 {
 	//Horribly inefficient but whatever - duplicates all circle points for each circle
 	//Fix it to use piePercentage methods multiple times around ONE circle to avoid creating duplicate calculations

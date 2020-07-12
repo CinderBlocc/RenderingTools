@@ -6,6 +6,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+RT::Frustum::Frustum() {}
+
 RT::Frustum::Frustum(CanvasWrapper canvas, Quat cameraQuat, Vector cameraLocation, float FOV, float nearClip, float farClip)
 {
 	//Generate the 6 planes of the viewing frustum from the 8 vertices of the frustum
@@ -67,7 +69,7 @@ RT::Frustum::Frustum(CanvasWrapper canvas, Quat cameraQuat, Vector cameraLocatio
 RT::Frustum::Frustum(CanvasWrapper canvas, CameraWrapper camera, float nearClip, float farClip)
 	: Frustum(canvas, RotatorToQuat(camera.GetRotation()), camera.GetLocation(), camera.GetFOV(), nearClip, farClip) {}
 
-void RT::Frustum::Draw(CanvasWrapper canvas)
+void RT::Frustum::Draw(CanvasWrapper canvas) const
 {
 	constexpr int FTL = 0;
 	constexpr int FTR = 1;
@@ -77,6 +79,7 @@ void RT::Frustum::Draw(CanvasWrapper canvas)
 	constexpr int NTR = 5;
 	constexpr int NBR = 6;
 	constexpr int NBL = 7;
+
 	//Far plane
 	canvas.DrawLine(canvas.ProjectF(points[FTL]), canvas.ProjectF(points[FTR]), 3);
 	canvas.DrawLine(canvas.ProjectF(points[FTR]), canvas.ProjectF(points[FBR]));
@@ -92,24 +95,12 @@ void RT::Frustum::Draw(CanvasWrapper canvas)
 	canvas.DrawLine(canvas.ProjectF(points[FTR]), canvas.ProjectF(points[NTR]));
 	canvas.DrawLine(canvas.ProjectF(points[FBR]), canvas.ProjectF(points[NBR]));
 	canvas.DrawLine(canvas.ProjectF(points[FBL]), canvas.ProjectF(points[NBL]));
-
-	/*
-	//DRAW VERTICES
-	canvas.SetPosition(canvas.ProjectF(points[FTL]).minus(Vector2F{2,2})); canvas.FillBox(Vector2F{4,4});
-	canvas.SetPosition(canvas.ProjectF(points[FTR]).minus(Vector2F{2,2})); canvas.FillBox(Vector2F{4,4});
-	canvas.SetPosition(canvas.ProjectF(points[FBR]).minus(Vector2F{2,2})); canvas.FillBox(Vector2F{4,4});
-	canvas.SetPosition(canvas.ProjectF(points[FBL]).minus(Vector2F{2,2})); canvas.FillBox(Vector2F{4,4});
-	canvas.SetPosition(canvas.ProjectF(points[NTL]).minus(Vector2F{2,2})); canvas.FillBox(Vector2F{4,4});
-	canvas.SetPosition(canvas.ProjectF(points[NTR]).minus(Vector2F{2,2})); canvas.FillBox(Vector2F{4,4});
-	canvas.SetPosition(canvas.ProjectF(points[NBR]).minus(Vector2F{2,2})); canvas.FillBox(Vector2F{4,4});
-	canvas.SetPosition(canvas.ProjectF(points[NBL]).minus(Vector2F{2,2})); canvas.FillBox(Vector2F{4,4});
-	*/
 }
 
-bool RT::Frustum::IsInFrustum(Vector location, float radius)
+bool RT::Frustum::IsInFrustum(Vector location, float radius) const
 {
 	//Check if object is on positive side of all 6 planes of frustum
-	for(int i=0; i<6; i++)
+	for(int i = 0; i < 6; ++i)
 	{
 		Vector planeNormal = {planes[i].x, planes[i].y, planes[i].z}; 
 		if(Vector::dot(location, planeNormal) + planes[i].d + radius <= 0)

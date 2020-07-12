@@ -1,6 +1,7 @@
 #include "Triangle.h"
 #include "Line.h"
 #include "Frustum.h"
+#include "Plane.h"
 #include "../Extra/WrapperStructsExtensions.h"
 
 RT::Triangle::Triangle()
@@ -9,7 +10,7 @@ RT::Triangle::Triangle()
 RT::Triangle::Triangle(Vector v1, Vector v2, Vector v3)
 	: vert1(v1), vert2(v2), vert3(v3) {}
 
-void RT::Triangle::Draw(CanvasWrapper canvas)
+void RT::Triangle::Draw(CanvasWrapper canvas) const
 {
 	Vector2F v1F = canvas.ProjectF(vert1);
 	Vector2F v2F = canvas.ProjectF(vert2);
@@ -24,7 +25,7 @@ void RT::Triangle::Draw(CanvasWrapper canvas)
 //
 //}
 
-void RT::Triangle::DrawOutline(CanvasWrapper canvas, Frustum &frustum, float lineThickness, bool drawNormal)
+void RT::Triangle::DrawOutline(CanvasWrapper canvas, Frustum &frustum, float lineThickness, bool drawNormal) const
 {
 	Line(vert1, vert2, lineThickness).DrawWithinFrustum(canvas, frustum);
 	Line(vert2, vert3, lineThickness).DrawWithinFrustum(canvas, frustum);
@@ -41,7 +42,7 @@ void RT::Triangle::DrawOutline(CanvasWrapper canvas, Frustum &frustum, float lin
 	}
 }
 
-RT::Plane RT::Triangle::GetPlaneFromTriangle()
+RT::Plane RT::Triangle::GetPlaneFromTriangle() const
 {
 	//Get the normal vector from the cross product of two edges of the triangle.
 	//Get 'd' from negative normal dotted with known point on plane
@@ -54,7 +55,7 @@ RT::Plane RT::Triangle::GetPlaneFromTriangle()
 	return newPlane;
 }
 
-bool RT::Triangle::LineTriangleIntersection(Line line)
+bool RT::Triangle::LineTriangleIntersection(Line &line) const
 {
 	//Check if line crosses through plane
 	//If it does, check if the intersection point is within the line segment
@@ -81,7 +82,7 @@ bool RT::Triangle::LineTriangleIntersection(Line line)
 	return true;
 }
 
-bool RT::Triangle::IsWithinTriangleCoordinates(Vector point)
+bool RT::Triangle::IsWithinTriangleCoordinates(Vector point) const
 {
 	//Found here: https://github.com/SebLague/Gamedev-Maths/blob/master/PointInTriangle.cs video: https://youtu.be/HYAgJN3x4GA
 	//and here: https://github.com/1robertslattery/GeometricTestLibrary/blob/master/Source/GeometricTests/GeometricTestLibrary.h#L1607 video: https://youtu.be/bd_JwXYVc6c

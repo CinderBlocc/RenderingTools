@@ -8,12 +8,20 @@ RT::Matrix3::Matrix3(Vector f, Vector r, Vector u)
 	: forward(f), right(r), up(u) {}
 
 RT::Matrix3::Matrix3(Quat q)
-	{ QuatToMatrix(q); }
+{
+    forward = RotateVectorWithQuat(Vector(1, 0, 0), q);
+	right = RotateVectorWithQuat(Vector(0, 1, 0), q);
+	up = RotateVectorWithQuat(Vector(0, 0, 1), q);
+	normalize();
+}
 
 RT::Matrix3::Matrix3(Rotator rot)
-	{ RotatorToMatrix(rot); }
+{
+    Quat q = RotatorToQuat(rot);
+	*this = Matrix3(q);
+}
 
-Quat RT::Matrix3::ToQuat()
+Quat RT::Matrix3::ToQuat() const
 {
 	//https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
 
@@ -59,43 +67,27 @@ Quat RT::Matrix3::ToQuat()
 	return q;
 }
 
-Rotator RT::Matrix3::ToRotator()
+Rotator RT::Matrix3::ToRotator() const
 {
-	Quat q = this->ToQuat();
+	Quat q = ToQuat();
 	return QuatToRotator(q);
 }
 
-RT::Matrix3 RT::Matrix3::QuatToMatrix(Quat q)
-{
-	forward = RotateVectorWithQuat(Vector(1, 0, 0), q);
-	right = RotateVectorWithQuat(Vector(0, 1, 0), q);
-	up = RotateVectorWithQuat(Vector(0, 0, 1), q);
-	this->normalize();
-
-	return *this;
-}
-
-RT::Matrix3 RT::Matrix3::RotatorToMatrix(Rotator rot)
-{
-	Quat q = RotatorToQuat(rot);
-	return QuatToMatrix(q);
-}
-
-RT::Matrix3 RT::Matrix3::RotateWithQuat(Quat q, bool normalize)
+RT::Matrix3 RT::Matrix3::RotateWithQuat(Quat q, bool shouldNormalize)
 {
 	forward = RotateVectorWithQuat(forward, q);
 	right = RotateVectorWithQuat(right, q);
 	up = RotateVectorWithQuat(up, q);
 
-	if(normalize)
+	if(shouldNormalize)
 	{
-		this->normalize();
+		normalize();
 	}
 
 	return *this;
 }
 
-void RT::Matrix3::Draw(CanvasWrapper canvas, Vector location, float size)
+void RT::Matrix3::Draw(CanvasWrapper canvas, Vector location, float size) const
 {
 	LinearColor inColor = canvas.GetColor();
 

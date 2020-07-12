@@ -1,7 +1,5 @@
 #pragma once
 #include "bakkesmod/plugin/bakkesmodplugin.h"
-#include "../Extra/RenderingMath.h"
-#include "Frustum.h"
 
 /*
 

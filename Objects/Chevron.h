@@ -1,10 +1,12 @@
 #pragma once
 #include "bakkesmod/wrappers/wrapperstructs.h"
 #include "bakkesmod/plugin/bakkesmodplugin.h"
-#include "Frustum.h"
+//#include "Frustum.h"
 
 namespace RT
 {
+    class Frustum;
+
 	class Chevron
 	{
 	public:
@@ -17,21 +19,21 @@ namespace RT
 		explicit Chevron(Vector loc, Quat rot, float len, float wid, float thicc, float tipToTail, float tailToTip);
 
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas, Frustum frustum, bool showLines=false);
-		void DrawAlongLine(CanvasWrapper canvas, Frustum frustum, Vector start, Vector end, float gap, float speed, float secondsElapsed);
+		void Draw(CanvasWrapper canvas, Frustum &frustum, bool showLines=false) const;
+		void DrawAlongLine(CanvasWrapper canvas, Frustum &frustum, Vector start, Vector end, float gap, float speed, float secondsElapsed) const;
 
-		float GetLength();
+		float GetLength() const;
 		void SetLength(const float newLength);
-		float GetFullLength();
-		float GetTipLength();
-		float GetWidth();
+		float GetFullLength() const;
+		float GetTipLength() const;
+		float GetWidth() const;
 		void SetWidth(const float newWidth);
-		float GetThickness();
+		float GetThickness() const;
 		void SetThickness(const float newThickness);
-		float GetMaxThickness();
-		float GetWipeTipToTail();
+		float GetMaxThickness() const;
+		float GetWipeTipToTail() const;
 		void SetWipeTipToTail(const float newWipeTipToTail);
-		float GetWipeTailToTip();
+		float GetWipeTailToTip() const;
 		void SetWipeTailToTip(const float newWipeTailToTip);
 
 	private:
