@@ -95,8 +95,8 @@ bool RT::Cylinder::IsInCylinder(Vector objLocation) const
 {
 	Matrix3 rotMat(this->orientation);
 
-	Vector cylinderBottom = this->location - rotMat.up * height * .5f;
-	Vector cylinderTop = this->location + rotMat.up * height * .5f;
+	Vector cylinderBottom = this->location - (rotMat.up * height * .5f);
+	Vector cylinderTop = this->location + (rotMat.up * height * .5f);
 
 	Vector projectedLocation = VectorProjection(objLocation - cylinderBottom, cylinderTop - cylinderBottom) + cylinderBottom;
 
@@ -108,59 +108,48 @@ bool RT::Cylinder::IsInCylinder(Vector objLocation) const
 		{
 			return true;
 		}
-		else
-		{
-			return false;
+	}
 	
-		}
-	}
-	else
-	{
-		return false;
-	}
+    return false;
 }
 
 bool RT::Cylinder::LineCrossesCylinder(const Line &line) const
 {
-    /*
-    https://stackoverflow.com/questions/4078401/trying-to-optimize-line-vs-cylinder-intersection
-    The cylinder is circular, right? You could transform coordinates so that the center line of the cylinder functions as the Z axis.
-    Then you have a 2D problem of intersecting a line with a circle.
-    The intersection points will be in terms of a parameter going from 0 to 1 along the length of the line,
-    so you can calculate their positions in that coordinate system and compare to the top and bottom of the cylinder.
-    */
+    //Get the local to world space transformation
+    Quat inverse = this->orientation.conjugate();
+    Vector offset(0, 0, this->height * .5f);
 
-    //Create a plane at both caps of the cylinder and do a disc check
-    //i.e. get intersection point, then check distance to center
+    //Create a copy of the cylinder, but translated so that the base is on 0,0,0 with no rotation
+    RT::Cylinder cylinderCopy = *this;
+    cylinderCopy.orientation = inverse * cylinderCopy.orientation;
+    cylinderCopy.location = offset;
 
-
-    //Move objects to world origin. Remove rotation from cylinder and line points
-    Quat inverse = orientation.conjugate();
-    Vector offset(0, 0, height * .5f);
-
-    RT::Cylinder cylCopy = *this;
-    cylCopy.orientation = inverse * cylCopy.orientation;
-    cylCopy.location = offset;
-
+    //Create a copy of the line, but translated to match the new orientation of the copied cylinder
     RT::Line lineCopy = line;
-    lineCopy.lineBegin = RT::RotateVectorWithQuat(lineCopy.lineBegin, inverse) - location + offset;
-    lineCopy.lineEnd = RT::RotateVectorWithQuat(lineCopy.lineEnd, inverse) - location + offset;
+    lineCopy.lineBegin = lineCopy.lineBegin + offset - this->location;
+    lineCopy.lineEnd = lineCopy.lineEnd + offset - this->location;
+    lineCopy.lineBegin = RT::RotateVectorWithQuat(lineCopy.lineBegin, inverse);
+    lineCopy.lineEnd = RT::RotateVectorWithQuat(lineCopy.lineEnd, inverse);
+
+    //Test if both of the points are above, or if both are below the cylinder
+    if((lineCopy.lineBegin.Z > this->height && lineCopy.lineEnd.Z > this->height) || (lineCopy.lineBegin.Z < 0 && lineCopy.lineEnd.Z < 0))
+    {
+        return false;
+    }
 
     //Test if either of the points are inside the cylinder
-    if(cylCopy.IsInCylinder(lineCopy.lineBegin) || cylCopy.IsInCylinder(lineCopy.lineEnd))
+    if(cylinderCopy.IsInCylinder(lineCopy.lineBegin) || cylinderCopy.IsInCylinder(lineCopy.lineEnd))
     {
         return true;
     }
 
-    //Create planes to test the end caps
-    RT::Plane top(Vector(0,0,1), height);
-    RT::Plane bottom(Vector(0,0,1), 0);
-
+    //Create planes to test the end caps. Draw them for testing
+    RT::Plane top( Vector(0, 0, 1), -this->height );
     if(top.LineIntersectsWithPlane(lineCopy))
     {
         Vector intersectionPoint = top.LinePlaneIntersectionPoint(lineCopy);
-        float dist = (intersectionPoint - Vector(0, 0, height)).magnitude();
-        if(dist <= radius)
+        float dist = (intersectionPoint - Vector(0, 0, this->height)).magnitude();
+        if(dist <= this->radius)
         {
             if(lineCopy.IsPointWithinLineSegment(intersectionPoint))
             {
@@ -168,11 +157,13 @@ bool RT::Cylinder::LineCrossesCylinder(const Line &line) const
             }
         }
     }
+
+    RT::Plane bottom( Vector(0, 0, 1), 0 );
     if(bottom.LineIntersectsWithPlane(lineCopy))
     {
         Vector intersectionPoint = bottom.LinePlaneIntersectionPoint(lineCopy);
         float dist = (intersectionPoint - Vector(0, 0, 0)).magnitude();
-        if(dist <= radius)
+        if(dist <= this->radius)
         {
             if(lineCopy.IsPointWithinLineSegment(intersectionPoint))
             {
@@ -183,28 +174,32 @@ bool RT::Cylinder::LineCrossesCylinder(const Line &line) const
 
     //Test the body of the cylinder
     //Remove the vertical component from the line, then test against a 2D circle
-    float beginZ = lineCopy.lineBegin.Z;
-    float endZ = lineCopy.lineEnd.Z;
-    lineCopy.lineBegin.Z = 0;
-    lineCopy.lineEnd.Z = 0;
+    RT::Line flatLine = lineCopy;
+    flatLine.lineBegin.Z = 0;
+    flatLine.lineEnd.Z = 0;
 
-    //Find closest point on line to the circle center
-    Vector circToA = Vector(0, 0, 0) - lineCopy.lineBegin;
-    Vector BToA = lineCopy.lineEnd - lineCopy.lineBegin;
-    Vector closestPoint = RT::VectorProjection(circToA, BToA);
-    if(closestPoint.magnitude() < radius)
+    //Find closest point on flat line to the circle center
+    Vector centerToFlatA = Vector(0, 0, 0) - flatLine.lineBegin;
+    Vector flatBToFlatA = flatLine.lineEnd - flatLine.lineBegin;
+    Vector closestPointOnFlatLine = RT::VectorRejection(centerToFlatA, flatBToFlatA) * -1.f;
+    
+    //Get that point as a percentage along the flat line
+    //Use this perc on the original line to find the Z position?
+    float closestPointPercAlongLine = flatLine.PointPercentageAlongLine(closestPointOnFlatLine);
+
+    //Determine if the point on the flat line closest to the cylinder center is within the cylinder's radius
+    //Ensure the point is within the line segment
+    if(closestPointOnFlatLine.magnitude() < this->radius && flatLine.IsPointWithinLineSegment(closestPointOnFlatLine))
     {
-        //Line crosses 2D circle, test if it is within vertical bounds of cylinder
-        float perc = lineCopy.PointPercentageAlongLine(closestPoint);
-        lineCopy.lineBegin.Z = beginZ;
-        lineCopy.lineEnd.Z = endZ;
-
-        Vector newClosestPoint = lineCopy.GetPointAlongLine(perc);
-        if(newClosestPoint.Z <= height)
+        //Line crosses 2D circle
+        //Check if 3D version of closestPoint is within cylinder bounds
+        Vector closestPoint = lineCopy.GetPointAlongLine(closestPointPercAlongLine);
+        if(closestPoint.Z >= 0 && closestPoint.Z <= height)
         {
             return true;
         }
     }
 
+    //Default false if none of the above results in an intersection
     return false;
 }
