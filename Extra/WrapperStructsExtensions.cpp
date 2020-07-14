@@ -9,8 +9,10 @@ Rotator RT::QuatToRotator(Quat quat)
 	//From Arator's HelperFunctions
 	RT::Matrix3 matrix(quat);
 	Vector fwd = matrix.forward;
-	Vector up = matrix.right;
-	Vector right = matrix.up;
+	//Vector up = matrix.right;
+	//Vector right = matrix.up;
+    Vector right = matrix.right;
+    Vector up = matrix.up;
 
 	//Pitch
 	float pitch_f = static_cast<float>(asin(fwd.Z));
