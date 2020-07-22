@@ -7,6 +7,7 @@
 //3D Objects
 #include "Objects/Chevron.h"
 #include "Objects/Circle.h"
+#include "Objects/Circle2D.h"
 #include "Objects/Cone.h"
 #include "Objects/Cube.h"
 #include "Objects/Cylinder.h"
