@@ -65,10 +65,10 @@ Quat RT::AngleAxisRotation(float angle, Vector axis)
 	//Angle in radians
 	Quat result;
 	float angDiv2 = angle * 0.5f;
-	result.W = static_cast<float>(cos(angDiv2));
-    result.X = axis.X * static_cast<float>(sin(angDiv2));
-    result.Y = axis.Y * static_cast<float>(sin(angDiv2));
-    result.Z = axis.Z * static_cast<float>(sin(angDiv2));
+	result.W = cosf(angDiv2);
+    result.X = axis.X * sinf(angDiv2);
+    result.Y = axis.Y * sinf(angDiv2);
+    result.Z = axis.Z * sinf(angDiv2);
 
 	return result;
 }
