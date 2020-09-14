@@ -26,8 +26,8 @@ RT::Matrix3 RT::LookAt(Vector objectLocation, Vector lookAtLocation, LookAtAxis 
 	if(rollAmount != 0)
 	{
 		Quat rot = AngleAxisRotation(rollAmount, forward);
-		right = RotateVectorWithQuat(right, rot, true);
-		up = RotateVectorWithQuat(up, rot, true);
+		right = RotateVectorWithQuat(right, rot); right.normalize();
+		up = RotateVectorWithQuat(up, rot); up.normalize();
 	}
 
 	Matrix3 mat;

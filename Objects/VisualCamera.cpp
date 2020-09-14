@@ -96,7 +96,7 @@ RT::VisualCamera::VisualCamera()
 void RT::VisualCamera::TransformCamera(Vector location, Rotator rotation, float scale)
 {
 	allCalculatedCameraVerts.clear();
-	Quat quat = RT::RotatorToQuat(rotation);
+	Quat quat = RotatorToQuat(rotation);
 	for(int i = 0; i < allOriginalCameraVerts.size(); ++i)
 	{
 		Vector calculatedVert = allOriginalCameraVerts[i];
@@ -161,7 +161,7 @@ void RT::VisualCamera::DrawCameraWithViewFrustum(CanvasWrapper canvas, Vector lo
     float resY = static_cast<float>(canvas.GetSize().Y);
 	float ratio = resX / resY;
 
-	RT::Frustum frustum(canvas, RT::RotatorToQuat(rotation), location, FOV, 0, clipDistance);
+	RT::Frustum frustum(canvas, RotatorToQuat(rotation), location, FOV, 0, clipDistance);
 
 	//Draw view frustum lines using 8 points of frustum
 	//<F/N> = Front / Near

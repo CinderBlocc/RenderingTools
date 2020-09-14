@@ -128,8 +128,8 @@ bool RT::Cylinder::LineCrossesCylinder(const Line &line) const
     RT::Line lineCopy = line;
     lineCopy.lineBegin = lineCopy.lineBegin + offset - this->location;
     lineCopy.lineEnd = lineCopy.lineEnd + offset - this->location;
-    lineCopy.lineBegin = RT::RotateVectorWithQuat(lineCopy.lineBegin, inverse);
-    lineCopy.lineEnd = RT::RotateVectorWithQuat(lineCopy.lineEnd, inverse);
+    lineCopy.lineBegin = RotateVectorWithQuat(lineCopy.lineBegin, inverse);
+    lineCopy.lineEnd = RotateVectorWithQuat(lineCopy.lineEnd, inverse);
 
     //Test if both of the points are above, or if both are below the cylinder
     if((lineCopy.lineBegin.Z > this->height && lineCopy.lineEnd.Z > this->height) || (lineCopy.lineBegin.Z < 0 && lineCopy.lineEnd.Z < 0))
