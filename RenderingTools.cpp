@@ -1,6 +1,4 @@
 #include "RenderingTools.h"
-#define _USE_MATH_DEFINES
-#include <math.h>
 
 /*
 
@@ -24,10 +22,10 @@ RT::Matrix3 RT::SingleAxisAlignment(Matrix3 matrix, Vector targetDirection, Look
 
 	Vector targetDirectionRejected = VectorRejection(targetDirection, primaryRotationAxis);
 	targetDirectionRejected.normalize();
-	double a = (targetDirectionRejected - finalAxis).magnitude();
-	double b = targetDirectionRejected.magnitude();
-	double c = finalAxis.magnitude();
-	float rotAngle = static_cast<float>(acos((b*b + c*c - a*a)/2*b*c));
+	float a = (targetDirectionRejected - finalAxis).magnitude();
+	float b = targetDirectionRejected.magnitude();
+	float c = finalAxis.magnitude();
+	float rotAngle = acosf((b*b + c*c - a*a)/2*b*c);
 
 	if(ShouldNegateAngle(Vector::dot(targetDirectionRejected, secondaryRotationAxis), step))
 		rotAngle *= -1;
@@ -145,7 +143,7 @@ float RT::GetVisualDistance(CanvasWrapper canvas, Frustum frustum, CameraWrapper
 		perspScaleLineEndProjected = canvas.ProjectF(objectLocation - (camUp * testScalePerspectiveLineLength));
 
 	Vector2F perspScaleLine = {perspScaleLineEndProjected.X - perspScaleLineStartProjected.X, perspScaleLineEndProjected.Y - perspScaleLineStartProjected.Y};
-	float perspScale = static_cast<float>(sqrt((double)perspScaleLine.X * perspScaleLine.X + (double)perspScaleLine.Y * perspScaleLine.Y));
+	float perspScale = sqrtf(perspScaleLine.X * perspScaleLine.X + perspScaleLine.Y * perspScaleLine.Y);
 	//if(perspScale > 100)
 	//	perspScale = 100;
 	float distancePercentage = perspScale/100;//1 is close, 0 is infinitely far away
@@ -156,23 +154,23 @@ float RT::GetVisualDistance(CanvasWrapper canvas, Frustum frustum, CameraWrapper
 
 	return distancePercentage;
 }
-void RT::SetColor(CanvasWrapper canvas, LinearColor color)
-{
-	canvas.SetColor((char)color.R, (char)color.G, (char)color.B, (char)color.A);
-}
+//void RT::SetColor(CanvasWrapper canvas, LinearColor color)
+//{
+//	canvas.SetColor((char)(color.R, (char)color.G, (char)color.B, (char)color.A);
+//}
 void RT::SetColor(CanvasWrapper canvas, std::string colorName, float opacity)
 {
 	LinearColor color = {0,0,0,opacity};
 
-	if(colorName == "black")	color = LinearColor{0,0,0,opacity};
-	if(colorName == "white")	color = LinearColor{255,255,255,opacity};
-	if(colorName == "red")		color = LinearColor{255,0,0,opacity};
-	if(colorName == "green")	color = LinearColor{0,255,0,opacity};
-	if(colorName == "blue")		color = LinearColor{0,0,255,opacity};
-	if(colorName == "yellow")	color = LinearColor{255,255,0,opacity};
-	if(colorName == "cyan")		color = LinearColor{0,255,255,opacity};
+	     if(colorName == "black")   color = LinearColor{0,0,0,opacity};
+	else if(colorName == "white")   color = LinearColor{255,255,255,opacity};
+	else if(colorName == "red")     color = LinearColor{255,0,0,opacity};
+	else if(colorName == "green")   color = LinearColor{0,255,0,opacity};
+	else if(colorName == "blue")    color = LinearColor{0,0,255,opacity};
+	else if(colorName == "yellow")  color = LinearColor{255,255,0,opacity};
+	else if(colorName == "cyan")    color = LinearColor{0,255,255,opacity};
 
-	SetColor(canvas, color);
+	canvas.SetColor(color);
 }
 void RT::DrawDebugStrings(CanvasWrapper canvas, std::vector<std::string> drawString, bool background, int width)
 {
@@ -183,7 +181,7 @@ void RT::DrawDebugStrings(CanvasWrapper canvas, std::vector<std::string> drawStr
 	{
 		SetColor(canvas, "black", 150);
 		canvas.SetPosition(base.minus({10,10}));
-		canvas.FillBox(Vector2{width, (int)(20 * (drawString.size() + 1))});
+		canvas.FillBox(Vector2{width, static_cast<int>(20 * (drawString.size() + 1))});
 	}
 
 	SetColor(canvas, "green");

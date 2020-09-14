@@ -1,8 +1,5 @@
 #include "Circle2D.h"
 
-#define _USE_MATH_DEFINES
-#include <math.h>
-
 RT::Circle2D::Circle2D()
     : location({0,0}), radius(20), steps(16), lineThickness(1) {}
 RT::Circle2D::Circle2D(Vector2F loc, float rad)
@@ -20,8 +17,8 @@ void RT::Circle2D::Draw(CanvasWrapper canvas) const
     for(int i = 0; i < steps; ++i)
     {
         float perc = static_cast<float>(i) / steps;
-        float X = -sinf(static_cast<float>(M_PI) * 2 * perc);
-        float Y = cosf(static_cast<float>(M_PI) * 2 * perc);
+        float X = -sinf(CONST_PI_F * 2.f * perc);
+        float Y = cosf(CONST_PI_F * 2.f * perc);
 
         X *= radius;
         Y *= radius;

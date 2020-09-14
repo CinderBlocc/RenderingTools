@@ -1,8 +1,6 @@
 #include "Cone.h"
 #include "../Extra/RenderingMath.h"
 #include "../Extra/WrapperStructsExtensions.h"
-#define _USE_MATH_DEFINES
-#include <math.h>
 
 RT::Cone::Cone()
 	: location(Vector()), direction(Vector(0,0,1)), radius(5), height(20), rollAmount(0), segments(8), thickness(1) {}
@@ -24,7 +22,7 @@ void RT::Cone::Draw(CanvasWrapper canvas) const
 	for(int i = 0; i < segments; ++i)
 	{
 		Vector newPoint = start;
-		float angle = static_cast<float>(((2 * M_PI) / segments * i) + rollAmount);
+		float angle = ((2.f * CONST_PI_F) / segments * i) + rollAmount;
 		Quat rotAmount = AngleAxisRotation(angle, Vector{0,0,1});
 		newPoint = RotateVectorWithQuat(newPoint, rotAmount);
 		basePoints.push_back(newPoint);

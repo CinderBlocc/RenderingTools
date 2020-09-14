@@ -4,8 +4,6 @@
 #include "Matrix3.h"
 #include "Frustum.h"
 #include "../Extra/WrapperStructsExtensions.h"
-#define _USE_MATH_DEFINES
-#include <math.h>
 
 RT::Chevron::Chevron()
 	: location(Vector()), orientation(Quat()), length(200), width(200), thickness(100), wipeTipToTail(0), wipeTailToTip(0) 
@@ -276,7 +274,7 @@ void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum &frustum, Vector s
 	float gapPerc = (gap + GetTipLength()) * lineLengthDiv;
 	
 	//remove the whole integer portion of the percentage
-	animationPercentage -= (int)animationPercentage;
+	animationPercentage -= static_cast<int>(animationPercentage);
 
 	//Get number of chevrons to draw
 	int numChevys = static_cast<int>(1.f / gapPerc);
@@ -291,7 +289,7 @@ void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum &frustum, Vector s
 	for(int i = 0; i < numChevys; ++i)
 	{
 		float localAnimPerc = animationPercentage + (gapPerc * i);
-		localAnimPerc -= (int)localAnimPerc;
+		localAnimPerc -= static_cast<int>(localAnimPerc);
 
 		Chevron chevy = *this;
 		chevy.location = (start * (1 - localAnimPerc) + fullEnd * localAnimPerc);
@@ -362,9 +360,9 @@ void RT::Chevron::UpdateMaxThickness()
 	Vector bottomInnerVert = bottomOuterVert + (outerRightAxis * thickness);//dot product remains the same regardless of thickness, so we can use thickness here
 
 	float dotOuterVert = Vector::dot(Vector(0, -1, 0) - bottomOuterVert, outerRightAxis);
-	double angleInnerSplitVert = (M_PI / 2) - acos(dotOuterVert);//right angle minus the known angle
+	float angleInnerSplitVert = (CONST_PI_F / 2.f) - acosf(dotOuterVert);//right angle minus the known angle
 
-	maxThickness = length * static_cast<float>(cos(angleInnerSplitVert));
+	maxThickness = length * cosf(angleInnerSplitVert);
 }
 
 void RT::Chevron::SetWipeTipToTail(const float newWipeTipToTail)

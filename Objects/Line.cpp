@@ -181,7 +181,7 @@ void RT::Line::DrawSegmentedAutomatic(CanvasWrapper canvas, Frustum &frustum, fl
 	//if(animationPercentage >= 1)
 	//{
 		//remove the whole integer portion of the percentage
-		animationPercentage -= (int)animationPercentage;
+		animationPercentage -= static_cast<int>(animationPercentage);
 	//}
 
 	DrawSegmentedManual(canvas, frustum, animationPercentage, segs, segPerc);

@@ -107,7 +107,7 @@ void RT::Matrix3::Draw(CanvasWrapper canvas, Vector location, float size) const
 	Vector2 root = canvas.Project(location);
 	float boxSizePercent = size/100;
 	if(boxSizePercent > 1) boxSizePercent = 1;
-	int boxSize = static_cast<int>(10 * boxSizePercent);
+	int boxSize = static_cast<int>(10.f * boxSizePercent);
 
     canvas.SetColor(LinearColor{255,255,255,255});
 	canvas.SetPosition(root.minus({boxSize/2,boxSize/2}));

@@ -3,19 +3,15 @@
 #include "Triangle.h"
 #include "Plane.h"
 #include "../Extra/WrapperStructsExtensions.h"
-#define _USE_MATH_DEFINES
-#include <math.h>
-
-RT::Frustum::Frustum() {}
 
 RT::Frustum::Frustum(CanvasWrapper canvas, Quat cameraQuat, Vector cameraLocation, float FOV, float nearClip, float farClip)
 {
 	//Generate the 6 planes of the viewing frustum from the 8 vertices of the frustum
 	//https://www.lighthouse3d.com/tutorials/view-frustum-culling/geometric-approach-extracting-the-planes/
 
-	Quat fQuat = cameraQuat * Quat{0,1,0,0} * cameraQuat.conjugate();
-	Quat rQuat = cameraQuat * Quat{0,0,1,0} * cameraQuat.conjugate();
-	Quat uQuat = cameraQuat * Quat{0,0,0,1} * cameraQuat.conjugate();
+	Quat fQuat = cameraQuat * Quat(0,1,0,0) * cameraQuat.conjugate();
+	Quat rQuat = cameraQuat * Quat(0,0,1,0) * cameraQuat.conjugate();
+	Quat uQuat = cameraQuat * Quat(0,0,0,1) * cameraQuat.conjugate();
 
 	Matrix3 mat(
 		Vector{fQuat.X, fQuat.Y, fQuat.Z},
@@ -24,8 +20,8 @@ RT::Frustum::Frustum(CanvasWrapper canvas, Quat cameraQuat, Vector cameraLocatio
 	);
 	mat.normalize();
 
-	float aspectRatio = (float)canvas.GetSize().X / canvas.GetSize().Y;
-	float angle = static_cast<float>(2 * tan(FOV * 0.5 * (M_PI/180)));
+	float aspectRatio = static_cast<float>(canvas.GetSize().X) / canvas.GetSize().Y;
+	float angle = 2.f * tanf(FOV * .5f * (CONST_PI_F / 180));
 
 	float fFarWidth   = angle * farClip;
 	float fFarHeight  = fFarWidth / aspectRatio;
@@ -100,10 +96,9 @@ void RT::Frustum::Draw(CanvasWrapper canvas) const
 bool RT::Frustum::IsInFrustum(Vector location, float radius) const
 {
 	//Check if object is on positive side of all 6 planes of frustum
-	for(int i = 0; i < 6; ++i)
+	for(const auto& plane : planes)
 	{
-		Vector planeNormal = {planes[i].x, planes[i].y, planes[i].z}; 
-		if(Vector::dot(location, planeNormal) + planes[i].d + radius <= 0)
+		if(Vector::dot(location, plane.direction()) + plane.d + radius <= 0)
 		{
 			return false;
 		}

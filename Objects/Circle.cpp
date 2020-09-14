@@ -3,8 +3,6 @@
 #include "Frustum.h"
 #include "../Extra/RenderingMath.h"
 #include "../Extra/WrapperStructsExtensions.h"
-#define _USE_MATH_DEFINES
-#include <math.h>
 
 RT::Circle::Circle()
 	: location(Vector(0,0,0)), orientation(Quat(1,0,0,0)), radius(100), lineThickness(1), piePercentage(1), steps(16) {}
@@ -30,24 +28,24 @@ void RT::Circle::Draw(CanvasWrapper canvas, Frustum &frustum) const
 	for(int i = 0; i < steps; ++i)
 	{
 		Vector newPoint = start;
-		float angle = static_cast<float>((2 * M_PI / steps) * (double)i);
+		float angle = (2.f * CONST_PI_F / steps) * i;
 		Quat rotAmount = AngleAxisRotation(angle, axis);
 		newPoint = RotateVectorWithQuat(newPoint, rotAmount);
 		circlePoints.push_back(newPoint);
 	}
 
 	//Reorient all points of circle
-	for(size_t i = 0; i < circlePoints.size(); i++)
-		circlePoints[i] = RotateVectorWithQuat(circlePoints[i], orientation);
+	for(auto & circlePoint : circlePoints)
+		circlePoint = RotateVectorWithQuat(circlePoint, orientation);
 
 	//Determine how many lines to draw
-	int newPointAmount = static_cast<int>((float)circlePoints.size() * piePercentage);
+	int newPointAmount = static_cast<int>(static_cast<float>(circlePoints.size()) * piePercentage);
 	if(piePercentage != 0 && piePercentage != 1)
 		newPointAmount += 1;
 	
 	//Calculate how much of the last line should be drawn
 	float percentagePerLineSegment = 1.f / steps;
-	float fullLinePercentage = (float)newPointAmount * percentagePerLineSegment - percentagePerLineSegment;
+	float fullLinePercentage = newPointAmount * percentagePerLineSegment - percentagePerLineSegment;
 	if(piePercentage == 0)
 		fullLinePercentage = 0;
 	if(piePercentage == 1)
@@ -96,7 +94,7 @@ void RT::Circle::DrawSegmented(CanvasWrapper canvas, Frustum &frustum, int segme
 
 	Circle circ = *this;
 	circ.piePercentage = percentPerSeg / segments;
-	float rotSection = static_cast<float>((2 * M_PI) / segments);
+	float rotSection = (2.f * CONST_PI_F) / segments;
 
 	Matrix3 orientationMat(circ.orientation);
 

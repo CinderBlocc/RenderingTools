@@ -38,7 +38,7 @@ namespace RT
 	//Miscellaneous canvas functions
 	LinearColor GetPercentageColor(float percent, float alpha=1.0f);
 	float GetVisualDistance(CanvasWrapper canvas, Frustum frustum, CameraWrapper camera, Vector objectLocation);
-	void SetColor(CanvasWrapper canvas, LinearColor color); //Remove when the corresponding CanvasWrapper function has been added
+	//void SetColor(CanvasWrapper canvas, LinearColor color); //Remove when the corresponding CanvasWrapper function has been added
 	void SetColor(CanvasWrapper canvas, std::string colorName, float opacity=255); //Remove as well?
 	void DrawDebugStrings(CanvasWrapper canvas, std::vector<std::string> drawString, bool background=false, int width=200);
 }

@@ -1,14 +1,9 @@
 #include "WrapperStructsExtensions.h"
 #include "../Objects/Matrix3.h"
 #include "../Objects/Cone.h"
-#define _USE_MATH_DEFINES
-#include <math.h>
 
 //  All commented code has been moved into the BakkesModSDK wrapperstructs.h file  //
 
-//constexpr double M_PI_D = 3.14159265358979323846;
-//constexpr float  M_PI_F = 3.14159265358979323846f;
-//
 //Rotator RT::QuatToRotator(Quat quat)
 //{
 //	//From Arator's HelperFunctions
@@ -19,7 +14,7 @@
 //
 //	//Pitch
 //	float pitch_f = asinf(fwd.Z);
-//	int PITCH = static_cast<int>((pitch_f / (M_PI_F / 2.f)) * 16384.f);
+//	int PITCH = static_cast<int>((pitch_f / (CONST_PI_F / 2.f)) * 16384.f);
 //
 //	//Yaw
 //	float hor_mag = sqrtf(fwd.X * fwd.X + fwd.Y * fwd.Y);
@@ -27,14 +22,14 @@
 //	if (fwd_y >= 0)
 //	{
 //		if (fwd.X < 0)
-//			fwd_y = M_PI_F - fwd_y;
+//			fwd_y = CONST_PI_F - fwd_y;
 //	}
 //	else
 //	{
 //		if (fwd.X < 0)
-//			fwd_y = -M_PI_F - fwd_y;
+//			fwd_y = -CONST_PI_F - fwd_y;
 //	}
-//	int YAW = static_cast<int>((fwd_y / M_PI_F) * 32768.f);
+//	int YAW = static_cast<int>((fwd_y / CONST_PI_F) * 32768.f);
 //
 //	//Roll
 //    Vector vert = (up.Z < 0) ? Vector(0, 0, -1) : Vector(0, 0, 1);
@@ -50,21 +45,21 @@
 //		if (up.Z >= 0)
 //			roll_f = -roll_f;
 //		else
-//			roll_f  = -M_PI_F + roll_f;
+//			roll_f  = -CONST_PI_F + roll_f;
 //	}
 //	else
 //	{
 //		if (up.Z < 0)
-//			roll_f = M_PI_F - roll_f;
+//			roll_f = CONST_PI_F - roll_f;
 //	}
-//	int ROLL = static_cast<int>((roll_f / M_PI_F) * 32768.f);
+//	int ROLL = static_cast<int>((roll_f / CONST_PI_F) * 32768.f);
 //
 //	return Rotator(PITCH, YAW, ROLL);
 //}
 //
 //Quat RT::RotatorToQuat(Rotator rot)
 //{
-//	float rotatorToRadian = (((M_PI_F / 180.f) * .5f) / 182.044449f);
+//	float rotatorToRadian = (((CONST_PI_F / 180.f) * .5f) / 182.044449f);
 //	float sinPitch = sinf(rot.Pitch * rotatorToRadian);
 //	float cosPitch = cosf(rot.Pitch * rotatorToRadian);
 //	float sinYaw   = sinf(rot.Yaw   * rotatorToRadian);

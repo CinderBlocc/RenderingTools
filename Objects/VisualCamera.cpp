@@ -2,8 +2,6 @@
 #include "Frustum.h"
 #include "../Extra/RenderingMath.h"
 #include "../Extra/WrapperStructsExtensions.h"
-#define _USE_MATH_DEFINES
-#include <math.h>
 
 RT::VisualCamera::VisualCamera()
 {
@@ -51,17 +49,15 @@ RT::VisualCamera::VisualCamera()
 	
 	allOriginalCameraVerts.clear();
 	//Matte box (8 verts): 0-7
-	for(int i = 0; i < 4; ++i)
+	for(Vector temp : originalMatteBoxSide)
 	{
-		Vector temp = originalMatteBoxSide[i];
 		allOriginalCameraVerts.push_back(temp);
 		temp.Y *= -1;
 		allOriginalCameraVerts.push_back(temp);
 	}
 	//Body (14 verts): 8-21
-	for(int i = 0; i < 7; ++i)
+	for(Vector temp : originalBodySide)
 	{
-		Vector temp = originalBodySide[i];
 		allOriginalCameraVerts.push_back(temp);
 		temp.Y *= -1;
 		allOriginalCameraVerts.push_back(temp);
@@ -72,21 +68,21 @@ RT::VisualCamera::VisualCamera()
 		Vector reelPosition = {0,0,0};
 		if(reel == 0){ reelPosition = Vector{ -1.441f, -8.79f, 26.4f }; };//top reel
 		if(reel == 1){ reelPosition = Vector{ -25.531f, -8.79f, 12.49f }; };//back reel
-		for(int i = 0; i < 12; ++i)
+		for(auto i : originalReelSide)
 		{
-			Vector temp = originalReelSide[i] + reelPosition;
+			Vector temp = i + reelPosition;
 			allOriginalCameraVerts.push_back(temp);
 			temp.Y *= -1;
 			allOriginalCameraVerts.push_back(temp);
 		}
 	}
 	//Lens (16 verts): 70-85
-	for(int i = 0; i < 8; ++i)
+	for(auto originalLen : originalLens)
 	{
 		Vector lensPosition = {28.772f, 0.f, -1.44f};
-		Vector temp = lensPosition + originalLens[i];
+		Vector temp = lensPosition + originalLen;
 		allOriginalCameraVerts.push_back(temp);
-		Vector temp2 = originalLens[i];
+		Vector temp2 = originalLen;
 		temp2.X *= -1;
 		temp = lensPosition + temp2;
 		allOriginalCameraVerts.push_back(temp);
@@ -97,9 +93,8 @@ void RT::VisualCamera::TransformCamera(Vector location, Rotator rotation, float 
 {
 	allCalculatedCameraVerts.clear();
 	Quat quat = RotatorToQuat(rotation);
-	for(int i = 0; i < allOriginalCameraVerts.size(); ++i)
+	for(Vector calculatedVert : allOriginalCameraVerts)
 	{
-		Vector calculatedVert = allOriginalCameraVerts[i];
 		calculatedVert.X -= 36;//adjust position to center the rotation around the lens
 		calculatedVert.Z += 3.76126f/2;//for some reason the camera's Z is wrong and the lens isn't centered on the frustum
 		calculatedVert = RotateVectorWithQuat(calculatedVert, quat);
@@ -131,7 +126,7 @@ void RT::VisualCamera::DrawCamera(CanvasWrapper canvas, Vector location, Rotator
 {
 	TransformCamera(location, rotation, scale);
     LinearColor inColor = canvas.GetColor();
-	canvas.SetColor((char)color.R, (char)color.G, (char)color.B, (char)color.A);
+	canvas.SetColor(color);
 
 	//DRAW LINES
 	std::vector<int> objectRanges;//Number of vertices per object
@@ -142,10 +137,10 @@ void RT::VisualCamera::DrawCamera(CanvasWrapper canvas, Vector location, Rotator
 	objectRanges.push_back(16);//Lens
 	int lineIndex = 0;
 
-	for(int i = 0; i < objectRanges.size(); ++i)
+	for(int objectRange : objectRanges)
 	{
-		DrawObject(canvas, lineIndex, objectRanges[i]);
-		lineIndex += objectRanges[i];
+		DrawObject(canvas, lineIndex, objectRange);
+		lineIndex += objectRange;
 	}
 
     canvas.SetColor(inColor);

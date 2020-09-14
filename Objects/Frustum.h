@@ -12,7 +12,7 @@ namespace RT
 		Plane planes[6]; // Top, Bottom, Left, Right, Near, Far
 
 		// CONSTRUCTORS
-		explicit Frustum();
+        explicit Frustum() = default;
 		explicit Frustum(CanvasWrapper canvas, Quat cameraQuat, Vector cameraLocation, float FOV=90, float nearClip=50, float farClip=20000); // Useful for drawing a frustum (used in VisualCamera)
 		explicit Frustum(CanvasWrapper canvas, CameraWrapper camera, float nearClip=50, float farClip=20000); // Useful for culling. Frustum(canvas, camera);
 		

@@ -3,8 +3,6 @@
 #include "Line.h"
 #include "../Extra/RenderingMath.h"
 #include "../Extra/WrapperStructsExtensions.h"
-#define _USE_MATH_DEFINES
-#include <math.h>
 
 RT::Cylinder::Cylinder()
 	: location(Vector()), orientation(Quat()), radius(50), height(100), lineThickness(1) {}
@@ -30,7 +28,7 @@ void RT::Cylinder::Draw(CanvasWrapper canvas, Frustum &frustum, int segments) co
 	std::vector<Vector> circlePoints;
 	for(int j = 0; j != segments; ++j)
 	{
-		Quat rotAmount = AngleAxisRotation(static_cast<float>(2 * M_PI * ((float)j / segments)), Vector(0,0,1));
+		Quat rotAmount = AngleAxisRotation(2.f * CONST_PI_F * j / segments, Vector(0,0,1));
 		circlePoints.push_back(RotateVectorWithQuat(Vector(radius, 0, 0), rotAmount));
 	}
 
