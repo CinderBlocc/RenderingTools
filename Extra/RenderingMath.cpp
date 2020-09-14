@@ -1,14 +1,12 @@
 #include "RenderingMath.h"
 #include "WrapperStructsExtensions.h"
-#define _USE_MATH_DEFINES
-#include <math.h>
 
-RT::Matrix3 RT::LookAt(Vector objectLocation, Vector lookAtLocation, LookAtAxis axis, float rollAmount, Vector worldUpAxis)
+RT::Matrix3 RT::LookAt(Vector baseLocation, Vector targetLocation, LookAtAxis axis, float rollAmount, Vector worldUpAxis)
 {
 	//rollAmount should be in radians
     //worldUp is for cases where the up axis for the cross product should be different from the real world up axis
 
-	Vector forward = lookAtLocation - objectLocation;
+	Vector forward = targetLocation - baseLocation;
 	forward.normalize();
 
 	Vector right = Vector::cross(worldUpAxis, forward);
@@ -39,7 +37,7 @@ RT::Matrix3 RT::LookAt(Vector objectLocation, Vector lookAtLocation, LookAtAxis 
 		mat.right = forward * -1;
 		mat.up = up;
 
-		Quat rot = AngleAxisRotation(static_cast<float>(M_PI), up);
+		Quat rot = AngleAxisRotation(CONST_PI_F, up);
 		mat.RotateWithQuat(rot, true);
 	}
 	else if(axis == LookAtAxis::AXIS_UP)
