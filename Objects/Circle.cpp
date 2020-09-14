@@ -1,8 +1,10 @@
+#include "bakkesmod/wrappers/canvaswrapper.h"
 #include "Circle.h"
 #include "Matrix3.h"
 #include "Frustum.h"
 #include "../Extra/RenderingMath.h"
 #include "../Extra/WrapperStructsExtensions.h"
+#include <vector>
 
 RT::Circle::Circle()
 	: location(Vector(0,0,0)), orientation(Quat(1,0,0,0)), radius(100), lineThickness(1), piePercentage(1), steps(16) {}

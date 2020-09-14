@@ -1,8 +1,11 @@
+#include "bakkesmod/wrappers/canvaswrapper.h"
 #include "Cylinder.h"
 #include "Frustum.h"
 #include "Line.h"
+#include "Matrix3.h"
 #include "../Extra/RenderingMath.h"
 #include "../Extra/WrapperStructsExtensions.h"
+#include <vector>
 
 RT::Cylinder::Cylinder()
 	: location(Vector()), orientation(Quat()), radius(50), height(100), lineThickness(1) {}

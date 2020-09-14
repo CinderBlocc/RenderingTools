@@ -1,5 +1,7 @@
+#include "bakkesmod/wrappers/canvaswrapper.h"
 #include "Line.h"
 #include "Frustum.h"
+#include <vector>
 
 RT::Line::Line()
 	: lineBegin(Vector{0,0,0}), lineEnd(Vector{0,0,0}), thickness(1.f) {}

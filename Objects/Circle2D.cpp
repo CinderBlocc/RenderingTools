@@ -1,4 +1,6 @@
+#include "bakkesmod/wrappers/canvaswrapper.h"
 #include "Circle2D.h"
+#include <vector>
 
 RT::Circle2D::Circle2D()
     : location({0,0}), radius(20), steps(16), lineThickness(1) {}

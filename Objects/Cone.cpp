@@ -1,6 +1,9 @@
+#include "bakkesmod/wrappers/canvaswrapper.h"
 #include "Cone.h"
+#include "Matrix3.h"
 #include "../Extra/RenderingMath.h"
 #include "../Extra/WrapperStructsExtensions.h"
+#include <vector>
 
 RT::Cone::Cone()
 	: location(Vector()), direction(Vector(0,0,1)), radius(5), height(20), rollAmount(0), segments(8), thickness(1) {}

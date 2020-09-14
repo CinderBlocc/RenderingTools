@@ -1,5 +1,6 @@
 #include "RenderingMath.h"
 #include "WrapperStructsExtensions.h"
+#include "../Objects/Matrix3.h"
 
 RT::Matrix3 RT::LookAt(Vector baseLocation, Vector targetLocation, LookAtAxis axis, float rollAmount, Vector worldUpAxis)
 {

@@ -1,3 +1,4 @@
+#include "bakkesmod/wrappers/canvaswrapper.h"
 #include "VisualCamera.h"
 #include "Frustum.h"
 #include "../Extra/RenderingMath.h"

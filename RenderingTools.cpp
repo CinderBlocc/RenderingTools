@@ -1,4 +1,6 @@
 #include "RenderingTools.h"
+#include "bakkesmod/wrappers/canvaswrapper.h"
+#include "bakkesmod/wrappers/GameObject/CameraWrapper.h"
 
 /*
 
@@ -172,23 +174,23 @@ void RT::SetColor(CanvasWrapper canvas, std::string colorName, float opacity)
 
 	canvas.SetColor(color);
 }
-void RT::DrawDebugStrings(CanvasWrapper canvas, std::vector<std::string> drawString, bool background, int width)
+void RT::DrawDebugStrings(CanvasWrapper canvas, const std::vector<std::string>& drawStrings, bool background, int width)
 {
-	if(drawString.empty()) return;
+	if(drawStrings.empty()) return;
 
 	Vector2 base = {50,50};
 	if(background)
 	{
 		SetColor(canvas, "black", 150);
 		canvas.SetPosition(base.minus({10,10}));
-		canvas.FillBox(Vector2{width, static_cast<int>(20 * (drawString.size() + 1))});
+		canvas.FillBox(Vector2{width, static_cast<int>(20 * (drawStrings.size() + 1))});
 	}
 
 	SetColor(canvas, "green");
-	for(auto it = 0; it != drawString.size(); ++it)
+	for(auto it = 0; it != drawStrings.size(); ++it)
 	{
 		canvas.SetPosition(base);
-		canvas.DrawString(drawString[it]);
+		canvas.DrawString(drawStrings[it]);
 		base.Y += 20;
 	}
 }

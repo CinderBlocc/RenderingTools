@@ -1,8 +1,10 @@
+#include "bakkesmod/wrappers/canvaswrapper.h"
 #include "Sphere.h"
 #include "Line.h"
 #include "Frustum.h"
 #include "../Extra/RenderingMath.h"
 #include "../Extra/WrapperStructsExtensions.h"
+#include <vector>
 
 RT::Sphere::Sphere()
 	: location(Vector(0,0,0)), orientation(Quat(1,0,0,0)), radius(100) {}

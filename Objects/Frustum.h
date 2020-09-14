@@ -1,7 +1,9 @@
 #pragma once
 #include "bakkesmod/wrappers/wrapperstructs.h"
-#include "bakkesmod/plugin/bakkesmodplugin.h"
 #include "Plane.h"
+
+class CameraWrapper;
+class CanvasWrapper;
 
 namespace RT
 {

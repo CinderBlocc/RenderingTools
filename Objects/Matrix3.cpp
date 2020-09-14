@@ -1,3 +1,4 @@
+#include "bakkesmod/wrappers/canvaswrapper.h"
 #include "Matrix3.h"
 #include "../Extra/WrapperStructsExtensions.h"
 
@@ -10,8 +11,8 @@ RT::Matrix3::Matrix3(Vector f, Vector r, Vector u)
 RT::Matrix3::Matrix3(Quat q)
 {
     forward = RotateVectorWithQuat(Vector(1, 0, 0), q);
-	right = RotateVectorWithQuat(Vector(0, 1, 0), q);
-	up = RotateVectorWithQuat(Vector(0, 0, 1), q);
+	right   = RotateVectorWithQuat(Vector(0, 1, 0), q);
+	up      = RotateVectorWithQuat(Vector(0, 0, 1), q);
 	normalize();
 }
 

@@ -1,3 +1,4 @@
+#include "bakkesmod/wrappers/canvaswrapper.h"
 #include "Triangle.h"
 #include "Line.h"
 #include "Frustum.h"

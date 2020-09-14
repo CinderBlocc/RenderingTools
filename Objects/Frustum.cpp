@@ -1,3 +1,5 @@
+#include "bakkesmod/wrappers/canvaswrapper.h"
+#include "bakkesmod/wrappers/GameObject/CameraWrapper.h"
 #include "Frustum.h"
 #include "Matrix3.h"
 #include "Triangle.h"

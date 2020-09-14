@@ -1,3 +1,4 @@
+#include "bakkesmod/wrappers/canvaswrapper.h"
 #include "Cube.h"
 #include "Matrix3.h"
 

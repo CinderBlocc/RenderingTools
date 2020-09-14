@@ -1,9 +1,5 @@
 #pragma once
 
-//BakkesMod Struct Includes
-#include "bakkesmod/wrappers/wrapperstructs.h"
-#include "bakkesmod/plugin/bakkesmodplugin.h"
-
 //3D Objects
 #include "Objects/Chevron.h"
 #include "Objects/Circle.h"
@@ -28,6 +24,13 @@
 
 
 //All of these will be split off into the appropriate headers eventually
+
+#include "bakkesmod/wrappers/wrapperstructs.h"
+#include <vector>
+#include <string>
+class CanvasWrapper;
+class CameraWrapper;
+
 namespace RT
 {
 	//Rotations
@@ -40,5 +43,5 @@ namespace RT
 	float GetVisualDistance(CanvasWrapper canvas, Frustum frustum, CameraWrapper camera, Vector objectLocation);
 	//void SetColor(CanvasWrapper canvas, LinearColor color); //Remove when the corresponding CanvasWrapper function has been added
 	void SetColor(CanvasWrapper canvas, std::string colorName, float opacity=255); //Remove as well?
-	void DrawDebugStrings(CanvasWrapper canvas, std::vector<std::string> drawString, bool background=false, int width=200);
+	void DrawDebugStrings(CanvasWrapper canvas, const std::vector<std::string>& drawStrings, bool background=false, int width=200);
 }

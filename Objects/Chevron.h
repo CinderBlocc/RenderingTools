@@ -1,7 +1,7 @@
 #pragma once
 #include "bakkesmod/wrappers/wrapperstructs.h"
-#include "bakkesmod/plugin/bakkesmodplugin.h"
-//#include "Frustum.h"
+
+class CanvasWrapper;
 
 namespace RT
 {
