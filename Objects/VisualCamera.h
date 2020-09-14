@@ -2,12 +2,6 @@
 #include "bakkesmod/wrappers/wrapperstructs.h"
 #include <vector>
 
-/*
-
-	NOTE: This will need a lot of overhaul, but is relatively unimportant and will be left for last
-
-*/
-
 class CanvasWrapper;
 
 namespace RT
