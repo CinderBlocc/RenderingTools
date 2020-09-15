@@ -5,6 +5,7 @@ class CanvasWrapper;
 
 namespace RT
 {
+    class Frustum;
     //  All commented code has been moved into the BakkesModSDK wrapperstructs.h file  //
 
 	//CONVERSIONS
@@ -22,4 +23,5 @@ namespace RT
 	Vector VectorReflection(Vector incident, Vector normal);
 
 	void DrawVector(CanvasWrapper canvas, Vector direction, Vector startLocation, float size=1);
+    void DrawVectorWithinFrustum(CanvasWrapper canvas, Frustum& frustum, Vector direction, Vector startLocation, float size=1);
 }

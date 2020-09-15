@@ -2,6 +2,8 @@
 #include "WrapperStructsExtensions.h"
 #include "../Objects/Matrix3.h"
 #include "../Objects/Cone.h"
+#include "../Objects/Frustum.h"
+#include "../Objects/Line.h"
 
 //  All commented code has been moved into the BakkesModSDK wrapperstructs.h file  //
 
@@ -197,4 +199,39 @@ void RT::DrawVector(CanvasWrapper canvas, Vector direction, Vector startLocation
 	//Draw line and cone
 	canvas.DrawLine(canvas.ProjectF(startLocation), canvas.ProjectF(newVec));
 	cone.Draw(canvas);
+}
+
+void RT::DrawVectorWithinFrustum(CanvasWrapper canvas, Frustum& frustum, Vector direction, Vector startLocation, float size)
+{
+	//Draws a vector from a starting location. Uses the vector's magnitude to determine length.
+	//"size" is useful for drawing normalized vectors to multiply their magnitude so that they are visible.
+	//Not recommended to use size for non-normalized vectors. It is defaulted to 1.
+
+	Vector newVec = (direction * size) + startLocation;
+	float mag = (newVec - startLocation).magnitude();
+	
+	//If vector length is less than default cone height, shrink cone to fit inside vector
+	Cone cone(newVec, direction);
+	if(cone.height > mag)
+	{
+		float originalConeHeight = cone.height;
+		cone.height = mag;
+
+		float ratio = originalConeHeight / cone.height;
+		cone.radius /= ratio;
+	}
+
+	//Subtract the cone's height from the vector so cone tip is directly on the vector instead of cone base
+	direction.normalize();
+	newVec = newVec - direction * cone.height;
+	cone.location = newVec;
+
+	//Draw line and cone
+    RT::Line renderLine(startLocation, newVec);
+    renderLine.DrawWithinFrustum(canvas, frustum);
+	
+    if(frustum.IsInFrustum(cone.location, cone.radius))
+    {
+        cone.Draw(canvas);
+    }
 }
