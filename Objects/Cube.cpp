@@ -3,20 +3,20 @@
 #include "Matrix3.h"
 
 RT::Cube::Cube()
-	: location(Vector()), orientation(Quat()), sideLength(50), lineThickness(1) {}
+	: location(Vector()), orientation(Quat()), sideLength(50.0f), lineThickness(1.0f) {}
 
 RT::Cube::Cube(Vector loc)
-    : location(loc), orientation(Quat()), sideLength(50), lineThickness(1) {}
+    : location(loc), orientation(Quat()), sideLength(50.0f), lineThickness(1.0f) {}
 
 RT::Cube::Cube(Vector loc, float sLength)
-    : location(loc), orientation(Quat()), sideLength(sLength), lineThickness(1) {}
+    : location(loc), orientation(Quat()), sideLength(sLength), lineThickness(1.0f) {}
 
 RT::Cube::Cube(Vector loc, Quat rot, float sLength)
-	: location(loc), orientation(rot), sideLength(sLength), lineThickness(1) {}
+	: location(loc), orientation(rot), sideLength(sLength), lineThickness(1.0f) {}
 
 void RT::Cube::Draw(CanvasWrapper canvas) const
 {
-	float halfLength = sideLength * .5f;
+	float halfLength = (sideLength * 0.5f);
 
 	Matrix3 matrix(orientation);
 	Vector fwd = matrix.forward * halfLength;
@@ -36,7 +36,7 @@ void RT::Cube::Draw(CanvasWrapper canvas) const
 	//Rendering works differently when thickness is not 1
 	if(lineThickness != 1)
 	{
-		for(int i = 0; i < 4; ++i)
+		for(int32_t i = 0; i < 4; ++i)
 		{
 			if(i == 3)
 			{
@@ -54,7 +54,7 @@ void RT::Cube::Draw(CanvasWrapper canvas) const
 	}
 	else
 	{
-		for(int i = 0; i < 4; ++i)
+		for(int32_t i = 0; i < 4; ++i)
 		{
 			if(i == 3)
 			{

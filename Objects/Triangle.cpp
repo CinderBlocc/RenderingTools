@@ -6,7 +6,7 @@
 #include "../Extra/WrapperStructsExtensions.h"
 
 RT::Triangle::Triangle()
-	: vert1(Vector{0,0,0}), vert2(Vector{0,0,0}), vert3(Vector{0,0,0}) {}
+	: vert1(Vector{0.0f,0.0f,0.0f}), vert2(Vector{0.0f,0.0f,0.0f}), vert3(Vector{0.0f,0.0f,0.0f}) {}
 
 RT::Triangle::Triangle(Vector v1, Vector v2, Vector v3)
 	: vert1(v1), vert2(v2), vert3(v3) {}
@@ -35,10 +35,11 @@ void RT::Triangle::DrawOutline(CanvasWrapper canvas, Frustum &frustum, float lin
 	if(drawNormal)
 	{
 		Vector normal = GetPlaneFromTriangle().direction();
-		Vector midpoint = (((vert1 + vert2) * .5f) + vert3) * .5f;
+		Vector midpoint = (((vert1 + vert2) * 0.5f) + vert3) * 0.5f;
+
 		if(frustum.IsInFrustum(midpoint))
 		{
-			DrawVector(canvas, normal, midpoint, 100);
+			DrawVector(canvas, normal, midpoint, 100.f);
 		}
 	}
 }
@@ -67,18 +68,27 @@ bool RT::Triangle::LineTriangleIntersection(Line &line) const
 		Vector intersection = plane.LinePlaneIntersectionPoint(line);
 		float intersectionSegmentLength = (intersection - line.lineBegin).magnitude();
 		float lineSegmentLength = (line.lineEnd - line.lineBegin).magnitude();
+
 		if(intersectionSegmentLength > lineSegmentLength)
+		{
 			return false;
+		}
 		else
 		{
 			if(IsWithinTriangleCoordinates(intersection))
+			{
 				return true;
+			}
 			else
+			{
 				return false;
+			}
 		}
 	}
 	else
+	{
 		return false;
+	}
 
 	return true;
 }
@@ -131,5 +141,5 @@ bool RT::Triangle::IsWithinTriangleCoordinates(Vector point) const
 		w2 = (s4 - w1*s3) / s1;
 	}
 	
-	return w1 >= 0 && w2 >= 0 && (w1 + w2) <= 1;
+	return (w1 >= 0.0f && w2 >= 0.0f && (w1 + w2) <= 1.0f);
 }

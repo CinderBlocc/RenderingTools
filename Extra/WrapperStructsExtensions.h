@@ -22,6 +22,6 @@ namespace RT
 	Vector VectorRejection(Vector vec1, Vector vec2);
 	Vector VectorReflection(Vector incident, Vector normal);
 
-	void DrawVector(CanvasWrapper canvas, Vector direction, Vector startLocation, float size=1);
-    void DrawVectorWithinFrustum(CanvasWrapper canvas, Frustum& frustum, Vector direction, Vector startLocation, float size=1);
+	void DrawVector(CanvasWrapper canvas, Vector direction, Vector startLocation, float size = 1.0f);
+    void DrawVectorWithinFrustum(CanvasWrapper canvas, Frustum& frustum, Vector direction, Vector startLocation, float size = 1.0f);
 }

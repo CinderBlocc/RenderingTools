@@ -19,7 +19,7 @@ namespace RT
 		explicit Matrix3(Rotator rot);
 
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas, Vector location, float size=100) const;
+		void Draw(CanvasWrapper canvas, Vector location, float size = 100.0f) const;
 		
 		Quat ToQuat() const;
 		Rotator ToRotator() const;

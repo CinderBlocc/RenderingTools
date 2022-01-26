@@ -23,7 +23,7 @@ namespace RT
 		// FUNCTIONS
 		void Draw(CanvasWrapper canvas) const;
 		//void DrawWithinFrustum(CanvasWrapper canvas, Frustum &frustum) const; // Future implementation: constrain triangle to clip space
-		void DrawOutline(CanvasWrapper canvas, Frustum &frustum, float lineThickness=1, bool drawNormal=false) const;
+		void DrawOutline(CanvasWrapper canvas, Frustum &frustum, float lineThickness = 1.0f, bool drawNormal=false) const;
 
 		Plane GetPlaneFromTriangle() const;
 

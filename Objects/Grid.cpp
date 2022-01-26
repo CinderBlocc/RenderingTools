@@ -7,36 +7,36 @@
 RT::Grid::Grid()
 	: width(100), height(100), widthSegs(10), heightSegs(10) {}
 
-RT::Grid::Grid(Vector loc, Quat rot, float w, float h, int wSegs, int hSegs)
+RT::Grid::Grid(Vector loc, Quat rot, float w, float h, int32_t wSegs, int32_t hSegs)
 	: location(loc), orientation(rot), width(w), height(h), widthSegs(wSegs), heightSegs(hSegs) {}
 
 void RT::Grid::Draw(CanvasWrapper canvas, Frustum &frustum, bool useThickMidline) const
 {
 	//The terms "horizontal" and "vertical" refer to the direction the line is drawn
 
-	int tempWidthSegs = (widthSegs < 2) ? 2 : widthSegs;
-	int tempHeightSegs = (heightSegs < 2) ? 2 : heightSegs;
+	int32_t tempWidthSegs = (widthSegs < 2) ? 2 : widthSegs;
+	int32_t tempHeightSegs = (heightSegs < 2) ? 2 : heightSegs;
 
-	bool drawHorizontalCenterLine = tempHeightSegs % 2 == 0;
-	bool drawVerticalCenterLine = tempWidthSegs % 2 == 0;
+	bool drawHorizontalCenterLine = (tempHeightSegs % 2 == 0);
+	bool drawVerticalCenterLine = (tempWidthSegs % 2 == 0);
 
 	float horizontalGridSpacing = height / tempHeightSegs;
 	float verticalGridSpacing = width / tempWidthSegs;
-	float horizontalStartVal = height * .5f;
-	float verticalStartVal = width * .5f;
+	float horizontalStartVal = height * 0.5f;
+	float verticalStartVal = width * 0.5f;
 	
 	RT::Matrix3 mat(orientation);
 	Vector startLocation = location - (mat.right * verticalStartVal) - (mat.up * horizontalStartVal);
 
 	//Draw horizontal lines
-	for(int y = 1; y < tempHeightSegs; ++y)
+	for(int32_t y = 1; y < tempHeightSegs; ++y)
 	{
 		Line line;
 		line.lineBegin = startLocation + (mat.up * verticalGridSpacing * static_cast<float>(y));
 		line.lineEnd = line.lineBegin + (mat.right * width);
-		if(useThickMidline && drawHorizontalCenterLine && y == tempHeightSegs/2)
+		if(useThickMidline && drawHorizontalCenterLine && y == tempHeightSegs / 2)
 		{
-			line.thickness = 3;
+			line.thickness = 3.0f;
 		}
 		line.DrawWithinFrustum(canvas, frustum);
 	}
@@ -47,7 +47,7 @@ void RT::Grid::Draw(CanvasWrapper canvas, Frustum &frustum, bool useThickMidline
 		Line line;
 		line.lineBegin = startLocation + (mat.right * horizontalGridSpacing * static_cast<float>(x));
 		line.lineEnd = line.lineBegin + (mat.up * height);
-		if(useThickMidline && drawVerticalCenterLine && x == tempWidthSegs/2)
+		if(useThickMidline && drawVerticalCenterLine && x == tempWidthSegs / 2)
 		{
 			line.thickness = 3;
 		}

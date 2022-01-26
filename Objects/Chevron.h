@@ -50,9 +50,9 @@ namespace RT
 		void UpdateBaseVertices();
 
 		//These values below are only useful for the drawing functions
-		float topPerc = .33f;
-		float middlePerc = .33f;
-		float bottomPerc = .33f;
+		float topPerc = 0.33f;
+		float middlePerc = 0.33f;
+		float bottomPerc = 0.33f;
 		void UpdateSegmentPercentages();
 		Vector tipVert;
 		Vector outerVert;

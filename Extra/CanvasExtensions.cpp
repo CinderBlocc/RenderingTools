@@ -6,18 +6,19 @@
 
 LinearColor RT::GetPercentageColor(float percent, float alpha)
 {
-	LinearColor color = {0, 0, 0, 255*alpha};
-	if(percent <= .5f)
+	LinearColor color = {0.0f, 0.0f, 0.0f, 255.0f * alpha};
+
+	if(percent <= 0.5f)
 	{
 		color.R = 255;
-		color.G = 0 + (255 * (percent*2));
+		color.G = 0.0f + (255.0f * (percent * 2.0f));
 	}
 	else
 	{
-		color.R = 255 - (255 * (percent*2));
-		color.G = 255;
+		color.R = 255.0f - (255.0f * (percent * 2.0f));
+		color.G = 255.0f;
 	}
-
+	
 	return color;
 }
 
@@ -29,7 +30,7 @@ float RT::GetVisualDistance(CanvasWrapper canvas, Frustum frustum, CameraWrapper
 	Quat camQuat = RotatorToQuat(camera.GetRotation());
 	Vector camUp = Matrix3(camQuat).up;
 
-	float testScalePerspectiveLineLength = 100;
+	float testScalePerspectiveLineLength = 100.0f;
 	Vector2F perspScaleLineStartProjected = canvas.ProjectF(objectLocation);
 	Vector2F perspScaleLineEndProjected;
 	Vector testScalePerspective = objectLocation + (camUp * testScalePerspectiveLineLength);
@@ -37,26 +38,32 @@ float RT::GetVisualDistance(CanvasWrapper canvas, Frustum frustum, CameraWrapper
 	//check if scale projection is within the top plane of the frustum, if not then invert the scale test line
 	Vector planeNormal = {frustum.planes[0].x, frustum.planes[0].y, frustum.planes[0].z}; 
 	if(Vector::dot(testScalePerspective, planeNormal) + frustum.planes[0].d + 1.0f > 0)
+	{
 		perspScaleLineEndProjected = canvas.ProjectF(objectLocation + (camUp * testScalePerspectiveLineLength));
+	}
 	else
+	{
 		perspScaleLineEndProjected = canvas.ProjectF(objectLocation - (camUp * testScalePerspectiveLineLength));
+	}
 
 	Vector2F perspScaleLine = {perspScaleLineEndProjected.X - perspScaleLineStartProjected.X, perspScaleLineEndProjected.Y - perspScaleLineStartProjected.Y};
 	float perspScale = sqrtf(perspScaleLine.X * perspScaleLine.X + perspScaleLine.Y * perspScaleLine.Y);
 	//if(perspScale > 100)
 	//	perspScale = 100;
-	float distancePercentage = perspScale/100;//1 is close, 0 is infinitely far away
+	float distancePercentage = perspScale / 100.0f; //1 is close, 0 is infinitely far away
 	//if(distancePercentage > 1)
 	//	distancePercentage = 1;
-	if(distancePercentage < 0)
-		distancePercentage = 0;
+	if(distancePercentage < 0.0f)
+	{
+		distancePercentage = 0.0f;
+	}
 
 	return distancePercentage;
 }
 
 void RT::SetColor(CanvasWrapper canvas, std::string colorName, float opacity)
 {
-	LinearColor color = {0,0,0,opacity};
+	LinearColor color = {0.0f,0.0f,0.0f,opacity};
 
 	     if(colorName == "black")   color = LinearColor{0,0,0,opacity};
 	else if(colorName == "white")   color = LinearColor{255,255,255,opacity};
@@ -69,7 +76,7 @@ void RT::SetColor(CanvasWrapper canvas, std::string colorName, float opacity)
 	canvas.SetColor(color);
 }
 
-void RT::DrawDebugStrings(CanvasWrapper canvas, const std::vector<DebugString>& drawStrings, EDebugStringBackground background, int minWidth)
+void RT::DrawDebugStrings(CanvasWrapper canvas, const std::vector<DebugString>& drawStrings, EDebugStringBackground background, int32_t minWidth)
 {
 	if(drawStrings.empty()) return;
 
@@ -77,16 +84,18 @@ void RT::DrawDebugStrings(CanvasWrapper canvas, const std::vector<DebugString>& 
 	if(background > EDebugStringBackground::BG_None)
 	{
         //If background type is static, leave finalWidth as minWidth
-        int finalWidth = minWidth;
+		int32_t finalWidth = minWidth;
 
         //Determine dynamic width of background based on longest string
         if(background > EDebugStringBackground::BG_StaticWidth)
         {
-            for(const auto& str : drawStrings)
+            for(const DebugString& str : drawStrings)
             {
-                int strSize = static_cast<int>(canvas.GetStringSize(str.Text).X);
-                if(strSize > minWidth)
-                    finalWidth = strSize;
+				int32_t strSize = static_cast<int32_t>(canvas.GetStringSize(str.Text).X);
+				if (strSize > minWidth)
+				{
+					finalWidth = strSize;
+				}
             }
         }
 
@@ -94,12 +103,12 @@ void RT::DrawDebugStrings(CanvasWrapper canvas, const std::vector<DebugString>& 
         finalWidth += 20;
 
         //Draw the background
-        canvas.SetColor(LinearColor{0,0,0,150});
+        canvas.SetColor(LinearColor{0.0f,0.0f,0.0f,150.0f});
 		canvas.SetPosition(base - Vector2{10,10});
-		canvas.FillBox(Vector2{finalWidth, static_cast<int>(20 * (drawStrings.size() + 1))});
+		canvas.FillBox(Vector2{finalWidth, static_cast<int32_t>(20 * (drawStrings.size() + 1))});
 	}
 
-    for(const auto& str : drawStrings)
+    for(const DebugString& str : drawStrings)
     {
         canvas.SetPosition(base);
         canvas.SetColor(str.Color);

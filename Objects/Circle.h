@@ -15,7 +15,7 @@ namespace RT
 		float radius;
 		float lineThickness;
 		float piePercentage;
-		int steps;
+		int32_t steps;
 
 		// CONSTRUCTORS
 		explicit Circle();

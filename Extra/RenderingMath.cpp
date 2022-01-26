@@ -11,7 +11,7 @@ RT::Matrix3 RT::LookAt(Vector baseLocation, Vector targetLocation, LookAtAxis ax
 	forward.normalize();
 
 	Vector right = Vector::cross(worldUpAxis, forward);
-	if(right.magnitude() == 0)
+	if(right.magnitude() == 0.0f)
 	{
 		//Forward axis is parallel to world Z axis
 		Matrix3 defaultMat;
@@ -22,7 +22,7 @@ RT::Matrix3 RT::LookAt(Vector baseLocation, Vector targetLocation, LookAtAxis ax
 	Vector up = Vector::cross(forward, right);
 	up.normalize();
 
-	if(rollAmount != 0)
+	if(rollAmount != 0.0f)
 	{
 		Quat rot = AngleAxisRotation(rollAmount, forward);
 		right = RotateVectorWithQuat(right, rot); right.normalize();
@@ -35,7 +35,7 @@ RT::Matrix3 RT::LookAt(Vector baseLocation, Vector targetLocation, LookAtAxis ax
 	{
 		//Right
 		mat.forward = right;
-		mat.right = forward * -1;
+		mat.right = forward * -1.0f;
 		mat.up = up;
 
 		Quat rot = AngleAxisRotation(CONST_PI_F, up);
@@ -45,7 +45,7 @@ RT::Matrix3 RT::LookAt(Vector baseLocation, Vector targetLocation, LookAtAxis ax
 	{
 		//Up
 		mat.forward = up;
-		mat.right = right * -1;
+		mat.right = right * -1.0f;
 		mat.up = forward;
 	}
 	else
@@ -72,7 +72,7 @@ Quat RT::AngleAxisRotation(float angle, Vector axis)
 	return result;
 }
 
-RT::Matrix3 RT::SingleAxisAlignment(Matrix3 matrix, Vector targetDirection, LookAtAxis axis, int step)
+RT::Matrix3 RT::SingleAxisAlignment(Matrix3 matrix, Vector targetDirection, LookAtAxis axis, int32_t step)
 {
 	//Rotate matrix along one axis to align with a vector
 	//Step is useful for LookAt function
@@ -90,21 +90,25 @@ RT::Matrix3 RT::SingleAxisAlignment(Matrix3 matrix, Vector targetDirection, Look
 	float rotAngle = acosf((b*b + c*c - a*a)/2*b*c);
 
 	if(ShouldNegateAngle(Vector::dot(targetDirectionRejected, secondaryRotationAxis), step))
-		rotAngle *= -1;
+	{
+		rotAngle *= -1.0f;
+	}
 
 	Quat rotAngleQuat = AngleAxisRotation(rotAngle, primaryRotationAxis);
 	return matrix.RotateWithQuat(rotAngleQuat, true);
 }
 
-RT::Matrix3 RT::GetRotationOrder(Matrix3 inMatrix, LookAtAxis axis, int step)
+RT::Matrix3 RT::GetRotationOrder(Matrix3 inMatrix, LookAtAxis axis, int32_t step)
 {
 	//Returning as a matrix is a bit janky, but I think it's cleaner than returning vector<Vector>
 	Vector firstRotationAxis;
 	Vector secondRotationAxis;
 	Vector finalAxis;
+
 	if(axis == LookAtAxis::AXIS_FORWARD)
 	{
 		finalAxis = inMatrix.forward;
+
 		if(step == 1)
 		{
 			firstRotationAxis = inMatrix.up;
@@ -119,6 +123,7 @@ RT::Matrix3 RT::GetRotationOrder(Matrix3 inMatrix, LookAtAxis axis, int step)
 	else if(axis == LookAtAxis::AXIS_RIGHT)
 	{
 		finalAxis = inMatrix.right;
+
 		if(step == 1)
 		{
 			firstRotationAxis = inMatrix.forward;
@@ -133,6 +138,7 @@ RT::Matrix3 RT::GetRotationOrder(Matrix3 inMatrix, LookAtAxis axis, int step)
 	else if(axis == LookAtAxis::AXIS_UP)
 	{
 		finalAxis = inMatrix.up;
+
 		if(step == 1)
 		{
 			firstRotationAxis = inMatrix.forward;
@@ -152,18 +158,22 @@ RT::Matrix3 RT::GetRotationOrder(Matrix3 inMatrix, LookAtAxis axis, int step)
 	return output;
 }
 
-bool RT::ShouldNegateAngle(float dot, int step)
+bool RT::ShouldNegateAngle(float dot, int32_t step)
 {
 	//Might need to flesh this out more based on which axis is being used
 	if(step == 1)
 	{
 		if(dot <= 0)
+		{
 			return true;
+		}
 	}
 	if(step == 2)
 	{
 		if(dot >= 0)
+		{
 			return true;
+		}
 	}
 
 	return false;

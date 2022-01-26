@@ -22,8 +22,8 @@ namespace RT
 		// FUNCTIONS
 		void Draw(CanvasWrapper canvas) const;
 		void DrawWithinFrustum(CanvasWrapper canvas, Frustum &frustum) const;
-		void DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float animationPerc, int segments=10, float segPercent=0.5f) const;
-		void DrawSegmentedAutomatic(CanvasWrapper canvas, Frustum &frustum, float segmentLength, float gapLength, float speed=0, float secondsElapsed=0);
+		void DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float animationPerc, int32_t segments = 10, float segPercent = 0.5f) const;
+		void DrawSegmentedAutomatic(CanvasWrapper canvas, Frustum &frustum, float segmentLength, float gapLength, float speed = 0.0f, float secondsElapsed = 0.0f);
 
 		bool IsPointWithinLineSegment(Vector point) const;
 		float PointPercentageAlongLine(Vector point) const;

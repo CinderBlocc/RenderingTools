@@ -6,9 +6,9 @@ RT::Circle2D::Circle2D()
     : location({0,0}), radius(20), steps(16), lineThickness(1) {}
 RT::Circle2D::Circle2D(Vector2F loc, float rad)
     : location(loc), radius(rad), steps(16), lineThickness(1) {}
-RT::Circle2D::Circle2D(Vector2F loc, float rad, int step)
+RT::Circle2D::Circle2D(Vector2F loc, float rad, int32_t step)
     : location(loc), radius(rad), steps(step), lineThickness(1) {}
-RT::Circle2D::Circle2D(Vector2F loc, float rad, int step, float lineThicc)
+RT::Circle2D::Circle2D(Vector2F loc, float rad, int32_t step, float lineThicc)
     : location(loc), radius(rad), steps(step), lineThickness(lineThicc) {}
 
 void RT::Circle2D::Draw(CanvasWrapper canvas) const
@@ -16,11 +16,11 @@ void RT::Circle2D::Draw(CanvasWrapper canvas) const
     std::vector<Vector2F> circlePoints;
 
     //Generate points
-    for(int i = 0; i < steps; ++i)
+    for(int32_t i = 0; i < steps; ++i)
     {
         float perc = static_cast<float>(i) / steps;
-        float X = -sinf(CONST_PI_F * 2.f * perc);
-        float Y = cosf(CONST_PI_F * 2.f * perc);
+        float X = -sinf(CONST_PI_F * 2.0f * perc);
+        float Y = cosf(CONST_PI_F * 2.0f * perc);
 
         X *= radius;
         Y *= radius;
@@ -51,7 +51,7 @@ void RT::Circle2D::Draw(CanvasWrapper canvas) const
 
         if(isCurrentPointOnScreen || isNextPointOnScreen)
         {
-            if(lineThickness == 1)
+            if(lineThickness == 1.0f)
             {
                 canvas.DrawLine(currentPoint, nextPoint);
             }

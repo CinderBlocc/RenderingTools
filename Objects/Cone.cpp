@@ -6,7 +6,7 @@
 #include <vector>
 
 RT::Cone::Cone()
-	: location(Vector()), direction(Vector(0,0,1)), radius(5), height(20), rollAmount(0), segments(8), thickness(1) {}
+	: location(Vector()), direction(Vector(0,0,1)), radius(5.0f), height(20.0f), rollAmount(0.0f), segments(8), thickness(1.0f) {}
 
 RT::Cone::Cone(Vector loc, Vector dir)
 	: Cone() { location = loc; direction = dir; }
@@ -19,14 +19,14 @@ void RT::Cone::Draw(CanvasWrapper canvas) const
 	
 	//Create base circle
 	std::vector<Vector> basePoints;
-	Vector start = {1,0,0};
+	Vector start = {1.0f,0.0f,0.0f};
 
 	//Get all the vertices that comprise the circle
-	for(int i = 0; i < segments; ++i)
+	for(int32_t i = 0; i < segments; ++i)
 	{
 		Vector newPoint = start;
 		float angle = ((2.f * CONST_PI_F) / segments * i) + rollAmount;
-		Quat rotAmount = AngleAxisRotation(angle, Vector{0,0,1});
+		Quat rotAmount = AngleAxisRotation(angle, Vector{0.0f,0.0f,1.0f});
 		newPoint = RotateVectorWithQuat(newPoint, rotAmount);
 		basePoints.push_back(newPoint);
 	}
@@ -44,7 +44,7 @@ void RT::Cone::Draw(CanvasWrapper canvas) const
 	}
 
 	//Draw lines
-	Vector2F startPoint = {0,0}, endPoint = {0,0};
+	Vector2F startPoint = {0.0f,0.0f}, endPoint = {0.0f,0.0f};
 	for(size_t i = 0; i != canvasPoints.size(); ++i)
 	{
 		if(i < canvasPoints.size()-1)
@@ -58,7 +58,7 @@ void RT::Cone::Draw(CanvasWrapper canvas) const
 			endPoint = canvasPoints[0];
 		}
 
-		if(thickness == 1)
+		if(thickness == 1.0f)
 		{
 			canvas.DrawLine(startPoint, endPoint);
 			canvas.DrawLine(startPoint, tip);
