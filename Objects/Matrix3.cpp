@@ -3,7 +3,7 @@
 #include "../Extra/WrapperStructsExtensions.h"
 
 RT::Matrix3::Matrix3()
-	: forward(Vector{1,0,0}), right(Vector{0,1,0}), up(Vector{0,0,1}) {}
+	: forward(Vector{1.0f,0.0f,0.0f}), right(Vector{0.0f,1.0f,0.0f}), up(Vector{0.0f,0.0f,1.0f}) {}
 
 RT::Matrix3::Matrix3(Vector f, Vector r, Vector u)
 	: forward(f), right(r), up(u) {}
@@ -93,22 +93,22 @@ void RT::Matrix3::Draw(CanvasWrapper canvas, Vector location, float size) const
 	LinearColor inColor = canvas.GetColor();
 
 	//Forward
-    canvas.SetColor(LinearColor{255,0,0,255});
+    canvas.SetColor(LinearColor{255.0f,0.0f,0.0f,255});
 	DrawVector(canvas, forward, location, size);
 
 	//Right
-    canvas.SetColor(LinearColor{0,255,0,255});
+    canvas.SetColor(LinearColor{0.0f,255.0f,0.0f,255.0f});
 	DrawVector(canvas, right, location, size);
 
 	//Up
-    canvas.SetColor(LinearColor{0,0,255,255});
+    canvas.SetColor(LinearColor{0.0f,0.0f,255.0f,255.0f});
 	DrawVector(canvas, up, location, size);
 
 	//Root
 	Vector2 root = canvas.Project(location);
-	float boxSizePercent = size/100;
-	if(boxSizePercent > 1) boxSizePercent = 1;
-	int boxSize = static_cast<int>(10.f * boxSizePercent);
+	float boxSizePercent = (size / 100.0f);
+	if(boxSizePercent > 1.0f) { boxSizePercent = 1; }
+	int32_t boxSize = static_cast<int32_t>(10.0f * boxSizePercent);
 
     canvas.SetColor(LinearColor{255,255,255,255});
 	canvas.SetPosition(root.minus({boxSize/2,boxSize/2}));

@@ -10,14 +10,14 @@ namespace RT
     public:
         Vector2F location;
         float radius;
-        int steps;
+        int32_t steps;
         float lineThickness;
 
         // CONSTRUCTORS
         Circle2D();
         Circle2D(Vector2F loc, float rad);
-        Circle2D(Vector2F loc, float rad, int step);
-        Circle2D(Vector2F loc, float rad, int step, float lineThicc);
+        Circle2D(Vector2F loc, float rad, int32_t step);
+        Circle2D(Vector2F loc, float rad, int32_t step, float lineThicc);
 
         // FUNCTIONS
 		void Draw(CanvasWrapper canvas) const;

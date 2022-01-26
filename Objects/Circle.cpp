@@ -7,7 +7,7 @@
 #include <vector>
 
 RT::Circle::Circle()
-	: location(Vector(0,0,0)), orientation(Quat(1,0,0,0)), radius(100), lineThickness(1), piePercentage(1), steps(16) {}
+	: location(Vector(0.0f,0.0f,0.0f)), orientation(Quat(1.0f,0.0f,0.0f,0.0f)), radius(100.0f), lineThickness(1.0f), piePercentage(1.0f), steps(16) {}
 
 RT::Circle::Circle(Vector loc, Quat rot, float rad)
 	: Circle() { location = loc; orientation = rot; radius = rad; }
@@ -15,8 +15,8 @@ RT::Circle::Circle(Vector loc, Quat rot, float rad)
 void RT::Circle::Draw(CanvasWrapper canvas, Frustum &frustum) const
 {
 	std::vector<Vector> circlePoints;
-	Vector start = {1,0,0};
-	Vector axis = {0,0,1};
+	Vector start = {1.0f,0.0f,0.0f};
+	Vector axis = {0.0f,0.0f,1.0f};
 
 	//Rename variables for easier readability
 	/*float radius = circle.radius;
@@ -27,35 +27,48 @@ void RT::Circle::Draw(CanvasWrapper canvas, Frustum &frustum) const
 	float piePercentage = circle.piePercentage;*/
 
 	//Get all the vertices that comprise the circle
-	for(int i = 0; i < steps; ++i)
+	for(int32_t i = 0; i < steps; ++i)
 	{
 		Vector newPoint = start;
-		float angle = (2.f * CONST_PI_F / steps) * i;
+		float angle = (2.0f * CONST_PI_F / steps) * i;
 		Quat rotAmount = AngleAxisRotation(angle, axis);
 		newPoint = RotateVectorWithQuat(newPoint, rotAmount);
 		circlePoints.push_back(newPoint);
 	}
 
 	//Reorient all points of circle
-	for(auto & circlePoint : circlePoints)
+	for(Vector& circlePoint : circlePoints)
+	{
 		circlePoint = RotateVectorWithQuat(circlePoint, orientation);
+	}
 
 	//Determine how many lines to draw
-	int newPointAmount = static_cast<int>(static_cast<float>(circlePoints.size()) * piePercentage);
-	if(piePercentage != 0 && piePercentage != 1)
+	int32_t newPointAmount = static_cast<int32_t>(static_cast<float>(circlePoints.size()) * piePercentage);
+	if(piePercentage != 0 && piePercentage != 1.0f)
+	{
 		newPointAmount += 1;
+	}
 	
 	//Calculate how much of the last line should be drawn
-	float percentagePerLineSegment = 1.f / steps;
+	float percentagePerLineSegment = 1.0f / steps;
 	float fullLinePercentage = newPointAmount * percentagePerLineSegment - percentagePerLineSegment;
-	if(piePercentage == 0)
-		fullLinePercentage = 0;
-	if(piePercentage == 1)
-		fullLinePercentage = 1;
+
+	if (piePercentage == 0.0f)
+	{
+		fullLinePercentage = 0.0f;
+	}
+	if (piePercentage == 1.0f)
+	{
+		fullLinePercentage = 1.0f;
+	}
+
 	float lastLineRemainder = piePercentage - fullLinePercentage;
 	float lastLinePercent = lastLineRemainder/percentagePerLineSegment;
-	if(piePercentage == 1)
-		lastLinePercent = 1;
+
+	if (piePercentage == 1.0f)
+	{
+		lastLinePercent = 1.0f;
+	}
 
 	//Draw the line segments
 	for(size_t i = 0; i < newPointAmount; ++i)
@@ -69,6 +82,7 @@ void RT::Circle::Draw(CanvasWrapper canvas, Frustum &frustum) const
 			startPoint = location + circlePoints[i] * radius;
 			originalEnd = location + circlePoints[i + 1] * radius;
 		}
+
 		if(i == circlePoints.size()-1)
 		{
 			startPoint = location + circlePoints[i] * radius;
@@ -77,14 +91,20 @@ void RT::Circle::Draw(CanvasWrapper canvas, Frustum &frustum) const
 
 		calculatedEnd = originalEnd;
 		if(i == (size_t)newPointAmount - 1)
+		{
 			calculatedEnd = ((originalEnd - startPoint) * lastLinePercent) + startPoint;
+		}
 
 		if(frustum.IsInFrustum(startPoint) && frustum.IsInFrustum(calculatedEnd))
 		{
-			if(lineThickness == 1)
-				canvas.DrawLine(canvas.ProjectF(startPoint), canvas.ProjectF(calculatedEnd));//avoid gaps between lines
+			if(lineThickness == 1.0f)
+			{
+				canvas.DrawLine(canvas.ProjectF(startPoint), canvas.ProjectF(calculatedEnd)); //Avoid gaps between lines
+			}
 			else
+			{
 				canvas.DrawLine(canvas.ProjectF(startPoint), canvas.ProjectF(calculatedEnd), lineThickness);
+			}
 		}
 	}
 }
@@ -100,7 +120,7 @@ void RT::Circle::DrawSegmented(CanvasWrapper canvas, Frustum &frustum, int segme
 
 	Matrix3 orientationMat(circ.orientation);
 
-	for(int i = 0; i < segments; ++i)
+	for(int32_t i = 0; i < segments; ++i)
 	{
 		Quat rotAroundUp = AngleAxisRotation(rotSection * i, orientationMat.up);
 		circ.orientation = rotAroundUp * circ.orientation;

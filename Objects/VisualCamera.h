@@ -22,7 +22,7 @@ namespace RT
 	public:
 		explicit VisualCamera();
 
-		void DrawCamera(CanvasWrapper canvas, Vector location, Rotator rotation, float scale=2, LinearColor color={255,255,255,255});
-		void DrawCameraWithViewFrustum(CanvasWrapper canvas, Vector location, Rotator rotation, float FOV, float clipDistance=250, float scale=2, LinearColor color={255,255,255,255});
+		void DrawCamera(CanvasWrapper canvas, Vector location, Rotator rotation, float scale = 2.0f, LinearColor color = {255.0f,255.0f,255.0f,255.0f});
+		void DrawCameraWithViewFrustum(CanvasWrapper canvas, Vector location, Rotator rotation, float FOV, float clipDistance = 250.0f, float scale = 2.0f, LinearColor color = {255.0f,255.0f,255.0f,255.0f});
 	};
 }

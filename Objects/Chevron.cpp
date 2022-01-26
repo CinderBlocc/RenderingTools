@@ -117,6 +117,7 @@ void RT::Chevron::Draw(CanvasWrapper canvas, Frustum &frustum, bool showLines) c
 			drawMiddle = false;
 		}
 	}
+
 	if(wipeTailToTip > 0 && wipeTailToTip <= 1)
 	{
 		if(wipeTailToTip <= bottomPerc)
@@ -275,22 +276,22 @@ void RT::Chevron::DrawAlongLine(CanvasWrapper canvas, Frustum &frustum, Vector s
 	float gapPerc = (gap + GetTipLength()) * lineLengthDiv;
 	
 	//remove the whole integer portion of the percentage
-	animationPercentage -= static_cast<int>(animationPercentage);
+	animationPercentage -= static_cast<int32_t>(animationPercentage);
 
 	//Get number of chevrons to draw
-	int numChevys = static_cast<int>(1.f / gapPerc);
+	int32_t numChevys = static_cast<int32_t>(1.0f / gapPerc);
 	if(numChevys == 0)
 	{
 		numChevys = 1;
 	}
 
 	//Re-space the chevrons evenly
-	gapPerc = 1.f / numChevys;
+	gapPerc = 1.0f / numChevys;
 
-	for(int i = 0; i < numChevys; ++i)
+	for(int32_t i = 0; i < numChevys; ++i)
 	{
 		float localAnimPerc = animationPercentage + (gapPerc * i);
-		localAnimPerc -= static_cast<int>(localAnimPerc);
+		localAnimPerc -= static_cast<int32_t>(localAnimPerc);
 
 		Chevron chevy = *this;
 		chevy.location = (start * (1 - localAnimPerc) + fullEnd * localAnimPerc);

@@ -19,11 +19,11 @@ namespace RT
 		// CONSTRUCTORS
 		explicit Plane();
 		explicit Plane(float X, float Y, float Z, float D);
-		explicit Plane(Vector normal, float distance=0);
+		explicit Plane(Vector normal, float distance = 0.0f);
 		explicit Plane(Vector normal, Vector location);
 
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas, Frustum &frustum, float size=300, int squares=20) const;
+		void Draw(CanvasWrapper canvas, Frustum &frustum, float size = 300.0f, int32_t squares = 20) const;
 
 		Vector direction() const;
 

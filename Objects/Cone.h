@@ -14,7 +14,7 @@ namespace RT
 		float height;
 		float rollAmount;
 		float thickness;
-		int segments;
+		int32_t segments;
 
 		// CONSTRUCTORS
 		explicit Cone();

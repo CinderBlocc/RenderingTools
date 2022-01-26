@@ -21,7 +21,7 @@ namespace RT
 		explicit Sphere(Vector loc, Quat rot, float rad);
 
 		// FUNCTIONS
-		void Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocation, int segments) const;
+		void Draw(CanvasWrapper canvas, Frustum &frustum, Vector cameraLocation, int32_t segments) const;
 
 		bool IsOccludingLine(Line &line) const;
 	};

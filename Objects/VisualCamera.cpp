@@ -45,7 +45,6 @@ RT::VisualCamera::VisualCamera()
 	originalLens[6] = Vector{ -7.03141f, 5.31923f,  0         };
 	originalLens[7] = Vector{ -7.03141f, 3.76126f,  3.76126f  };
 
-
 	//FILL OUT ALL ORIGINAL POINTS
 	
 	allOriginalCameraVerts.clear();
@@ -64,27 +63,28 @@ RT::VisualCamera::VisualCamera()
 		allOriginalCameraVerts.push_back(temp);
 	}
 	//Reels (24 verts): 22-69
-	for(int reel = 0; reel < 2; ++reel)
+	for(int32_t reel = 0; reel < 2; ++reel)
 	{
-		Vector reelPosition = {0,0,0};
+		Vector reelPosition = {0.0f,0.0f,0.0f};
 		if(reel == 0){ reelPosition = Vector{ -1.441f, -8.79f, 26.4f }; };//top reel
 		if(reel == 1){ reelPosition = Vector{ -25.531f, -8.79f, 12.49f }; };//back reel
-		for(auto i : originalReelSide)
+
+		for(Vector i : originalReelSide)
 		{
 			Vector temp = i + reelPosition;
 			allOriginalCameraVerts.push_back(temp);
-			temp.Y *= -1;
+			temp.Y *= -1.0f;
 			allOriginalCameraVerts.push_back(temp);
 		}
 	}
 	//Lens (16 verts): 70-85
-	for(auto originalLen : originalLens)
+	for(Vector originalLen : originalLens)
 	{
 		Vector lensPosition = {28.772f, 0.f, -1.44f};
 		Vector temp = lensPosition + originalLen;
 		allOriginalCameraVerts.push_back(temp);
 		Vector temp2 = originalLen;
-		temp2.X *= -1;
+		temp2.X *= -1.0f;
 		temp = lensPosition + temp2;
 		allOriginalCameraVerts.push_back(temp);
 	}
@@ -94,10 +94,11 @@ void RT::VisualCamera::TransformCamera(Vector location, Rotator rotation, float 
 {
 	allCalculatedCameraVerts.clear();
 	Quat quat = RotatorToQuat(rotation);
+
 	for(Vector calculatedVert : allOriginalCameraVerts)
 	{
-		calculatedVert.X -= 36;//adjust position to center the rotation around the lens
-		calculatedVert.Z += 3.76126f/2;//for some reason the camera's Z is wrong and the lens isn't centered on the frustum
+		calculatedVert.X -= 36.0f;//adjust position to center the rotation around the lens
+		calculatedVert.Z += 3.76126f / 2.0f;//for some reason the camera's Z is wrong and the lens isn't centered on the frustum
 		calculatedVert = RotateVectorWithQuat(calculatedVert, quat);
 		calculatedVert = calculatedVert * scale;
 		calculatedVert = calculatedVert + location;
@@ -130,15 +131,15 @@ void RT::VisualCamera::DrawCamera(CanvasWrapper canvas, Vector location, Rotator
 	canvas.SetColor(color);
 
 	//DRAW LINES
-	std::vector<int> objectRanges;//Number of vertices per object
+	std::vector<int32_t> objectRanges;//Number of vertices per object
 	objectRanges.push_back(8);//Matte box
 	objectRanges.push_back(14);//Body
 	objectRanges.push_back(24);//Reel 1
 	objectRanges.push_back(24);//Reel 2
 	objectRanges.push_back(16);//Lens
-	int lineIndex = 0;
+	int32_t lineIndex = 0;
 
-	for(int objectRange : objectRanges)
+	for(int32_t objectRange : objectRanges)
 	{
 		DrawObject(canvas, lineIndex, objectRange);
 		lineIndex += objectRange;
@@ -163,17 +164,17 @@ void RT::VisualCamera::DrawCameraWithViewFrustum(CanvasWrapper canvas, Vector lo
 	//<F/N> = Front / Near
 	//<T/B> = Top / Bottom
 	//<L/R> = Left / Right
-	constexpr int FTL = 0;
-	constexpr int FTR = 1;
-	constexpr int FBR = 2;
-	constexpr int FBL = 3;
-	constexpr int NTL = 4;
-	constexpr int NTR = 5;
-	constexpr int NBR = 6;
-	constexpr int NBL = 7;
+	constexpr int32_t FTL = 0;
+	constexpr int32_t FTR = 1;
+	constexpr int32_t FBR = 2;
+	constexpr int32_t FBL = 3;
+	constexpr int32_t NTL = 4;
+	constexpr int32_t NTR = 5;
+	constexpr int32_t NBR = 6;
+	constexpr int32_t NBL = 7;
 
 	//Far plane
-    canvas.SetColor(LinearColor{0,255,0,255});
+    canvas.SetColor(LinearColor{0.0f,255.0f,0.0f,255.0f});
 	canvas.DrawLine(canvas.Project(frustum.points[FTL]), canvas.Project(frustum.points[FTR]));//top line is green to indicate orientation
 	canvas.SetColor(color);
 	canvas.DrawLine(canvas.Project(frustum.points[FTR]), canvas.Project(frustum.points[FBR]));

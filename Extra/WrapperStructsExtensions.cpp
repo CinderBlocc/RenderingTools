@@ -160,12 +160,14 @@ Vector RT::VectorReflection(Vector incident, Vector normal)
 	//taken from: https://en.wikipedia.org/wiki/Specular_reflection
 	normal.normalize();
 	float norm_dot = Vector::dot(incident, normal);
-	if (norm_dot < 0)
+
+	if (norm_dot < 0.0f)
 	{
-		normal = normal * -1;
-		norm_dot *= -1.0;
+		normal = normal * -1.0f;
+		norm_dot *= -1.0f;
 	}
-	norm_dot *= 2.0;
+
+	norm_dot *= 2.0f;
 	Vector change = normal * norm_dot;
 	Vector r_unit = change - incident;
 	return r_unit;

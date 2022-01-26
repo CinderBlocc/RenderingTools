@@ -4,7 +4,7 @@
 #include <vector>
 
 RT::Line::Line()
-	: lineBegin(Vector{0,0,0}), lineEnd(Vector{0,0,0}), thickness(1.f) {}
+	: lineBegin(Vector{0.0f,0.0f,0.0f}), lineEnd(Vector{0.0f,0.0f,0.0f}), thickness(1.0f) {}
 
 RT::Line::Line(Vector begin, Vector end)
 	: lineBegin(begin), lineEnd(end), thickness(1) {}
@@ -40,13 +40,13 @@ void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum &frustum) const
 	}
 	
 	//Store which planes have been intersected and the location
-	std::vector<int> planeIndex;
-	for(int i = 0; i != 6; ++i)
+	std::vector<int32_t> planeIndex;
+	for(int32_t i = 0; i != 6; ++i)
 	{
 		if(frustum.planes[i].LineIntersectsWithPlane(thisLine))
 		{
 			Vector intersectLocation = frustum.planes[i].LinePlaneIntersectionPoint(thisLine);
-			if(frustum.IsInFrustum(intersectLocation, 1.f) && IsPointWithinLineSegment(intersectLocation))
+			if(frustum.IsInFrustum(intersectLocation, 1.0f) && IsPointWithinLineSegment(intersectLocation))
 			{
 				planeIndex.push_back(i);
 			}
@@ -84,6 +84,7 @@ void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum &frustum) const
 	{
 		return;
 	}
+
 	Vector intersect0 = frustum.planes[planeIndex[0]].LinePlaneIntersectionPoint(thisLine);
 	Vector intersect1 = frustum.planes[planeIndex[1]].LinePlaneIntersectionPoint(thisLine);
 
@@ -96,18 +97,18 @@ void RT::Line::DrawWithinFrustum(CanvasWrapper canvas, Frustum &frustum) const
 	tempLine.Draw(canvas);
 }
 
-void RT::Line::DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float animationPerc, int segments, float segPercent) const
+void RT::Line::DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float animationPerc, int32_t segments, float segPercent) const
 {
 	//MANUAL: Manually define number of desired segments and the percentage of each segment that should be visible
 
-	if(segments == 0) return; //avoid divide by 0 errors
+	if (segments == 0) { return; } //avoid divide by 0 errors
 
 	//Subtract the whole value amount from animationPerc to get just the 0-1 value
 	float trueAnimPerc = abs(animationPerc) - static_cast<int>(abs(animationPerc));
 
 	//Generate segments
 	std::vector<float> splits;
-	for(int i = 0; i != segments; ++i)
+	for(int32_t i = 0; i != segments; ++i)
 	{
 		float position = (static_cast<float>(i) / segments) + trueAnimPerc;
 		splits.push_back(position);
@@ -131,13 +132,18 @@ void RT::Line::DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float
 		if(endPerc > 1)
 		{
 			Vector overflowStart = lineBegin;
-			Vector overflowEnd = lineBegin + (direction() * lineLength * (endPerc - 1));
-			if(frustum.IsInFrustum(overflowStart, 20) && frustum.IsInFrustum(overflowEnd, 20))
+			Vector overflowEnd = lineBegin + (direction() * lineLength * (endPerc - 1.0f));
+
+			if(frustum.IsInFrustum(overflowStart, 20.0f) && frustum.IsInFrustum(overflowEnd, 20.0f))
 			{
-				if(thickness != 1)
+				if(thickness != 1.0f)
+				{
 					canvas.DrawLine(canvas.ProjectF(overflowStart), canvas.ProjectF(overflowEnd), thickness);
+				}
 				else
+				{
 					canvas.DrawLine(canvas.ProjectF(overflowStart), canvas.ProjectF(overflowEnd));
+				}
 			}
 
 			//Set normal end to cap at 1
@@ -147,12 +153,17 @@ void RT::Line::DrawSegmentedManual(CanvasWrapper canvas, Frustum &frustum, float
 		//Draw line segment
 		Vector start = lineBegin + (direction() * lineLength * startPerc);
 		Vector end = lineBegin + (direction() * lineLength * endPerc);
-		if(frustum.IsInFrustum(start, 20) && frustum.IsInFrustum(end, 20))
+
+		if(frustum.IsInFrustum(start, 20.0f) && frustum.IsInFrustum(end, 20.0f))
 		{
-			if(thickness != 1)
+			if(thickness != 1.0f)
+			{
 				canvas.DrawLine(canvas.ProjectF(start), canvas.ProjectF(end), thickness);
+			}
 			else
+			{
 				canvas.DrawLine(canvas.ProjectF(start), canvas.ProjectF(end));
+			}
 		}
 	}
 }
@@ -167,23 +178,24 @@ void RT::Line::DrawSegmentedAutomatic(CanvasWrapper canvas, Frustum &frustum, fl
 		segmentLength = magnitude();
 		gapLength = 0;
 	}
+
 	float totalSegmentLength = segmentLength + gapLength;
 	
 	//Avoid divide by 0 error
-	if(totalSegmentLength == 0) return;
+	if(totalSegmentLength == 0) { return; }
 	
 	//Calculate number of segments and length of each segment
-	int segs = static_cast<int>(magnitude() / totalSegmentLength);
+	int32_t segs = static_cast<int32_t>(magnitude() / totalSegmentLength);
 	float segPerc = segmentLength / totalSegmentLength;
 
 	//Convert distance units into line percentage
-	float animationPercPerSecond = (speed * 100) / magnitude();// distance along line percentage
+	float animationPercPerSecond = (speed * 100.0f) / magnitude();// distance along line percentage
 	animationPercentage += animationPercPerSecond * secondsElapsed;
 	
 	//if(animationPercentage >= 1)
 	//{
 		//remove the whole integer portion of the percentage
-		animationPercentage -= static_cast<int>(animationPercentage);
+		animationPercentage -= static_cast<int32_t>(animationPercentage);
 	//}
 
 	DrawSegmentedManual(canvas, frustum, animationPercentage, segs, segPerc);
@@ -196,14 +208,14 @@ bool RT::Line::IsPointWithinLineSegment(Vector point) const
 
 	//Check if point is colinear with line
 	float cross = Vector::cross(direction(), beginToPoint).magnitude();
-	if(cross > 0.001)
+	if(cross > 0.001f)
 	{
 		return false;
 	}
 
 	//Check if point is between the beginning and end of the line
 	float perc = PointPercentageAlongLine(point);
-	if(perc < 0 || perc > 1)
+	if(perc < 0.0f || perc > 1.0f)
 	{
 		return false;
 	}
@@ -219,7 +231,7 @@ float RT::Line::PointPercentageAlongLine(Vector point) const
 
 Vector RT::Line::GetPointAlongLine(float percent) const
 {
-	return (lineBegin * (1 - percent) + lineEnd * percent);
+	return (lineBegin * (1.0f - percent) + lineEnd * percent);
 }
 
 Vector RT::Line::direction() const

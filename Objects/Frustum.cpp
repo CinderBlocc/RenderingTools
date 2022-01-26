@@ -11,9 +11,9 @@ RT::Frustum::Frustum(CanvasWrapper canvas, Quat cameraQuat, Vector cameraLocatio
 	//Generate the 6 planes of the viewing frustum from the 8 vertices of the frustum
 	//https://www.lighthouse3d.com/tutorials/view-frustum-culling/geometric-approach-extracting-the-planes/
 
-	Quat fQuat = cameraQuat * Quat(0,1,0,0) * cameraQuat.conjugate();
-	Quat rQuat = cameraQuat * Quat(0,0,1,0) * cameraQuat.conjugate();
-	Quat uQuat = cameraQuat * Quat(0,0,0,1) * cameraQuat.conjugate();
+	Quat fQuat = cameraQuat * Quat(0.0f,1.0f,0.0f,0.0f) * cameraQuat.conjugate();
+	Quat rQuat = cameraQuat * Quat(0.0f,0.0f,1.0f,0.0f) * cameraQuat.conjugate();
+	Quat uQuat = cameraQuat * Quat(0.0f,0.0f,0.0f,1.0f) * cameraQuat.conjugate();
 
 	Matrix3 mat(
 		Vector{fQuat.X, fQuat.Y, fQuat.Z},
@@ -23,7 +23,7 @@ RT::Frustum::Frustum(CanvasWrapper canvas, Quat cameraQuat, Vector cameraLocatio
 	mat.normalize();
 
 	float aspectRatio = static_cast<float>(canvas.GetSize().X) / canvas.GetSize().Y;
-	float angle = 2.f * tanf(FOV * .5f * (CONST_PI_F / 180));
+	float angle = 2.0f * tanf(FOV * 0.5f * (CONST_PI_F / 180.0f));
 
 	float fFarWidth   = angle * farClip;
 	float fFarHeight  = fFarWidth / aspectRatio;
@@ -38,14 +38,14 @@ RT::Frustum::Frustum(CanvasWrapper canvas, Quat cameraQuat, Vector cameraLocatio
 	Vector vNearHeight = mat.up    * fNearHeight * 0.5f;
 	Vector vNearWidth  = mat.right * fNearWidth  * 0.5f;
 
-	constexpr int FTL = 0; // Far Top Left
-	constexpr int FTR = 1; // Far Top Right
-	constexpr int FBR = 2; // Far Bottom Right
-	constexpr int FBL = 3; // Far Bottom Left
-	constexpr int NTL = 4; // Near Top Left
-	constexpr int NTR = 5; // Near Top Right
-	constexpr int NBR = 6; // Near Bottom Right
-	constexpr int NBL = 7; // Near Bottom Left
+	constexpr int32_t FTL = 0; // Far Top Left
+	constexpr int32_t FTR = 1; // Far Top Right
+	constexpr int32_t FBR = 2; // Far Bottom Right
+	constexpr int32_t FBL = 3; // Far Bottom Left
+	constexpr int32_t NTL = 4; // Near Top Left
+	constexpr int32_t NTR = 5; // Near Top Right
+	constexpr int32_t NBR = 6; // Near Bottom Right
+	constexpr int32_t NBL = 7; // Near Bottom Left
 
 	points[FTL] = vFarPlane  + vFarHeight  - vFarWidth;
 	points[FTR] = vFarPlane  + vFarHeight  + vFarWidth;
@@ -69,17 +69,17 @@ RT::Frustum::Frustum(CanvasWrapper canvas, CameraWrapper camera, float nearClip,
 
 void RT::Frustum::Draw(CanvasWrapper canvas) const
 {
-	constexpr int FTL = 0;
-	constexpr int FTR = 1;
-	constexpr int FBR = 2;
-	constexpr int FBL = 3;
-	constexpr int NTL = 4;
-	constexpr int NTR = 5;
-	constexpr int NBR = 6;
-	constexpr int NBL = 7;
+	constexpr int32_t FTL = 0;
+	constexpr int32_t FTR = 1;
+	constexpr int32_t FBR = 2;
+	constexpr int32_t FBL = 3;
+	constexpr int32_t NTL = 4;
+	constexpr int32_t NTR = 5;
+	constexpr int32_t NBR = 6;
+	constexpr int32_t NBL = 7;
 
 	//Far plane
-	canvas.DrawLine(canvas.ProjectF(points[FTL]), canvas.ProjectF(points[FTR]), 3);
+	canvas.DrawLine(canvas.ProjectF(points[FTL]), canvas.ProjectF(points[FTR]), 3.0f);
 	canvas.DrawLine(canvas.ProjectF(points[FTR]), canvas.ProjectF(points[FBR]));
 	canvas.DrawLine(canvas.ProjectF(points[FBR]), canvas.ProjectF(points[FBL]));
 	canvas.DrawLine(canvas.ProjectF(points[FBL]), canvas.ProjectF(points[FTL]));
@@ -98,7 +98,7 @@ void RT::Frustum::Draw(CanvasWrapper canvas) const
 bool RT::Frustum::IsInFrustum(Vector location, float radius) const
 {
 	//Check if object is on positive side of all 6 planes of frustum
-	for(const auto& plane : planes)
+	for(const Plane& plane : planes)
 	{
 		if(Vector::dot(location, plane.direction()) + plane.d + radius <= 0)
 		{
